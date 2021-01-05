@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 using AutoMapper;
 using ECMSS.Data;
 using ECMSS.Repositories;
@@ -9,16 +10,17 @@ using ECMSS.Services.AutoMapperConfig;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace ECMSS.Web.App_Start
 {
     public class ContainerConfig
     {
-        public static IContainer Configure()
+        public static void Configure()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<ECMEntities>().AsSelf().InstancePerRequest();
@@ -33,7 +35,7 @@ namespace ECMSS.Web.App_Start
             builder.RegisterFilterProvider();
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-            return container;
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
         }
 
         private static void RegisterAutoMapper(ContainerBuilder builder)

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ECMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ECMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="Id" />
@@ -296,8 +296,7 @@
             <End Role="FileShare" EntitySet="FileShare" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ECMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -308,17 +307,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Employees" Relationship="Self.Fk_Employee_Department" FromRole="Department" ToRole="Employee" />
-        </EntityType>
-        <EntityType Name="Directory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ParentId" Type="Int32" />
-          <NavigationProperty Name="Directory1" Relationship="Self.Fk_Directory_Seft" FromRole="Directory" ToRole="Directory1" />
-          <NavigationProperty Name="Directory2" Relationship="Self.Fk_Directory_Seft" FromRole="Directory1" ToRole="Directory" />
-          <NavigationProperty Name="FileInfoes" Relationship="Self.Fk_FileInfo_Directory" FromRole="Directory" ToRole="FileInfo" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -365,7 +353,7 @@
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <Property Name="Size" Type="Int32" Nullable="false" />
           <NavigationProperty Name="FileInfo" Relationship="Self.Fk_FileHistory_FileInfo" FromRole="FileHistory" ToRole="FileInfo" />
-          <NavigationProperty Name="FileStatu" Relationship="Self.Fk_FileHistory_FileStatus" FromRole="FileHistory" ToRole="FileStatus" />
+          <NavigationProperty Name="FileStatus" Relationship="Self.Fk_FileHistory_FileStatus" FromRole="FileHistory" ToRole="FileStatus" />
         </EntityType>
         <EntityType Name="FileInfo">
           <Key>
@@ -378,11 +366,11 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
           <Property Name="Tag" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DirectoryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Directory" Relationship="Self.Fk_FileInfo_Directory" FromRole="FileInfo" ToRole="Directory" />
           <NavigationProperty Name="Employee" Relationship="Self.Fk_FileInfo_Employee" FromRole="FileInfo" ToRole="Employee" />
           <NavigationProperty Name="FileFavorites" Relationship="Self.Fk_FileFavorite_FileInfo" FromRole="FileInfo" ToRole="FileFavorite" />
           <NavigationProperty Name="FileHistories" Relationship="Self.Fk_FileHistory_FileInfo" FromRole="FileInfo" ToRole="FileHistory" />
           <NavigationProperty Name="FileShares" Relationship="Self.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
+          <NavigationProperty Name="Directory" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="FileInfo" ToRole="Directory" />
         </EntityType>
         <EntityType Name="FileShare">
           <Key>
@@ -421,30 +409,6 @@
             </Principal>
             <Dependent Role="Employee">
               <PropertyRef Name="DepartmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Fk_Directory_Seft">
-          <End Role="Directory" Type="Self.Directory" Multiplicity="0..1" />
-          <End Role="Directory1" Type="Self.Directory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Directory">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Directory1">
-              <PropertyRef Name="ParentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Fk_FileInfo_Directory">
-          <End Role="Directory" Type="Self.Directory" Multiplicity="1" />
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Directory">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileInfo">
-              <PropertyRef Name="Owner" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -558,7 +522,6 @@
         </Association>
         <EntityContainer Name="ECMEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Departments" EntityType="Self.Department" />
-          <EntitySet Name="Directories" EntityType="Self.Directory" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="FileAuthorities" EntityType="Self.FileAuthority" />
           <EntitySet Name="FileFavorites" EntityType="Self.FileFavorite" />
@@ -570,14 +533,6 @@
           <AssociationSet Name="Fk_Employee_Department" Association="Self.Fk_Employee_Department">
             <End Role="Department" EntitySet="Departments" />
             <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="Fk_Directory_Seft" Association="Self.Fk_Directory_Seft">
-            <End Role="Directory" EntitySet="Directories" />
-            <End Role="Directory1" EntitySet="Directories" />
-          </AssociationSet>
-          <AssociationSet Name="Fk_FileInfo_Directory" Association="Self.Fk_FileInfo_Directory">
-            <End Role="Directory" EntitySet="Directories" />
-            <End Role="FileInfo" EntitySet="FileInfoes" />
           </AssociationSet>
           <AssociationSet Name="Fk_Employee_Roles" Association="Self.Fk_Employee_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -615,7 +570,51 @@
             <End Role="FileInfo" EntitySet="FileInfoes" />
             <End Role="FileShare" EntitySet="FileShares" />
           </AssociationSet>
+          <EntitySet Name="Directories" EntityType="ECMModel.Directory" />
+          <AssociationSet Name="Fk_Directory_Seft" Association="ECMModel.Fk_Directory_Seft">
+            <End Role="Directory" EntitySet="Directories" />
+            <End Role="Directory1" EntitySet="Directories" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileInfo_Directory" Association="ECMModel.Fk_FileInfo_Directory">
+            <End Role="Directory" EntitySet="Directories" />
+            <End Role="FileInfo" EntitySet="FileInfoes" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Directory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <NavigationProperty Name="Childrens" Relationship="ECMModel.Fk_Directory_Seft" FromRole="Directory" ToRole="Directory1" />
+          <NavigationProperty Name="Parent" Relationship="ECMModel.Fk_Directory_Seft" FromRole="Directory1" ToRole="Directory" />
+          <NavigationProperty Name="FileInfoes" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="Directory" ToRole="FileInfo" />
+        </EntityType>
+        <Association Name="Fk_Directory_Seft">
+          <End Type="ECMModel.Directory" Role="Directory" Multiplicity="0..1" />
+          <End Type="ECMModel.Directory" Role="Directory1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Directory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directory1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileInfo_Directory">
+          <End Type="ECMModel.Directory" Role="Directory" Multiplicity="1" />
+          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Directory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileInfo">
+              <PropertyRef Name="Owner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -627,15 +626,6 @@
               <MappingFragment StoreEntitySet="Department">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Directories">
-            <EntityTypeMapping TypeName="ECMModel.Directory">
-              <MappingFragment StoreEntitySet="Directory">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -716,6 +706,15 @@
               <MappingFragment StoreEntitySet="Roles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Directories">
+            <EntityTypeMapping TypeName="ECMModel.Directory">
+              <MappingFragment StoreEntitySet="Directory">
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

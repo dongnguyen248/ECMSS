@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace ECMSS.Services.Interfaces
 {
-    public interface IDepartmentService
+    public interface IDirectoryService
     {
-        IEnumerable<DepartmentDTO> GetDepartments();
+        IEnumerable<DirectoryDTO> GetDirectories();
     }
 }

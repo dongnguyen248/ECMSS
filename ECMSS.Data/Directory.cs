@@ -27,7 +27,7 @@ namespace ECMSS.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Directory> Childrens { get; set; }
-        public virtual Directory Parents { get; set; }
+        public virtual Directory Parent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileInfo> FileInfoes { get; set; }
     }
