@@ -33,5 +33,7 @@ namespace ECMSS.Repositories.Interfaces
         TEntity GetSingle(Expression<Func<TEntity, bool>> condition);
 
         TEntity GetSingle(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
+
+        IEnumerable<TEntity> ExecuteQuery(string query, params object[] parameters);
     }
 }

@@ -18,8 +18,8 @@ namespace ECMSS.Data
         public Employee()
         {
             this.FileFavorites = new HashSet<FileFavorite>();
-            this.FileInfoes = new HashSet<FileInfo>();
             this.FileShares = new HashSet<FileShare>();
+            this.FileInfoes = new HashSet<FileInfo>();
         }
     
         public int Id { get; set; }
@@ -34,8 +34,8 @@ namespace ECMSS.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileFavorite> FileFavorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FileInfo> FileInfoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileShare> FileShares { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileInfo> FileInfoes { get; set; }
     }
 }

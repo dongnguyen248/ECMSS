@@ -2,6 +2,7 @@
 using ECMSS.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -104,6 +105,11 @@ namespace ECMSS.Repositories
         {
             var query = _dbSet.Where(condition);
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking().FirstOrDefault();
+        }
+
+        public IEnumerable<TEntity> ExecuteQuery(string query, params object[] parameters)
+        {
+            return _dbSet.SqlQuery(query, parameters).AsNoTracking();
         }
     }
 }

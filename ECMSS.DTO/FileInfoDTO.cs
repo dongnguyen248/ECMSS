@@ -7,7 +7,6 @@ namespace ECMSS.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Path { get; set; }
         public int Owner { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string Tag { get; set; }

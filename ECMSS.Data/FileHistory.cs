@@ -16,12 +16,12 @@ namespace ECMSS.Data
     {
         public int Id { get; set; }
         public int FileId { get; set; }
-        public Nullable<decimal> Version { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public int StatusId { get; set; }
         public int Size { get; set; }
+        public string Version { get; set; }
     
-        public virtual FileInfo FileInfo { get; set; }
         public virtual FileStatus FileStatus { get; set; }
+        public virtual FileInfo FileInfo { get; set; }
     }
 }
