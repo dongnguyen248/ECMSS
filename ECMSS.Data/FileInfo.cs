@@ -18,8 +18,8 @@ namespace ECMSS.Data
         public FileInfo()
         {
             this.FileFavorites = new HashSet<FileFavorite>();
-            this.FileHistories = new HashSet<FileHistory>();
             this.FileShares = new HashSet<FileShare>();
+            this.FileHistories = new HashSet<FileHistory>();
         }
     
         public int Id { get; set; }
@@ -34,8 +34,8 @@ namespace ECMSS.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileFavorite> FileFavorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FileHistory> FileHistories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileShare> FileShares { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileHistory> FileHistories { get; set; }
     }
 }

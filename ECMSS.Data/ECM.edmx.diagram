@@ -19,14 +19,15 @@
         <AssociationConnector Association="ECMModel.Fk_FileShare_FileAuthority" ManuallyRouted="false" />
         <EntityTypeShape EntityType="ECMModel.Directory" Width="1.5" PointX="5.5" PointY="0.875" />
         <AssociationConnector Association="ECMModel.Fk_Directory_Seft" />
-        <EntityTypeShape EntityType="ECMModel.FileHistory" Width="1.5" PointX="10.5" PointY="4.75" />
-        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileStatus" />
         <EntityTypeShape EntityType="ECMModel.FileInfo" Width="1.5" PointX="7.75" PointY="3.5" />
         <AssociationConnector Association="ECMModel.Fk_FileInfo_Directory" />
         <AssociationConnector Association="ECMModel.Fk_FileInfo_Employee" />
         <AssociationConnector Association="ECMModel.Fk_FileFavorite_FileInfo" />
-        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileInfo" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_FileInfo" />
+        <EntityTypeShape EntityType="ECMModel.FileHistory" Width="1.5" PointX="10.5" PointY="4.625" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_Employee" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileInfo" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileStatus" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

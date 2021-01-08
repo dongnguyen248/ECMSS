@@ -20,8 +20,10 @@ namespace ECMSS.Data
         public int StatusId { get; set; }
         public int Size { get; set; }
         public string Version { get; set; }
+        public int Modifier { get; set; }
     
-        public virtual FileStatus FileStatus { get; set; }
+        public virtual Employee Employee { get; set; }
         public virtual FileInfo FileInfo { get; set; }
+        public virtual FileStatus FileStatus { get; set; }
     }
 }

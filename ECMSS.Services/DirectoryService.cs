@@ -4,6 +4,9 @@ using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace ECMSS.Services
 {
@@ -24,6 +27,12 @@ namespace ECMSS.Services
         {
             var res = _mapper.Map<IEnumerable<DirectoryDTO>>(_directoryRepository.GetAll(x => x.Childrens, x => x.Parent));
             return res;
+        }
+        public string GetPathFromFileId(int fileId)
+        {
+            var idParam = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.Int, Value = fileId };
+            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetPathFromFileId @FileId", idParam).FirstOrDefault();
+            return directory.Name;
         }
     }
 }

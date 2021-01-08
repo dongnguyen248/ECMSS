@@ -20,6 +20,8 @@ namespace ECMSS.Repositories
             _dbContext.Configuration.LazyLoadingEnabled = false;
             _dbContext.Configuration.AutoDetectChangesEnabled = false;
             _dbSet = _dbContext.Set<TEntity>();
+
+            //_dbContext.Database.Log = s => Debug.WriteLine(s);
         }
 
         public TEntity Add(TEntity entity)
