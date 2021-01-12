@@ -36,12 +36,8 @@ namespace ECMSS.Repositories
             RoleRepository = new GenericRepository<Role>(_dbContext);
         }
 
-        public void Commit(bool? validateOnSaveEnabled = null)
+        public void Commit()
         {
-            if (validateOnSaveEnabled != null)
-            {
-                _dbContext.Configuration.ValidateOnSaveEnabled = (bool)validateOnSaveEnabled;
-            }
             _dbContext.SaveChanges();
         }
 

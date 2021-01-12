@@ -2,7 +2,7 @@
 
 namespace ECMSS.Services
 {
-    public  class FileFavoriteService : IFileFavoriteService
+    public class FileFavoriteService : IFileFavoriteService
     {
     }
 }

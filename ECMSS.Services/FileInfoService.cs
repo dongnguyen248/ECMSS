@@ -30,14 +30,16 @@ namespace ECMSS.Services
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public string GetFileUrl(int id)
+        public string[] GetFileUrl(int id)
         {
+            string[] result = new string[2];
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories);
             string filePath = ConfigHelper.Read("FileUploadPath");
             filePath += $"{_directoryService.GetPathFromFileId(id)}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
-            string pattern = $"ECMProtocol: <Download>[{fileInfo.Id}][{filePath}][{fileInfo.Owner}][{version}]";
-            return pattern;
+            result[0] = $"ECMProtocol: <Download>[{fileInfo.Id}][{filePath}][{fileInfo.Owner}][{version}]";
+            result[1] = fileInfo.Name;
+            return result;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using ECMSS.Services.AutoMapperConfig;
-using ECMSS.Web.App_Start;
+﻿using ECMSS.Web.App_Start;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,7 +17,6 @@ namespace ECMSS.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ContainerConfig.Configure();
-            AutoMapperConfiguration.Config();
         }
     }
 }

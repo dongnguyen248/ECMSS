@@ -15,6 +15,6 @@ namespace ECMSS.Repositories.Interfaces
         IGenericRepository<FileStatus> FileStatusRepository { get; }
         IGenericRepository<Role> RoleRepository { get; }
 
-        void Commit(bool? validateOnSaveEnabled = null);
+        void Commit();
     }
 }
