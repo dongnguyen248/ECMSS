@@ -1,33 +1,8 @@
 ﻿window.addEventListener('load', () => {
-    const api = axios.create({
-        baseURL: 'https://localhost:44372/api',
-        timeout: 5000,
-    });
-
-    const router = new Router({
-        mode: 'history'
-    });
-
-    const mainTable = $('#tbMainDefault tbody');
-    const mainTableTemplate = Handlebars.compile($('#main-table-template').html());
+    var table = initDataTable("api/fileinfo");
 
     router.add('/', async () => {
-        let html = mainTableTemplate();
-        mainTable.html(html);
-        try {
-            const response = await api.get('/fileinfo');
-            const fileInfo = response.data.map(f => ({
-                Id: f.Id, Name: f.Name, Employee: f.Employee, FileHistories: f.FileHistories.reduce((prev, current) =>
-                    +prev.id > +current.id ? prev : current
-                )
-            }));
-
-            html = mainTableTemplate({ fileInfo });
-            mainTable.html(html);
-            this.table.reload();
-        } catch (error) {
-            console.log(error);
-        }
+        table.ajax.url("api/fileinfo").load();
     });
 
     router.add('/open-content/{id}', async (id) => {
@@ -56,9 +31,13 @@
     router.navigateTo("/");
 
     $(document).delegate("a", "click", (event) => {
-        event.preventDefault();
         var target = $(event.currentTarget);
         var href = target.attr("href");
-        router.navigateTo(href);
+        if (href) {
+            if (!href.includes("ECMProtocol")) {
+                event.preventDefault();
+                router.navigateTo(href);
+            }
+        }
     });
 });

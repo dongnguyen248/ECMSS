@@ -26,7 +26,7 @@ namespace ECMSS.Services
 
         public IEnumerable<FileInfoDTO> GetFileInfos()
         {
-            var result = _fileInfoRepository.GetAll(x => x.Employee, x => x.FileHistories);
+            var result = _fileInfoRepository.GetAll(x => x.Employee, x => x.FileHistories, x => x.FileHistories.Select(h => h.Employee));
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 

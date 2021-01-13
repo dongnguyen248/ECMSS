@@ -14,6 +14,7 @@ namespace ECMSS.Web.Api
             _departmentService = departmentService;
         }
 
+        [HttpGet]
         public IEnumerable<DepartmentDTO> GetDepartments()
         {
             return _departmentService.GetDepartments();

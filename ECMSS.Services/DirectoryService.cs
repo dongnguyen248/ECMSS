@@ -23,11 +23,12 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<DirectoryDTO> GetDirectories()
+        public IEnumerable<DirectoryDTO> GetTreeDirectories()
         {
-            var res = _mapper.Map<IEnumerable<DirectoryDTO>>(_directoryRepository.GetAll(x => x.Childrens, x => x.Parent));
+            var res = _mapper.Map<IEnumerable<DirectoryDTO>>(_directoryRepository.GetAll());
             return res;
         }
+
         public string GetPathFromFileId(int fileId)
         {
             var idParam = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.Int, Value = fileId };

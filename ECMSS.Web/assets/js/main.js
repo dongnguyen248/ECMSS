@@ -1,9 +1,4 @@
 ﻿$(document).ready(function () {
-    //$("#tbMainDefault").DataTable({
-    //    columnDefs: [{ orderable: false, targets: 0 }],
-    //    order: [[1, "asc"]],
-    //    bFilter: false,
-    //});
     //hide side bar
     $("#btn_area").click(function () {
         var padding = $("#ecmcontent").css("padding-left");
@@ -59,20 +54,20 @@
         var lastFour = text.substr(text.length - 4);
         var lastThree = text.substr(text.length - 3);
         if (lastThree === "doc" || lastFour === "docx") {
-            backgroundIcon = "~/assets/imgs/ico_doc_on.png";
+            backgroundIcon = "/assets/imgs/ico_doc_on.png";
         } else if (lastThree === "xls" || lastFour === "xlsx") {
-            backgroundIcon = "~/assets/imgs/ico_xlsx_on.png";
+            backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
         } else if (lastThree === "ppt" || lastFour === "pptx") {
-            backgroundIcon = "~/assets/imgs/ico_ppt_on.png";
+            backgroundIcon = "/assets/imgs/ico_ppt_on.png";
         } else if (
             lastThree === "jpg" ||
             lastThree === "gif" ||
             lastThree === "jpg" ||
             lastFour === "jpeg"
         ) {
-            backgroundIcon = "~/assets/imgs/ico_img_on.png";
+            backgroundIcon = "/assets/imgs/ico_img_on.png";
         } else {
-            backgroundIcon = "~/assets/imgs/ico_pdf_on.png";
+            backgroundIcon = "/assets/imgs/ico_pdf_on.png";
         }
         $(this).css("background-image", "url(" + backgroundIcon + ")");
     });
@@ -141,7 +136,7 @@ $(".sidebar-menu li").on("click", function (e) {
     $(".sidebar-menu").find("span").remove();
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
-        $(this).children().children().attr("src", "~/assets/imgs/ico_folder_on.png");
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
         $(
             '<span onclick=selectFolder(this) class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
         ).insertAfter($(this).children("a"));
@@ -149,7 +144,7 @@ $(".sidebar-menu li").on("click", function (e) {
         $(this)
             .children()
             .children()
-            .attr("src", "~/assets/imgs/ico_folder_off.png");
+            .attr("src", "/assets/imgs/ico_folder_off.png");
         $(this).children("span").remove();
     }
 });
@@ -159,12 +154,12 @@ $(".sidebar-menu1 li").on("click", function (e) {
     $(".sidebar-menu").find("span").remove();
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
-        $(this).children().children().attr("src", "~/assets/imgs/ico_folder_on.png");
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
     } else {
         $(this)
             .children()
             .children()
-            .attr("src", "~/assets/imgs/ico_folder_off.png");
+            .attr("src", "/assets/imgs/ico_folder_off.png");
         $(this).children("span").remove();
     }
 });
@@ -241,25 +236,25 @@ function changebackgroundFilextension(filename, optId, inpID) {
     let backgroundIcon = "";
     $(".listFileImport").css("display", "block");
     $(".listFileImport .list").append(
-        `<li id=${optId}>${filename} <a onclick='removefile("${optId}","${inpID}")' class='btnfloatR'><img src='~/assets/~/assets/Content/img/ico_go_rcb.png'/></a></li>`
+        `<li id=${optId}>${filename} <a onclick='removefile("${optId}","${inpID}")' class='btnfloatR'><img src='/assets/Content/img/ico_go_rcb.png'/></a></li>`
     );
     let extension = getFileExtension(filename);
 
     if (extension === "doc" || extension === "docx") {
-        backgroundIcon = "~/assets/~/assets/Content/img/ico_doc_on.png";
+        backgroundIcon = "/assets/Content/img/ico_doc_on.png";
     } else if (extension === "xls" || extension === "xlsx") {
-        backgroundIcon = "~/assets/~/assets/Content/img/ico_xlsx_on.png";
+        backgroundIcon = "/assets/Content/img/ico_xlsx_on.png";
     } else if (extension === "ppt" || extension === "pptx") {
-        backgroundIcon = "~/assets/~/assets/Content/img/ico_ppt_on.png";
+        backgroundIcon = "/assets/Content/img/ico_ppt_on.png";
     } else if (
         extension === "jpg" ||
         extension === "gif" ||
         extension === "jpg" ||
         extension === "jpeg"
     ) {
-        backgroundIcon = "~/assets/~/assets/Content/img/ico_img_on.png";
+        backgroundIcon = "/assets/Content/img/ico_img_on.png";
     } else {
-        backgroundIcon = "~/assets/~/assets/Content/img/ico_pdf_on.png";
+        backgroundIcon = "/assets/Content/img/ico_pdf_on.png";
     }
     $("#" + optId).css("background-image", "url(" + backgroundIcon + ")");
 }

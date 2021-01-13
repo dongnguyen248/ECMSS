@@ -14,9 +14,10 @@ namespace ECMSS.Web.Api
             _directoryService = directoryService;
         }
 
-        public IEnumerable<DirectoryDTO> GetDirectories()
+        [HttpGet]
+        public IEnumerable<DirectoryDTO> GetTreeDirectory()
         {
-            return _directoryService.GetDirectories();
+            return _directoryService.GetTreeDirectories();
         }
     }
 }

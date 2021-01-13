@@ -47,58 +47,7 @@
                         <th>Modified date</th>
                     </tr>
                 </thead>
-                @*<tbody></tbody>*@
-                <tfoot>
-                    <tr>
-                        <td><span>File name</span></td>
-                        <td>owner</td>
-                        <td>Modifier</td>
-                        <td>Size</td>
-                        <td>Security level</td>
-                        <td>Version</td>
-                        <td>Modified date</td>
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </div>
 </div>
-
-@section ScriptTemplate {
-    <script id="main-table-template" type="text/x-handlebars-template">
-        {{#each fileInfo}}
-        <tr>
-            <td class="contentBox">
-                <div class="contentTitle">
-                    <input type="checkbox" name="name" value="" />
-                    <a class="addfavorite" onclick="AddFavorite(this)">
-                        <img src="/assets/imgs/ico_fav.png" alt="icon_start" />
-                    </a>
-                    <a href="/open-content/{{Id}}"
-                       class="contentname">
-                        {{Name}}
-                    </a>
-                </div>
-            </td>
-            <td>
-                <p>{{Employee.EpLiteId}}</p>
-            </td>
-            <td>
-                <p></p>
-            </td>
-            <td>
-                <p>{{FileHistories.Size}} kb</p>
-            </td>
-            <td>
-                <p></p>
-            </td>
-            <td>
-                <p>{{FileHistories.Version}}</p>
-            </td>
-            <td>
-                <p>{{formatDate FileHistories.ModifiedDate}}</p>
-            </td>
-        </tr>
-        {{/each}}
-    </script>
-}

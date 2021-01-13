@@ -13,6 +13,7 @@ namespace ECMSS.DTO
         public int StatusId { get; set; } = FILE_UPLOAD_STATUS;
         public int Size { get; set; }
         public int Modifier { get; set; }
+        public virtual EmployeeDTO Employee { get; set; }
         public virtual FileInfoDTO FileInfo { get; set; }
         public virtual FileStatusDTO FileStatus { get; set; }
 
