@@ -16,11 +16,11 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage UploadFile(FileHistoryDTO fileHistoryDTO)
+        public HttpResponseMessage UploadFile(FileHistoryDTO fileHistory)
         {
             try
             {
-                _fileHistoryService.UploadFile(fileHistoryDTO);
+                _fileHistoryService.UploadFile(fileHistory);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch

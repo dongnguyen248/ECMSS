@@ -48,22 +48,24 @@
         }
     });
 
+});
+
+$(document).ajaxStop(function () {
     //check extension when show file
     $(".contentname").each(function () {
         var text = $(this).text();
-        var lastFour = text.substr(text.length - 4);
-        var lastThree = text.substr(text.length - 3);
-        if (lastThree === "doc" || lastFour === "docx") {
+        var fileExtension = text.split('.').pop().trim();
+        if (fileExtension === "doc" || fileExtension === "docx") {
             backgroundIcon = "/assets/imgs/ico_doc_on.png";
-        } else if (lastThree === "xls" || lastFour === "xlsx") {
+        } else if (fileExtension === "xls" || fileExtension === "xlsx") {
             backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
-        } else if (lastThree === "ppt" || lastFour === "pptx") {
+        } else if (fileExtension === "ppt" || fileExtension === "pptx") {
             backgroundIcon = "/assets/imgs/ico_ppt_on.png";
         } else if (
-            lastThree === "jpg" ||
-            lastThree === "gif" ||
-            lastThree === "jpg" ||
-            lastFour === "jpeg"
+            fileExtension === "jpg" ||
+            fileExtension === "gif" ||
+            fileExtension === "jpg" ||
+            fileExtension === "jpeg"
         ) {
             backgroundIcon = "/assets/imgs/ico_img_on.png";
         } else {
@@ -131,15 +133,13 @@ function moveToDown(idFrom, idTo) {
     $("#" + idFrom + " .checked").appendTo("#" + idTo);
 }
 //open folder and Change image folder
-$(".sidebar-menu li").on("click", function (e) {
+$(document).on("click", ".sidebar-menu li", function (e) {
     e.stopPropagation();
     $(".sidebar-menu").find("span").remove();
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
-        $(
-            '<span onclick=selectFolder(this) class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
-        ).insertAfter($(this).children("a"));
+        $('<span onclick=selectFolder(this,"#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>').insertAfter($(this).children('a'))
     } else {
         $(this)
             .children()
@@ -149,17 +149,29 @@ $(".sidebar-menu li").on("click", function (e) {
     }
 });
 
-$(".sidebar-menu1 li").on("click", function (e) {
+$(document).on('click', '.sidebar-menu2 li', function (e) {
+    e.stopPropagation();
+    $('.sidebar-menu2').find('span').remove();
+    $(this).toggleClass('active');
+    if ($(this).hasClass('active')) {
+        $(this).children().children().attr('src', '/assets/imgs/ico_folder_on.png');
+        $('<span onclick=selectFolder(this,"#folderPath2",".sidebar-menu2") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>').insertAfter($(this).children('a'))
+
+    } else {
+        $(this).children().children().attr('src', '/assets/imgs/ico_folder_off.png');
+        $(this).children('span').remove();
+
+    }
+});
+
+$(document).on("click", ".sidebar-menu1 li", function (e) {
     e.stopPropagation();
     $(".sidebar-menu").find("span").remove();
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
     } else {
-        $(this)
-            .children()
-            .children()
-            .attr("src", "/assets/imgs/ico_folder_off.png");
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_off.png");
         $(this).children("span").remove();
     }
 });
@@ -186,9 +198,9 @@ function dfs(elem, destinationClass) {
     return text;
 }
 
-function selectFolder(obj) {
-    var temp = dfs($(".sidebar-menu"), $(obj).attr("id"));
-    $(".folderPath").val(temp.slice(0, -1));
+function selectFolder(obj, id, clas) {
+    var temp = dfs($(clas), $(obj).attr("id"));
+    $(id).val(temp.slice(0, -1));
     text = "PoscoVST>";
 }
 //upload file
@@ -236,25 +248,25 @@ function changebackgroundFilextension(filename, optId, inpID) {
     let backgroundIcon = "";
     $(".listFileImport").css("display", "block");
     $(".listFileImport .list").append(
-        `<li id=${optId}>${filename} <a onclick='removefile("${optId}","${inpID}")' class='btnfloatR'><img src='/assets/Content/img/ico_go_rcb.png'/></a></li>`
+        `<li id=${optId}>${filename} <a onclick='removefile("${optId}","${inpID}")' class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>`
     );
     let extension = getFileExtension(filename);
 
     if (extension === "doc" || extension === "docx") {
-        backgroundIcon = "/assets/Content/img/ico_doc_on.png";
+        backgroundIcon = "/assets/imgs/ico_doc_on.png";
     } else if (extension === "xls" || extension === "xlsx") {
-        backgroundIcon = "/assets/Content/img/ico_xlsx_on.png";
+        backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
     } else if (extension === "ppt" || extension === "pptx") {
-        backgroundIcon = "/assets/Content/img/ico_ppt_on.png";
+        backgroundIcon = "/assets/imgs/ico_ppt_on.png";
     } else if (
         extension === "jpg" ||
         extension === "gif" ||
         extension === "jpg" ||
         extension === "jpeg"
     ) {
-        backgroundIcon = "/assets/Content/img/ico_img_on.png";
+        backgroundIcon = "/assets/imgs/ico_img_on.png";
     } else {
-        backgroundIcon = "/assets/Content/img/ico_pdf_on.png";
+        backgroundIcon = "/assets/imgs/ico_pdf_on.png";
     }
     $("#" + optId).css("background-image", "url(" + backgroundIcon + ")");
 }

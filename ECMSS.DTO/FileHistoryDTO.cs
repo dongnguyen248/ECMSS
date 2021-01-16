@@ -9,7 +9,7 @@ namespace ECMSS.DTO
         public int Id { get; set; }
         public int FileId { get; set; }
         public string Version { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; } = DateTime.Now;
         public int StatusId { get; set; } = FILE_UPLOAD_STATUS;
         public int Size { get; set; }
         public int Modifier { get; set; }
@@ -18,6 +18,8 @@ namespace ECMSS.DTO
         public virtual FileStatusDTO FileStatus { get; set; }
 
         #region IgnoreMap
+        [IgnoreMap]
+        public string ModifierUser { get; set; }
 
         [IgnoreMap]
         public string FileName { get; set; }

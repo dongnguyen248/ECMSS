@@ -6,6 +6,9 @@ namespace ECMSS.Services.Interfaces
     public interface IDirectoryService
     {
         IEnumerable<DirectoryDTO> GetTreeDirectories();
+
         string GetPathFromFileId(int fileId);
+
+        string GetPathFromDirId(int dirId);
     }
 }

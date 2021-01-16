@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 
 namespace ECMSS.DTO
@@ -17,5 +18,15 @@ namespace ECMSS.DTO
         public virtual ICollection<FileFavoriteDTO> FileFavorites { get; set; }
         public virtual ICollection<FileHistoryDTO> FileHistories { get; set; }
         public virtual ICollection<FileShareDTO> FileShares { get; set; }
+
+        #region IgnoreMap
+
+        [IgnoreMap]
+        public string OwnerUser { get; set; }
+
+        [IgnoreMap]
+        public byte[] FileData { get; set; }
+
+        #endregion IgnoreMap
     }
 }

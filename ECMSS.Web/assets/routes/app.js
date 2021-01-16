@@ -1,13 +1,18 @@
 ﻿window.addEventListener('load', () => {
-    var table = initDataTable("api/fileinfo");
+    initDataTable("api/FileInfo");
 
-    router.add('/', async () => {
-        table.ajax.url("api/fileinfo").load();
+    router.add('/', () => {
+        $("#tbMainDefault").DataTable().ajax.url("api/FileInfo").load();
     });
 
-    router.add('/open-content/{id}', async (id) => {
+    router.add('/get-by-dir-{dirId}', (dirId) => {
+        var url = `api/FileInfo/GetFileInfosByDirId/${dirId}`;
+        $("#tbMainDefault").DataTable().ajax.url(url).load();
+    });
+
+    router.add('/open-content-{id}', async (id) => {
         try {
-            const response = await api.get(`/fileinfo/getfileurl/${id}`);
+            const response = await api.get(`FileInfo/GetFileUrl/${id}`);
             var fileUrl = response.data;
             var item = {
                 view: `${fileUrl[0]}[true]`,
@@ -26,6 +31,10 @@
         } catch (error) {
             console.log(error);
         }
+    });
+
+    router.add("/filter-{fileType}-file", (fileType) => {
+        filterDTByFileType(fileType);
     });
 
     router.navigateTo("/");

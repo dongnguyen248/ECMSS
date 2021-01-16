@@ -42,7 +42,7 @@
                     </div>
                     <div class="selectFolder">
                         <div class="allForder">
-                            <input class="form-control folderPath" readonly type="text" name="name" value="PoscoVST" />
+                            <input class="form-control" id="folderPath" readonly type="text" name="name" value="PoscoVST" />
 
                             <a href="#" class="btn btn-default btn-sm" id="showAllFolder">All Content</a>
                             <div class="listFolder" style="display:none">
@@ -52,119 +52,8 @@
                                         <option value="value" selected>PoscoVST</option>
                                     </select>
                                 </div>
-                                <ul class="sidebar-menu">
-                                    <li class="treeview" id="rootFolder1">
-                                        <a href="#">
-                                            <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                            Content1
-                                        </a>
-                                        <ul class="treeview-menu">
-                                            <li id="folder001">
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> SubFolder
-                                                </a>
-                                            </li>
-                                            <li id="folder002">
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> Level One
-                                                </a>
-
-                                                <ul class="treeview-menu">
-                                                    <li id="folder004">
-                                                        <a>
-                                                            <img src="~/assets/imgs/ico_folder_off.png"
-                                                                 alt="Folder Image" /> Level Two
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <img src="~/assets/imgs/ico_folder_off.png"
-                                                                 alt="Folder Image" /> Level Two
-                                                        </a>
-                                                        <ul class="treeview-menu">
-                                                            <li id="folder005">
-                                                                <a href="#">
-                                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                                         alt="Folder Image" /> Level Three
-                                                                </a>
-                                                            </li>
-                                                            <li id="folder006">
-                                                                <a href="#">
-                                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                                         alt="Folder Image" /> Level Three
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li id="folder003">
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> Level One
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li id="rootFolder2" class="treeview">
-                                        <a href="#">
-                                            <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                            Content2
-                                        </a>
-                                        <ul class="treeview-menu">
-                                            <li>
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> Level One
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> Level One
-                                                </a>
-                                                <ul class="treeview-menu">
-                                                    <li>
-                                                        <a href="#">
-                                                            <img src="~/assets/imgs/ico_folder_off.png"
-                                                                 alt="Folder Image" /> Level Two
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#">
-                                                            <img src="~/assets/imgs/ico_folder_off.png"
-                                                                 alt="Folder Image" /> Level Two
-                                                        </a>
-                                                        <ul class="treeview-menu">
-                                                            <li>
-                                                                <a href="#">
-                                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                                         alt="Folder Image" /> Level Three
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                                         alt="Folder Image" /> Level Three
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <img src="~/assets/imgs/ico_folder_off.png"
-                                                         alt="Folder Image" /> Level One
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                </ul>
-
+                                <div class="addFolderTreeBox">
+                                </div>
                             </div>
                         </div>
                         <div class="searchFolder">
@@ -480,7 +369,7 @@
                 </div>
                 <div class="locationContent">
                     <span>Location Content</span>
-                    <input class="form-control folderPath" readonly type="text" name="name" value="PoscoVST" />
+                    <input class="form-control" id="folderPath2" readonly type="text" name="name" value="PoscoVST" />
                     <a href="#" class="btn btn-default" id="showFolder">All Content</a>
                 </div>
             </div>
@@ -492,118 +381,8 @@
                             <option value="value" selected>PoscoVST</option>
                         </select>
                     </div>
-                    <ul class="sidebar-menu">
-                        <li class="treeview" id="rootFolder1">
-                            <a href="#">
-                                <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                Content1
-                            </a>
-                            <ul class="treeview-menu">
-                                <li id="folder001">
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png"
-                                             alt="Folder Image" /> SubFolder
-                                    </a>
-                                </li>
-                                <li id="folder002">
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" /> Level
-                                        One
-                                    </a>
-
-                                    <ul class="treeview-menu">
-                                        <li id="folder004">
-                                            <a>
-                                                <img src="~/assets/imgs/ico_folder_off.png"
-                                                     alt="Folder Image" /> Level Two
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="~/assets/imgs/ico_folder_off.png"
-                                                     alt="Folder Image" /> Level Two
-                                            </a>
-                                            <ul class="treeview-menu">
-                                                <li id="folder005">
-                                                    <a href="#">
-                                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                                        Level Three
-                                                    </a>
-                                                </li>
-                                                <li id="folder006">
-                                                    <a href="#">
-                                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                                        Level Three
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li id="folder003">
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png"
-                                             alt="Folder Image" /> Level One
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li id="rootFolder2" class="treeview">
-                            <a href="#">
-                                <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                Content2
-                            </a>
-                            <ul class="treeview-menu">
-                                <li>
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" /> Level
-                                        One
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" /> Level
-                                        One
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        <li>
-                                            <a href="#">
-                                                <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                                Level Two
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" />
-                                                Level Two
-                                            </a>
-                                            <ul class="treeview-menu">
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="~/assets/imgs/ico_folder_off.png"
-                                                             alt="Folder Image" /> Level Three
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <img src="~/assets/imgs/ico_folder_off.png"
-                                                             alt="Folder Image" /> Level Three
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="~/assets/imgs/ico_folder_off.png" alt="Folder Image" /> Level
-                                        One
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
+                    <div class="addFolderTreeBox2">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

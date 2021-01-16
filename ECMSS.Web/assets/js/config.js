@@ -1,5 +1,5 @@
 ﻿const api = axios.create({
-    baseURL: 'https://localhost:44372/api',
+    baseURL: "https://localhost:44372/api/",
     timeout: 5000,
 });
 

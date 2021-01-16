@@ -11,6 +11,7 @@ namespace ECMSS.Services
     public class FileHistoryService : IFileHistoryService
     {
         private readonly IGenericRepository<FileHistory> _fileHistoryRepository;
+        private readonly IGenericRepository<Employee> _employeeRepository;
         private readonly IDirectoryService _directoryService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,6 +20,7 @@ namespace ECMSS.Services
         {
             _unitOfWork = unitOfWork;
             _fileHistoryRepository = _unitOfWork.FileHistoryRepository;
+            _employeeRepository = _unitOfWork.EmployeeRepository;
             _directoryService = directoryService;
             _mapper = mapper;
         }
@@ -27,6 +29,7 @@ namespace ECMSS.Services
         {
             try
             {
+                fileHistory.Modifier = _employeeRepository.GetSingle(x => x.EpLiteId == fileHistory.ModifierUser).Id;
                 string filePath = ConfigHelper.Read("FileUploadPath");
                 filePath += $"{_directoryService.GetPathFromFileId(fileHistory.FileId)}/{fileHistory.FileName}";
                 FileHelper.SaveFile(filePath, fileHistory.FileData);
