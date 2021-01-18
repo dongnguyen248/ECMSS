@@ -7,6 +7,7 @@ using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace ECMSS.Services
 {
@@ -18,6 +19,7 @@ namespace ECMSS.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDirectoryService _directoryService;
         private readonly IMapper _mapper;
+        private readonly Expression<Func<FileInfo, object>>[] _includes;
 
         public FileInfoService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
         {
@@ -27,17 +29,23 @@ namespace ECMSS.Services
             _employeeRepository = _unitOfWork.EmployeeRepository;
             _directoryService = directoryService;
             _mapper = mapper;
+
+            _includes = new Expression<Func<FileInfo, object>>[] { x => x.Employee,
+                x => x.FileHistories,
+                x => x.FileHistories.Select(h => h.Employee),
+                x => x.FileFavorites,
+                x => x.FileImportants };
         }
 
-        public IEnumerable<FileInfoDTO> GetFileInfos()
+        public IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId)
         {
-            var result = _fileInfoRepository.GetAll(x => x.Employee, x => x.FileHistories, x => x.FileHistories.Select(h => h.Employee));
+            var result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId)
         {
-            var result = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId, x => x.Employee, x => x.FileHistories, x => x.FileHistories.Select(h => h.Employee));
+            var result = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
@@ -79,6 +87,18 @@ namespace ECMSS.Services
             {
                 throw ex;
             }
+        }
+
+        public IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId)
+        {
+            var result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.FileFavorites.Count > 0, _includes);
+            return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
+        }
+
+        public IEnumerable<FileInfoDTO> GetImportantFiles(int empId)
+        {
+            var result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.FileImportants.Count > 0, _includes);
+            return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
     }
 }

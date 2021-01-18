@@ -17,9 +17,10 @@ namespace ECMSS.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FileInfo()
         {
-            this.FileFavorites = new HashSet<FileFavorite>();
             this.FileShares = new HashSet<FileShare>();
             this.FileHistories = new HashSet<FileHistory>();
+            this.FileFavorites = new HashSet<FileFavorite>();
+            this.FileImportants = new HashSet<FileImportant>();
         }
     
         public int Id { get; set; }
@@ -32,10 +33,12 @@ namespace ECMSS.Data
         public virtual Directory Directory { get; set; }
         public virtual Employee Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FileFavorite> FileFavorites { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileShare> FileShares { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileHistory> FileHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileFavorite> FileFavorites { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileImportant> FileImportants { get; set; }
     }
 }

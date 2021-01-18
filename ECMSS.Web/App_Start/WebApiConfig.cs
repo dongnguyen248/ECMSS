@@ -9,6 +9,8 @@ namespace ECMSS.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            //config.Filters.Add(new AuthorizeAttribute());
+
             config.MapHttpAttributeRoutes();
 
             var corsAttr = new EnableCorsAttribute("*", "*", "*");
@@ -19,7 +21,7 @@ namespace ECMSS.Web
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

@@ -86,6 +86,9 @@
     <Compile Include="FileHistory.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>
+    <Compile Include="FileImportant.cs">
+      <DependentUpon>ECM.tt</DependentUpon>
+    </Compile>
     <Compile Include="FileInfo.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>

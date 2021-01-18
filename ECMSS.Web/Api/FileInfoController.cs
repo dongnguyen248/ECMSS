@@ -1,5 +1,8 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
+using ECMSS.Web.Extensions.Auth;
+using ECMSS.Web.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -7,7 +10,7 @@ using System.Web.Http;
 
 namespace ECMSS.Web.Api
 {
-    [RoutePrefix("Api/FileInfo")]
+    [JwtAuthentication]
     public class FileInfoController : ApiController
     {
         private readonly IFileInfoService _fileInfoService;
@@ -17,47 +20,22 @@ namespace ECMSS.Web.Api
             _fileInfoService = fileInfoService;
         }
 
-        [Route("")]
         [HttpGet]
-        public IHttpActionResult GetFileInfos()
+        public IHttpActionResult GetFileInfosByUserId(int empId)
         {
-            var fileInfos = _fileInfoService.GetFileInfos();
-            var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
-            var result = fileInfos.Select(x => new
-            {
-                x.Id,
-                x.Name,
-                Owner = x.Employee.EpLiteId,
-                Modifier = fileHistory.Employee.EpLiteId,
-                fileHistory.Size,
-                SecurityLevel = "",
-                fileHistory.Version,
-                fileHistory.ModifiedDate
-            });
+            var fileInfos = _fileInfoService.GetFileInfosByUserId(empId);
+            var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
-        [Route("GetFileInfosByDirId/{dirId}")]
         [HttpGet]
         public IHttpActionResult GetFileInfosByDirId(int dirId)
         {
             var fileInfos = _fileInfoService.GetFileInfosByDirId(dirId);
-            var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
-            var result = fileInfos.Select(x => new
-            {
-                x.Id,
-                x.Name,
-                Owner = x.Employee.EpLiteId,
-                Modifier = fileHistory.Employee.EpLiteId,
-                fileHistory.Size,
-                SecurityLevel = "",
-                fileHistory.Version,
-                fileHistory.ModifiedDate
-            });
+            var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
-        [Route("GetFileUrl/{id}")]
         [HttpGet]
         public string[] GetFileUrl(int id)
         {
@@ -76,6 +54,40 @@ namespace ECMSS.Web.Api
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetFavoriteFiles(int empId)
+        {
+            var fileInfos = _fileInfoService.GetFavoriteFiles(empId);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetImportantFiles(int empId)
+        {
+            var fileInfos = _fileInfoService.GetImportantFiles(empId);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
+
+        private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
+        {
+            var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
+            return fileInfos.Select(x => new FileInfoViewModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Owner = x.Employee.EpLiteId,
+                Modifier = fileHistory.Employee.EpLiteId,
+                Size = fileHistory.Size,
+                SecurityLevel = "",
+                Version = fileHistory.Version,
+                ModifiedDate = fileHistory.ModifiedDate,
+                IsFavorite = x.FileFavorites.Count > 0,
+                IsImportant = x.FileImportants.Count > 0
+            });
         }
     }
 }

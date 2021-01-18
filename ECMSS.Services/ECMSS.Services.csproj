@@ -55,6 +55,7 @@
     <Compile Include="FileAuthorityService.cs" />
     <Compile Include="FileFavoriteService.cs" />
     <Compile Include="FileHistoryService.cs" />
+    <Compile Include="FileImportantService.cs" />
     <Compile Include="FileInfoService.cs" />
     <Compile Include="FileShareService.cs" />
     <Compile Include="FileStatusService.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Interfaces\IFileAuthorityService.cs" />
     <Compile Include="Interfaces\IFileFavoriteService.cs" />
     <Compile Include="Interfaces\IFileHistoryService.cs" />
+    <Compile Include="Interfaces\IFileImportantService.cs" />
     <Compile Include="Interfaces\IFileInfoService.cs" />
     <Compile Include="Interfaces\IFileShareService.cs" />
     <Compile Include="Interfaces\IFileStatusService.cs" />

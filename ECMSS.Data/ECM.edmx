@@ -42,9 +42,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FileId" Type="int" Nullable="false" />
           <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="FileHistory">
           <Key>
@@ -58,12 +58,20 @@
           <Property Name="Version" Type="varchar" MaxLength="5" Nullable="false" />
           <Property Name="Modifier" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="FileImportant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="FileInfo">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Owner" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="date" />
           <Property Name="Tag" Type="nvarchar" MaxLength="500" />
@@ -188,6 +196,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Fk_FileImportant_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="FileImportant" Type="Self.FileImportant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileImportant">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileImportant_FileInfo">
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileImportant" Type="Self.FileImportant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileImportant">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Fk_FileInfo_Directory">
           <End Role="Directory" Type="Self.Directory" Multiplicity="1" />
           <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="*" />
@@ -255,6 +287,7 @@
           <EntitySet Name="FileAuthority" EntityType="Self.FileAuthority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileFavorite" EntityType="Self.FileFavorite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileHistory" EntityType="Self.FileHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileImportant" EntityType="Self.FileImportant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileInfo" EntityType="Self.FileInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileShare" EntityType="Self.FileShare" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileStatus" EntityType="Self.FileStatus" Schema="dbo" store:Type="Tables" />
@@ -290,6 +323,14 @@
           <AssociationSet Name="Fk_FileHistory_FileStatus" Association="Self.Fk_FileHistory_FileStatus">
             <End Role="FileStatus" EntitySet="FileStatus" />
             <End Role="FileHistory" EntitySet="FileHistory" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileImportant_Employee" Association="Self.Fk_FileImportant_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="FileImportant" EntitySet="FileImportant" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileImportant_FileInfo" Association="Self.Fk_FileImportant_FileInfo">
+            <End Role="FileInfo" EntitySet="FileInfo" />
+            <End Role="FileImportant" EntitySet="FileImportant" />
           </AssociationSet>
           <AssociationSet Name="Fk_FileInfo_Directory" Association="Self.Fk_FileInfo_Directory">
             <End Role="Directory" EntitySet="Directory" />
@@ -336,10 +377,11 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="Self.Fk_Employee_Department" FromRole="Employee" ToRole="Department" />
           <NavigationProperty Name="Role" Relationship="Self.Fk_Employee_Roles" FromRole="Employee" ToRole="Roles" />
-          <NavigationProperty Name="FileFavorites" Relationship="Self.Fk_FileFavorite_Employee" FromRole="Employee" ToRole="FileFavorite" />
           <NavigationProperty Name="FileShares" Relationship="Self.Fk_FileShare_Employee" FromRole="Employee" ToRole="FileShare" />
           <NavigationProperty Name="FileInfoes" Relationship="ECMModel.Fk_FileInfo_Employee" FromRole="Employee" ToRole="FileInfo" />
           <NavigationProperty Name="FileHistories" Relationship="ECMModel.Fk_FileHistory_Employee" FromRole="Employee" ToRole="FileHistory" />
+          <NavigationProperty Name="FileFavorites" Relationship="ECMModel.Fk_FileFavorite_Employee" FromRole="Employee" ToRole="FileFavorite" />
+          <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_Employee" FromRole="Employee" ToRole="FileImportant" />
         </EntityType>
         <EntityType Name="FileAuthority">
           <Key>
@@ -348,16 +390,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="FileShares" Relationship="Self.Fk_FileShare_FileAuthority" FromRole="FileAuthority" ToRole="FileShare" />
-        </EntityType>
-        <EntityType Name="FileFavorite">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FileId" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Employee" Relationship="Self.Fk_FileFavorite_Employee" FromRole="FileFavorite" ToRole="Employee" />
-          <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileFavorite_FileInfo" FromRole="FileFavorite" ToRole="FileInfo" />
         </EntityType>
         <EntityType Name="FileShare">
           <Key>
@@ -411,18 +443,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Fk_FileFavorite_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="FileFavorite" Type="Self.FileFavorite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileFavorite">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Fk_FileShare_Employee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="FileShare" Type="Self.FileShare" Multiplicity="*" />
@@ -451,7 +471,6 @@
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
           <EntitySet Name="FileAuthorities" EntityType="Self.FileAuthority" />
-          <EntitySet Name="FileFavorites" EntityType="Self.FileFavorite" />
           <EntitySet Name="FileShares" EntityType="Self.FileShare" />
           <EntitySet Name="FileStatus1" EntityType="ECMModel.FileStatus" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
@@ -462,10 +481,6 @@
           <AssociationSet Name="Fk_Employee_Roles" Association="Self.Fk_Employee_Roles">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
-          <AssociationSet Name="Fk_FileFavorite_Employee" Association="Self.Fk_FileFavorite_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="FileFavorite" EntitySet="FileFavorites" />
           </AssociationSet>
           <AssociationSet Name="Fk_FileShare_Employee" Association="Self.Fk_FileShare_Employee">
             <End Role="Employee" EntitySet="Employees" />
@@ -489,10 +504,6 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="FileInfo" EntitySet="FileInfoes" />
           </AssociationSet>
-          <AssociationSet Name="Fk_FileFavorite_FileInfo" Association="ECMModel.Fk_FileFavorite_FileInfo">
-            <End Role="FileInfo" EntitySet="FileInfoes" />
-            <End Role="FileFavorite" EntitySet="FileFavorites" />
-          </AssociationSet>
           <AssociationSet Name="Fk_FileShare_FileInfo" Association="ECMModel.Fk_FileShare_FileInfo">
             <End Role="FileInfo" EntitySet="FileInfoes" />
             <End Role="FileShare" EntitySet="FileShares" />
@@ -509,6 +520,24 @@
           <AssociationSet Name="Fk_FileHistory_FileStatus" Association="ECMModel.Fk_FileHistory_FileStatus">
             <End Role="FileStatus" EntitySet="FileStatus1" />
             <End Role="FileHistory" EntitySet="FileHistories" />
+          </AssociationSet>
+          <EntitySet Name="FileFavorites" EntityType="ECMModel.FileFavorite" />
+          <AssociationSet Name="Fk_FileFavorite_Employee" Association="ECMModel.Fk_FileFavorite_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="FileFavorite" EntitySet="FileFavorites" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileFavorite_FileInfo" Association="ECMModel.Fk_FileFavorite_FileInfo">
+            <End Role="FileInfo" EntitySet="FileInfoes" />
+            <End Role="FileFavorite" EntitySet="FileFavorites" />
+          </AssociationSet>
+          <EntitySet Name="FileImportants" EntityType="ECMModel.FileImportant" />
+          <AssociationSet Name="Fk_FileImportant_Employee" Association="ECMModel.Fk_FileImportant_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="FileImportant" EntitySet="FileImportants" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileImportant_FileInfo" Association="ECMModel.Fk_FileImportant_FileInfo">
+            <End Role="FileInfo" EntitySet="FileInfoes" />
+            <End Role="FileImportant" EntitySet="FileImportants" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Directory">
@@ -539,16 +568,17 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Owner" Type="Int32" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="0" />
           <Property Name="Tag" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DirectoryId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Directory" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="FileInfo" ToRole="Directory" />
           <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileInfo_Employee" FromRole="FileInfo" ToRole="Employee" />
-          <NavigationProperty Name="FileFavorites" Relationship="ECMModel.Fk_FileFavorite_FileInfo" FromRole="FileInfo" ToRole="FileFavorite" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
           <NavigationProperty Name="FileHistories" Relationship="ECMModel.Fk_FileHistory_FileInfo" FromRole="FileInfo" ToRole="FileHistory" />
+          <NavigationProperty Name="FileFavorites" Relationship="ECMModel.Fk_FileFavorite_FileInfo" FromRole="FileInfo" ToRole="FileFavorite" />
+          <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_FileInfo" FromRole="FileInfo" ToRole="FileImportant" />
         </EntityType>
         <Association Name="Fk_FileInfo_Directory">
           <End Type="ECMModel.Directory" Role="Directory" Multiplicity="1" />
@@ -571,18 +601,6 @@
             </Principal>
             <Dependent Role="FileInfo">
               <PropertyRef Name="Owner" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Fk_FileFavorite_FileInfo">
-          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="1" />
-          <End Type="ECMModel.FileFavorite" Role="FileFavorite" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FileInfo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileFavorite">
-              <PropertyRef Name="FileId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -649,6 +667,74 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FileFavorite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileFavorite_Employee" FromRole="FileFavorite" ToRole="Employee" />
+          <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileFavorite_FileInfo" FromRole="FileFavorite" ToRole="FileInfo" />
+        </EntityType>
+        <Association Name="Fk_FileFavorite_Employee">
+          <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="ECMModel.FileFavorite" Role="FileFavorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileFavorite">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileFavorite_FileInfo">
+          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="1" />
+          <End Type="ECMModel.FileFavorite" Role="FileFavorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileFavorite">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FileImportant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileImportant_Employee" FromRole="FileImportant" ToRole="Employee" />
+          <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileImportant_FileInfo" FromRole="FileImportant" ToRole="FileInfo" />
+        </EntityType>
+        <Association Name="Fk_FileImportant_Employee">
+          <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="ECMModel.FileImportant" Role="FileImportant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileImportant">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileImportant_FileInfo">
+          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="1" />
+          <End Type="ECMModel.FileImportant" Role="FileImportant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileImportant">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -680,15 +766,6 @@
               <MappingFragment StoreEntitySet="FileAuthority">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FileFavorites">
-            <EntityTypeMapping TypeName="ECMModel.FileFavorite">
-              <MappingFragment StoreEntitySet="FileFavorite">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FileId" ColumnName="FileId" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -747,6 +824,24 @@
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileFavorites">
+            <EntityTypeMapping TypeName="ECMModel.FileFavorite">
+              <MappingFragment StoreEntitySet="FileFavorite">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileImportants">
+            <EntityTypeMapping TypeName="ECMModel.FileImportant">
+              <MappingFragment StoreEntitySet="FileImportant">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="FileId" ColumnName="FileId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

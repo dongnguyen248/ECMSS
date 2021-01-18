@@ -1,18 +1,26 @@
-﻿window.addEventListener('load', () => {
-    initDataTable("api/FileInfo");
+﻿window.addEventListener("load", () => {
+    initDataTable(`api/FileInfo/GetFileInfosByUserId?empId=${EMPLOYEE_ID}`);
 
-    router.add('/', () => {
-        $("#tbMainDefault").DataTable().ajax.url("api/FileInfo").load();
+    router.add("/", () => {
+        $("#tbMainDefault").DataTable().ajax.url(`api/FileInfo/GetFileInfosByUserId?empId=${EMPLOYEE_ID}`).load();
     });
 
-    router.add('/get-by-dir-{dirId}', (dirId) => {
-        var url = `api/FileInfo/GetFileInfosByDirId/${dirId}`;
+    router.add("/get-by-dir-{dirId}", (dirId) => {
+        var url = `api/FileInfo/GetFileInfosByDirId?dirId=${dirId}`;
         $("#tbMainDefault").DataTable().ajax.url(url).load();
     });
 
-    router.add('/open-content-{id}', async (id) => {
+    router.add("/favorites-file", () => {
+        $("#tbMainDefault").DataTable().ajax.url(`api/FileInfo/GetFavoriteFiles?empId=${EMPLOYEE_ID}`).load();
+    });
+
+    router.add("/important-file", () => {
+        $("#tbMainDefault").DataTable().ajax.url(`api/FileInfo/GetImportantFiles?empId=${EMPLOYEE_ID}`).load();
+    });
+
+    router.add("/open-content-{id}", async (id) => {
         try {
-            const response = await api.get(`FileInfo/GetFileUrl/${id}`);
+            const response = await api.get(`FileInfo/GetFileUrl?id=${id}`);
             var fileUrl = response.data;
             var item = {
                 view: `${fileUrl[0]}[true]`,

@@ -12,11 +12,11 @@ namespace ECMSS.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class FileFavorite
+    public partial class FileImportant
     {
+        public System.Guid Id { get; set; }
         public int FileId { get; set; }
         public int EmployeeId { get; set; }
-        public System.Guid Id { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual FileInfo FileInfo { get; set; }

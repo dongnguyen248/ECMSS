@@ -1,9 +1,15 @@
 ﻿$(document).ready(async function () {
     try {
-        const response = await api.get(`/directory`);
-        $(".mycontList .treefdBox").html(renderTreeFolder(listToTree(response.data), "sidebar-menu1", true));
-        $(".addFolderTreeBox").html(renderTreeFolder(listToTree(response.data), "sidebar-menu", false));
-        $(".addFolderTreeBox2").html(renderTreeFolder(listToTree(response.data), "sidebar-menu2", false));
+        const response = await api.get(`/Directory/GetTreeDirectory`);
+        $(".mycontList .treefdBox").html(
+            renderTreeFolder(listToTree(response.data), "sidebar-menu1", true)
+        );
+        $(".addFolderTreeBox").html(
+            renderTreeFolder(listToTree(response.data), "sidebar-menu", false)
+        );
+        $(".addFolderTreeBox2").html(
+            renderTreeFolder(listToTree(response.data), "sidebar-menu2", false)
+        );
     } catch (error) {
         console.log(error);
     }
@@ -19,35 +25,54 @@ function initDataTable(url) {
         info: false,
         ajax: {
             url: url,
-            dataSrc: "fileInfos"
+            dataSrc: "fileInfos",
         },
         columns: [
             {
-                data: "Name", render: function (data, type, row) {
+                data: "Name",
+                render: function (data, type, row) {
+                    var favoriteImgSrc = row["IsFavorite"] ? "/assets/imgs/ico_fav_blue_on.png" : "/assets/imgs/ico_fav.png";
+                    var importantClass = row["IsImportant"] ? "backgroundImp" : "";
                     return `<div class="contentTitle">
-                                <input type="checkbox" name="name" value="" />
-                                <a class="addfavorite" onclick="AddFavorite(this)">
-                                    <img src="/assets/imgs/ico_fav.png" alt="icon_start" />
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value="">
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                    </label>
+                                </div>
+                                <a class="important ${importantClass}" onclick="addImportant(this, ${row["Id"]})"><i class="fas fa-info"></i></a>
+                                <a class="addfavorite" onclick="addFavorite(this, ${row["Id"]})">
+                                    <img src="${favoriteImgSrc}" alt="icon_start" />
                                 </a>
-                                <a href="/open-content-${row['Id']}"
+                                <a href="/open-content-${row["Id"]}"
                                    class="contentname">
                                     ${data}
                                 </a>
-                            </div>`
-                }, searchable: true,
+                            </div>`;
+                },
+                searchable: true,
             },
-            { data: "Owner", searchable: true, },
+            { data: "Owner", searchable: true },
             { data: "Modifier" },
             { data: "Size" },
             { data: "SecurityLevel" },
             { data: "Version" },
-            { data: "ModifiedDate", type: "date", render: function (data) { return data ? moment(data).format("DD/MM/yyyy") : ""; } }
-        ]
+            {
+                data: "ModifiedDate",
+                type: "date",
+                render: function (data) {
+                    return data ? moment(data).format("DD/MM/yyyy") : "";
+                },
+            },
+        ],
     });
 }
 
 function listToTree(list) {
-    var map = {}, node, roots = [], i;
+    var map = {},
+        node,
+        roots = [],
+        i;
     for (i = 0; i < list.length; i += 1) {
         map[list[i].Id] = i;
         list[i].Childrens = [];
@@ -72,43 +97,56 @@ function renderTreeFolder(children, rootClass, renderLink) {
             childrenName = "treeview-menu";
         }
     }
-    return `<ul ${childrenName ? `class='${childrenName}'` : ""}>` + children.map(node =>
-        `<li class='treeview'>` +
-        `<a ${renderLink ? `href='/get-by-dir-${node.Id}'` : ""}>` +
-        "<img src='/assets/imgs/ico_folder_off.png' alt='Folder Image' /> " + node.Name +
-        "</a>" + renderTreeFolder(node.Childrens, rootClass, renderLink) +
-        "</li>").join('\n') +
-        "</ul>";
+    return (
+        `<ul ${childrenName ? `class='${childrenName}'` : ""}>` +
+        children
+            .map(
+                (node) =>
+                    `<li class='treeview'>` +
+                    `<a ${renderLink ? `href='/get-by-dir-${node.Id}'` : ""}>` +
+                    "<img src='/assets/imgs/ico_folder_off.png' alt='Folder Image' /> " +
+                    node.Name +
+                    "</a>" +
+                    renderTreeFolder(node.Childrens, rootClass, renderLink) +
+                    "</li>"
+            )
+            .join("\n") +
+        "</ul>"
+    );
 }
 
 function filterDTByFileType(type) {
-    $.fn.dataTable.ext.search.pop()
+    $.fn.dataTable.ext.search.pop();
 
-    var extensions = []
+    var extensions = [];
     switch (type) {
         case "all":
             break;
-        case "powerpoint": extensions = ["ppt", "pptx"];
+        case "powerpoint":
+            extensions = ["ppt", "pptx"];
             break;
-        case "excel": extensions = ["xls", "xlsx"];
+        case "excel":
+            extensions = ["xls", "xlsx"];
             break;
-        case "word": extensions = ["doc", "docx"];
+        case "word":
+            extensions = ["doc", "docx"];
             break;
-        case "pdf": extensions = ["pdf"];
+        case "pdf":
+            extensions = ["pdf"];
             break;
-        case "image": extensions = ["jpg", "gif", "jpg", "jpeg"];
+        case "image":
+            extensions = ["jpg", "gif", "jpg", "jpeg"];
             break;
-        default: break;
+        default:
+            break;
     }
 
-    $.fn.dataTable.ext.search.push(
-        function (settings, data, dataIndex) {
-            if (extensions.length === 0) {
-                return true;
-            }
-            return extensions.includes(data[0].split('.').pop().trim());
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        if (extensions.length === 0) {
+            return true;
         }
-    );
+        return extensions.includes(data[0].split(".").pop().trim());
+    });
 
     $("#tbMainDefault").DataTable().draw();
 }

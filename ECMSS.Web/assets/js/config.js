@@ -6,3 +6,5 @@
 const router = new Router({
     mode: 'history'
 });
+
+const EMPLOYEE_ID = 1;

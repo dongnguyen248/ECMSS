@@ -18,6 +18,7 @@ namespace ECMSS.DTO
         public virtual ICollection<FileFavoriteDTO> FileFavorites { get; set; }
         public virtual ICollection<FileHistoryDTO> FileHistories { get; set; }
         public virtual ICollection<FileShareDTO> FileShares { get; set; }
+        public virtual ICollection<FileImportantDTO> FileImportants { get; set; }
 
         #region IgnoreMap
 

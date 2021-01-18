@@ -47,14 +47,13 @@
             $("#" + t + "C").fadeIn("slow");
         }
     });
-
 });
 
 $(document).ajaxStop(function () {
     //check extension when show file
     $(".contentname").each(function () {
         var text = $(this).text();
-        var fileExtension = text.split('.').pop().trim();
+        var fileExtension = text.split(".").pop().trim();
         if (fileExtension === "doc" || fileExtension === "docx") {
             backgroundIcon = "/assets/imgs/ico_doc_on.png";
         } else if (fileExtension === "xls" || fileExtension === "xlsx") {
@@ -139,7 +138,9 @@ $(document).on("click", ".sidebar-menu li", function (e) {
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
-        $('<span onclick=selectFolder(this,"#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>').insertAfter($(this).children('a'))
+        $(
+            '<span onclick=selectFolder(this,"#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
+        ).insertAfter($(this).children("a"));
     } else {
         $(this)
             .children()
@@ -149,18 +150,21 @@ $(document).on("click", ".sidebar-menu li", function (e) {
     }
 });
 
-$(document).on('click', '.sidebar-menu2 li', function (e) {
+$(document).on("click", ".sidebar-menu2 li", function (e) {
     e.stopPropagation();
-    $('.sidebar-menu2').find('span').remove();
-    $(this).toggleClass('active');
-    if ($(this).hasClass('active')) {
-        $(this).children().children().attr('src', '/assets/imgs/ico_folder_on.png');
-        $('<span onclick=selectFolder(this,"#folderPath2",".sidebar-menu2") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>').insertAfter($(this).children('a'))
-
+    $(".sidebar-menu2").find("span").remove();
+    $(this).toggleClass("active");
+    if ($(this).hasClass("active")) {
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
+        $(
+            '<span onclick=selectFolder(this,"#folderPath2",".sidebar-menu2") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
+        ).insertAfter($(this).children("a"));
     } else {
-        $(this).children().children().attr('src', '/assets/imgs/ico_folder_off.png');
-        $(this).children('span').remove();
-
+        $(this)
+            .children()
+            .children()
+            .attr("src", "/assets/imgs/ico_folder_off.png");
+        $(this).children("span").remove();
     }
 });
 
@@ -171,7 +175,10 @@ $(document).on("click", ".sidebar-menu1 li", function (e) {
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
     } else {
-        $(this).children().children().attr("src", "/assets/imgs/ico_folder_off.png");
+        $(this)
+            .children()
+            .children()
+            .attr("src", "/assets/imgs/ico_folder_off.png");
         $(this).children("span").remove();
     }
 });
@@ -301,11 +308,29 @@ function getFilename(fullPath) {
     }
 }
 
-function AddFavorite(id) {
-    var img = id.children;
-    var src =
-        $(img).attr("src") === "/assets/imgs/ico_fav.png"
-            ? "/assets/imgs/ico_fav_blue_on.png"
-            : "/assets/imgs/ico_fav.png";
-    $(img).attr("src", src);
+async function addFavorite(obj, fileId) {
+    try {
+        await api.post(`FileFavorite/AddOrRemoveFavoriteFile?fileId=${fileId}&employeeId=${EMPLOYEE_ID}`);
+        var img = obj.children;
+        var src =
+            $(img).attr("src") === "/assets/imgs/ico_fav.png"
+                ? "/assets/imgs/ico_fav_blue_on.png"
+                : "/assets/imgs/ico_fav.png";
+        $(img).attr("src", src);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function addImportant(obj, fileId) {
+    try {
+        await api.post(`FileImportant/AddOrRemoveImportantFile?fileId=${fileId}&employeeId=${EMPLOYEE_ID}`);
+        if (!$(obj).hasClass('backgroundImp')) {
+            $(obj).addClass('backgroundImp');
+        } else {
+            $(obj).removeClass('backgroundImp');
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }

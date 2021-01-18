@@ -13,6 +13,7 @@ namespace ECMSS.Services.AutoMapperConfig
             CreateMap<Employee, EmployeeDTO>().ReverseMap();
             CreateMap<FileAuthority, FileAuthorityDTO>().ReverseMap();
             CreateMap<FileFavorite, FileFavoriteDTO>().ReverseMap();
+            CreateMap<FileImportant, FileImportantDTO>().ReverseMap();
             CreateMap<FileHistory, FileHistoryDTO>().ReverseMap();
             CreateMap<FileInfo, FileInfoDTO>().ReverseMap();
             CreateMap<FileShare, FileShareDTO>().ReverseMap();

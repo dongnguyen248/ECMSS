@@ -50,6 +50,7 @@
     <Compile Include="FileAuthorityDTO.cs" />
     <Compile Include="FileFavoriteDTO.cs" />
     <Compile Include="FileHistoryDTO.cs" />
+    <Compile Include="FileImportantDTO.cs" />
     <Compile Include="FileInfoDTO.cs" />
     <Compile Include="FileShareDTO.cs" />
     <Compile Include="FileStatusDTO.cs" />

@@ -2,5 +2,6 @@
 {
     public interface IFileFavoriteService
     {
+        void AddOrRemoveFavoriteFile(int fileId, int employeeId);
     }
 }

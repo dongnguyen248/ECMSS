@@ -23,14 +23,14 @@ li {
 }
 
 a {
-    color: inherit; /* blue colors for links too */
-    text-decoration: inherit; /* no underline */
+    color: #4987c9 !important;
 }
 
-    a:hover {
-        color: inherit !important; /* blue colors for links too */
-        text-decoration: inherit !important; /* no underline */
+    a:hover, a:focus {
+        color: #4987c9 !important;
+        text-decoration: none !important;
     }
+
 
 .Boxlayout {
     width: 200px;
@@ -445,15 +445,17 @@ a {
         }
 
     .tab_on > ul > li:nth-child(2) {
-        background: url("/assets/imgs/bg_go_newwin_cnt.png") no-repeat;
+        background: url('/assets/imgs/bg_go_cnt.png') no-repeat;
         display: block;
         height: 40px;
         line-height: 35px;
-        background-size: 200px 35px;
+        background-size: 100%;
     }
 
         .tab_on > ul > li:nth-child(2) a {
-            background: url("/assets/imgs/ico_go_cnt30.png") no-repeat;
+            background: url('/assets/imgs/ico_go_cnt26.png') no-repeat;
+            background-position-x: 0%;
+            background-position-y: 0%;
             padding-left: 45px;
             background-position-x: 8px;
             color: #222;
@@ -470,8 +472,7 @@ a {
     }
 
         .tab_on > ul > li:nth-child(3) a {
-            background: url("/assets/imgs/ico_go_cnt26.png") no-repeat;
-            padding-left: 45px;
+            padding-left: 39px;
             background-position-x: 8px;
             color: #222;
             display: block;
@@ -1673,14 +1674,9 @@ ol {
     left: 10px;
 }
 
-.contentTitle > a:nth-child(3) {
-    margin-left: 23px;
-    padding-left: 24px;
-}
-
 .contentname {
     background: no-repeat;
-    padding-left: 5px;
+    padding-left: 25px;
 }
 
 .contentTitle input {
@@ -1702,4 +1698,136 @@ ol {
 
 #tbMainDefault_filter {
     display: none;
+}
+
+.modal-dialog {
+    width: 900px !important;
+}
+
+.important {
+    display: inline-block;
+    width: 18px;
+    border: 1px solid var(--main-border-color);
+    height: 17px;
+    text-align: center;
+    font-size: 11px;
+    position: relative;
+    left: 6px;
+    color: #4987c9;
+    border-radius: 3px;
+}
+
+.checkbox label:after,
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+
+.checkbox {
+    position: relative;
+    display: inline-block !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    height: 17px;
+    top: 5px;
+    width: 17px;
+}
+
+    .radio label, .checkbox label {
+        min-height: 13px !important;
+        padding-left: 0px !important;
+    }
+
+    .checkbox .cr,
+    .radio .cr {
+        position: relative;
+        display: inline-block;
+        border: 1px solid #a9a9a9;
+        border-radius: .25em;
+        width: 17px;
+        height: 17px;
+        float: left;
+        margin-right: .5em;
+    }
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+    .checkbox .cr .cr-icon,
+    .radio .cr .cr-icon {
+        position: absolute;
+        font-size: .8em;
+        line-height: 0;
+        top: 50%;
+        left: 10%;
+        color: #4987c9 !important;
+    }
+
+    .radio .cr .cr-icon {
+        margin-left: 0.04em;
+    }
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+    .checkbox label input[type="checkbox"] + .cr > .cr-icon,
+    .radio label input[type="radio"] + .cr > .cr-icon {
+        transform: scale(3) rotateZ(-20deg);
+        opacity: 0;
+        transition: all .3s ease-in;
+    }
+
+    .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+    .radio label input[type="radio"]:checked + .cr > .cr-icon {
+        transform: scale(1) rotateZ(0deg);
+        opacity: 1;
+    }
+
+    .checkbox label input[type="checkbox"]:disabled + .cr,
+    .radio label input[type="radio"]:disabled + .cr {
+        opacity: .5;
+    }
+
+.backgroundImp {
+    background: #4987c9;
+    color: #fff !important;
+}
+
+    .backgroundImp:hover {
+        color: #fff !important;
+    }
+
+.importantside {
+    position: relative;
+    right: 26px;
+    color: #b4b4b4;
+}
+
+.backgroundtr {
+    background: #dfe1e4 !important;
+}
+
+.addfavorite {
+    position: relative;
+    display: inline-block;
+    left: 10px;
+    margin-right: 20px;
+}
+
+.important {
+    display: inline-block;
+    width: 18px;
+    border: 1px solid var(--main-border-color);
+    height: 17px;
+    text-align: center;
+    font-size: 11px;
+    position: relative;
+    left: 6px;
+    color: #4987c9;
+    border-radius: 3px;
 }

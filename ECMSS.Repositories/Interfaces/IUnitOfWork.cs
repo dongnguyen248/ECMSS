@@ -9,6 +9,7 @@ namespace ECMSS.Repositories.Interfaces
         IGenericRepository<Employee> EmployeeRepository { get; }
         IGenericRepository<FileAuthority> FileAuthorityRepository { get; }
         IGenericRepository<FileFavorite> FileFavoriteRepository { get; }
+        IGenericRepository<FileImportant> FileImportantRepository { get; }
         IGenericRepository<FileHistory> FileHistoryRepository { get; }
         IGenericRepository<FileInfo> FileInfoRepository { get; }
         IGenericRepository<FileShare> FileShareRepository { get; }

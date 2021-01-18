@@ -11,6 +11,7 @@ namespace ECMSS.Repositories
         public IGenericRepository<Employee> EmployeeRepository { get; private set; }
         public IGenericRepository<FileAuthority> FileAuthorityRepository { get; private set; }
         public IGenericRepository<FileFavorite> FileFavoriteRepository { get; private set; }
+        public IGenericRepository<FileImportant> FileImportantRepository { get; private set; }
         public IGenericRepository<FileHistory> FileHistoryRepository { get; private set; }
         public IGenericRepository<FileInfo> FileInfoRepository { get; private set; }
         public IGenericRepository<FileShare> FileShareRepository { get; private set; }
@@ -29,6 +30,7 @@ namespace ECMSS.Repositories
             EmployeeRepository = new GenericRepository<Employee>(_dbContext);
             FileAuthorityRepository = new GenericRepository<FileAuthority>(_dbContext);
             FileFavoriteRepository = new GenericRepository<FileFavorite>(_dbContext);
+            FileImportantRepository = new GenericRepository<FileImportant>(_dbContext);
             FileHistoryRepository = new GenericRepository<FileHistory>(_dbContext);
             FileInfoRepository = new GenericRepository<FileInfo>(_dbContext);
             FileShareRepository = new GenericRepository<FileShare>(_dbContext);
