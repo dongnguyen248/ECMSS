@@ -2031,7 +2031,6 @@
     <Content Include="assets\libs\fontawesome-free-5.15.1\webfonts\fa-brands-400.svg" />
     <Content Include="assets\libs\fontawesome-free-5.15.1\webfonts\fa-regular-400.svg" />
     <Content Include="assets\libs\fontawesome-free-5.15.1\webfonts\fa-solid-900.svg" />
-    <Content Include="assets\libs\handlebars.min.js" />
     <Content Include="assets\libs\jquery-3.5.1.min.js" />
     <Content Include="assets\libs\moment.min.js" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\.idea\vcs.xml" />

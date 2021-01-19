@@ -1,6 +1,6 @@
 ﻿namespace ECMSS.Services.Interfaces
 {
-    public  interface IFileImportantService
+    public interface IFileImportantService
     {
         void AddOrRemoveImportantFile(int fileId, int employeeId);
     }

@@ -1,6 +1,6 @@
 ﻿namespace ECMSS.Services.Interfaces
 {
-    public interface IFileAuthorityService
+    public interface ITrashService
     {
     }
 }

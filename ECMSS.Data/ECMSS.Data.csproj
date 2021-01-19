@@ -102,6 +102,9 @@
     <Compile Include="Role.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Trash.cs">
+      <DependentUpon>ECM.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

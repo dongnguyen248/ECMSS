@@ -18,6 +18,7 @@ namespace ECMSS.DTO
         public virtual FileStatusDTO FileStatus { get; set; }
 
         #region IgnoreMap
+
         [IgnoreMap]
         public string ModifierUser { get; set; }
 

@@ -35,6 +35,7 @@ namespace ECMSS.Services
             var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetPathFromFileId @FileId", idParam).FirstOrDefault();
             return directory.Name;
         }
+
         public string GetPathFromDirId(int dirId)
         {
             var idParam = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };

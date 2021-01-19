@@ -12,15 +12,12 @@ namespace ECMSS.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class FileShare
+    public partial class Trash
     {
-        public int FileId { get; set; }
-        public int EmployeeId { get; set; }
-        public int Authority { get; set; }
         public System.Guid Id { get; set; }
+        public int FileId { get; set; }
+        public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual Employee Employee { get; set; }
-        public virtual FileAuthority FileAuthority { get; set; }
         public virtual FileInfo FileInfo { get; set; }
     }
 }

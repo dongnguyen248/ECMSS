@@ -23,11 +23,11 @@ li {
 }
 
 a {
-    color: #4987c9 !important;
+    color: #4987c9;
 }
 
     a:hover, a:focus {
-        color: #4987c9 !important;
+        color: #4987c9;
         text-decoration: none !important;
     }
 
@@ -312,7 +312,6 @@ table.dataTable thead .sorting_desc {
 #tabs {
     width: 100%;
     height: 30px;
-    border-bottom: solid 1px var(--main-border-color);
     padding-right: 2px;
     display: flex;
     margin-bottom: 0px !important;
@@ -1262,14 +1261,20 @@ a {
     text-align: center;
 }
 
-.sub1 {
-    border: 1px solid #ccd0d3;
-    background: #e6e9eb;
-    color: #555;
-    position: relative;
-    left: 55px;
-    height: 45px;
-}
+    .PartR .sub1 {
+        border: 1px solid #ccd0d3;
+        background: #e6e9eb;
+        color: #555;
+        position: relative;
+        left: 55px;
+        height: 45px;
+    }
+
+    .PartR .sub2,
+    .PartR .sub4 {
+        margin-bottom: 8px;
+    }
+
 
 .subheader {
     line-height: 45px;
@@ -1303,7 +1308,7 @@ a {
     left: 55px;
     width: 100%;
     position: relative;
-    bottom: 9px;
+    bottom: 11px;
 }
 
 .delselectsub1 {
@@ -1373,11 +1378,6 @@ ol {
     padding-left: 11px;
     font-weight: inherit !important;
     max-width: none;
-}
-
-#showAllFolder {
-    position: relative;
-    bottom: 2px;
 }
 /*css for modal create*/
 .nameNewContent,
@@ -1830,4 +1830,10 @@ ol {
     left: 6px;
     color: #4987c9;
     border-radius: 3px;
+}
+
+.modalcreate {
+    width: 600px;
+    top: 20%;
+    left: 28%;
 }

@@ -14,6 +14,7 @@ namespace ECMSS.Repositories.Interfaces
         IGenericRepository<FileInfo> FileInfoRepository { get; }
         IGenericRepository<FileShare> FileShareRepository { get; }
         IGenericRepository<FileStatus> FileStatusRepository { get; }
+        IGenericRepository<Trash> TrashRepository { get; }
         IGenericRepository<Role> RoleRepository { get; }
 
         void Commit();

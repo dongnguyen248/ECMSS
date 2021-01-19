@@ -36,9 +36,6 @@
                                 Add Favorites
                             </label>
                         </div>
-                        <span class="btnR btn btn-default">
-                            <a href="#">Select Folder TIP</a>
-                        </span>
                     </div>
                     <div class="selectFolder">
                         <div class="allForder">
@@ -56,19 +53,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="searchFolder">
-                            <input type="search" class="searchF" name="name" value="" />
-                            <input type="image" class="imgSearch" name="name" src="~/assets/imgs/btn_search.gif" />
-                        </div>
                     </div>
                 </div>
                 <div class="popSubtitle3">
                     <div class="Security">
                         <div class="headerSecurity">
-                            <span>
-                                Security grade
-                            </span>
-                            <span class="btn btn-default btnR "> <a href="#"> Shared scope TIP</a> </span>
+                            <span>Security grade</span>
                         </div>
                         <div class="bodySercurity">
                             <div class="share_set">
@@ -354,42 +344,40 @@
 
 <div class="modal fade" id="createnew" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">Content Creation</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+    <div class="modal-content modalcreate">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel">Content Creation</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">x</span>
+            </button>
+        </div>
+        <div class="body-modal">
+            <div class="nameNewContent">
+                <span>Name Content</span>
+                <input class="form-control" type="text" name="name" value="" />
             </div>
-            <div class="body-modal">
-                <div class="nameNewContent">
-                    <span>Name Content</span>
-                    <input class="form-control" type="text" name="name" value="" />
-                </div>
-                <div class="locationContent">
-                    <span>Location Content</span>
-                    <input class="form-control" id="folderPath2" readonly type="text" name="name" value="PoscoVST" />
-                    <a href="#" class="btn btn-default" id="showFolder">All Content</a>
-                </div>
+            <div class="locationContent">
+                <span>Location Content</span>
+                <input class="form-control" id="folderPath2" readonly type="text" name="name" value="PoscoVST" />
+                <a href="#" class="btn btn-default" id="showFolder">All Content</a>
             </div>
-            <div class="allForder">
-                <div class="listFolder1" style="display:none">
-                    <div class="contentSelect">
-                        <em>Content box selection</em>
-                        <select>
-                            <option value="value" selected>PoscoVST</option>
-                        </select>
-                    </div>
-                    <div class="addFolderTreeBox2">
-                    </div>
+        </div>
+        <div class="allForder">
+            <div class="listFolder1" style="display:none">
+                <div class="contentSelect">
+                    <em>Content box selection</em>
+                    <select>
+                        <option value="value" selected>PoscoVST</option>
+                    </select>
+                </div>
+                <div class="addFolderTreeBox2">
                 </div>
             </div>
-            <div class="modal-footer">
-                <center>
-                    <button type="button" class="btn btn-primary">Create Content</button>
-                </center>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <center>
+                <button type="button" class="btn btn-primary">Create Content</button>
+            </center>
         </div>
     </div>
 </div>
@@ -397,7 +385,7 @@
 <div class="modal fade modalchangefile" id="changefile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content modalcreate">
             <div class="modal-header">
                 <h3 class="modal-title" id="exampleModalLabel">Open Content</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

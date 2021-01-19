@@ -139,7 +139,7 @@ $(document).on("click", ".sidebar-menu li", function (e) {
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
         $(
-            '<span onclick=selectFolder(this,"#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
+            '<span onclick=selectFolder("#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
         ).insertAfter($(this).children("a"));
     } else {
         $(this)
@@ -157,7 +157,7 @@ $(document).on("click", ".sidebar-menu2 li", function (e) {
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
         $(
-            '<span onclick=selectFolder(this,"#folderPath2",".sidebar-menu2") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
+            '<span onclick=selectFolder("#folderPath2",".sidebar-menu2") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
         ).insertAfter($(this).children("a"));
     } else {
         $(this)
@@ -183,13 +183,13 @@ $(document).on("click", ".sidebar-menu1 li", function (e) {
     }
 });
 
-var text = "PoscoVST>";
-function dfs(elem, destinationClass) {
-    $(elem)
+var tempPath = "";
+function dfs(srcElem, desElem) {
+    $(srcElem)
         .children()
         .each(function () {
-            if ($(this).find("#btnGetPath").length > 0) {
-                text +=
+            if ($(this).find(desElem).length > 0) {
+                tempPath +=
                     $(this)
                         .clone()
                         .children(":not(a)")
@@ -199,17 +199,19 @@ function dfs(elem, destinationClass) {
                         .text()
                         .trim() + ">";
             }
-            dfs($(this), destinationClass);
+            dfs($(this), desElem);
         });
-    text = text.replace(">>", ">");
-    return text;
+    tempPath = tempPath.replace(">>", ">");
+    return tempPath;
 }
 
-function selectFolder(obj, id, clas) {
-    var temp = dfs($(clas), $(obj).attr("id"));
-    $(id).val(temp.slice(0, -1));
-    text = "PoscoVST>";
+function selectFolder(id, cls) {
+    var desElem = $("#btnGetPath");
+    var path = "PoscoVST>" + dfs($(cls), desElem);
+    $(id).val(path.slice(0, -1));
+    tempPath = "";
 }
+
 //upload file
 var seq = 1;
 $("#fileupload").click(function () {
@@ -334,3 +336,25 @@ async function addImportant(obj, fileId) {
         console.log(error);
     }
 }
+
+function searchContent() {
+    var inpTxt = $("#txtSearch").val().trim();
+    if (inpTxt.length > 0) {
+        $("#tbMainDefault").DataTable().ajax.url(`api/FileInfo/Search?searchContent=${inpTxt}`).load();
+    } else {
+        $("#tbMainDefault").DataTable().ajax.url(ROOT_DT_URL).load();
+    }
+}
+
+$("#tab1C a").click(function () {
+    var txt = $(this).text();
+    $(".areacBox .txt p").text(`Shortcut Box>${txt}`);
+});
+
+$(document).on("click", "#tab2C .sidebar-menu1 a", function () {
+    var root = $(".sidebar-menu1");
+    var desElem = $(this);
+    var path = dfs(root, desElem);
+    $(".areacBox .txt p").text(path);
+    tempPath = "";
+});

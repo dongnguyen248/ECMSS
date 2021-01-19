@@ -18,6 +18,7 @@ namespace ECMSS.Services.AutoMapperConfig
             CreateMap<FileInfo, FileInfoDTO>().ReverseMap();
             CreateMap<FileShare, FileShareDTO>().ReverseMap();
             CreateMap<FileStatus, FileStatusDTO>().ReverseMap();
+            CreateMap<Trash, TrashDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
         }
     }

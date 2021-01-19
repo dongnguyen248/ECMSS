@@ -72,6 +72,37 @@ namespace ECMSS.Web.Api
             return Ok(new { fileInfos = result });
         }
 
+        [HttpGet]
+        public IHttpActionResult Search(string searchContent)
+        {
+            var fileInfos = _fileInfoService.Search(searchContent);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetDepartmentFiles(int empId)
+        {
+            var fileInfos = _fileInfoService.GetDepartmentFiles(empId);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetSharedFiles(int empId)
+        {
+            var fileInfos = _fileInfoService.GetSharedFiles(empId);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
+        
+        [HttpGet]
+        public IHttpActionResult GetTrashContents(int empId)
+        {
+            var fileInfos = _fileInfoService.GetTrashContents(empId);
+            var result = ConvertToModels(fileInfos);
+            return Ok(new { fileInfos = result });
+        }
         private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
         {
             var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();

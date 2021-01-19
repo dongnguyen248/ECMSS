@@ -8,3 +8,7 @@ const router = new Router({
 });
 
 const EMPLOYEE_ID = 1;
+
+var configDT = {
+    trashRoute: false
+}

@@ -16,6 +16,7 @@ namespace ECMSS.Repositories
         public IGenericRepository<FileInfo> FileInfoRepository { get; private set; }
         public IGenericRepository<FileShare> FileShareRepository { get; private set; }
         public IGenericRepository<FileStatus> FileStatusRepository { get; private set; }
+        public IGenericRepository<Trash> TrashRepository { get; private set; }
         public IGenericRepository<Role> RoleRepository { get; private set; }
 
         private readonly ECMEntities _dbContext;
@@ -35,6 +36,7 @@ namespace ECMSS.Repositories
             FileInfoRepository = new GenericRepository<FileInfo>(_dbContext);
             FileShareRepository = new GenericRepository<FileShare>(_dbContext);
             FileStatusRepository = new GenericRepository<FileStatus>(_dbContext);
+            TrashRepository = new GenericRepository<Trash>(_dbContext);
             RoleRepository = new GenericRepository<Role>(_dbContext);
         }
 

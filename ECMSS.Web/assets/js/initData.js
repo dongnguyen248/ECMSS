@@ -13,6 +13,8 @@
     } catch (error) {
         console.log(error);
     }
+
+    $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
 });
 
 function initDataTable(url) {
@@ -33,6 +35,25 @@ function initDataTable(url) {
                 render: function (data, type, row) {
                     var favoriteImgSrc = row["IsFavorite"] ? "/assets/imgs/ico_fav_blue_on.png" : "/assets/imgs/ico_fav.png";
                     var importantClass = row["IsImportant"] ? "backgroundImp" : "";
+                    if (configDT.trashRoute) {
+                        configDT.trashRoute = !configDT.trashRoute;
+
+                        return `<div class="contentTitle">
+                                <div class="checkbox">
+                                    <label >
+                                        <input type="checkbox" value="">
+                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                    </label>
+                                </div>
+                                <a class="important ${importantClass}"><i class="fas fa-info"></i></a>
+                                <a class="addfavorite">
+                                    <img src="${favoriteImgSrc}" alt="icon_start" />
+                                </a>
+                                <a class="contentname">
+                                    ${data}
+                                </a>
+                            </div>`;
+                    }
                     return `<div class="contentTitle">
                                 <div class="checkbox">
                                     <label >
@@ -49,10 +70,9 @@ function initDataTable(url) {
                                     ${data}
                                 </a>
                             </div>`;
-                },
-                searchable: true,
+                }
             },
-            { data: "Owner", searchable: true },
+            { data: "Owner" },
             { data: "Modifier" },
             { data: "Size" },
             { data: "SecurityLevel" },

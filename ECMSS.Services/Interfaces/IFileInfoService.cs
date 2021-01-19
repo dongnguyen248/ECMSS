@@ -16,5 +16,13 @@ namespace ECMSS.Services.Interfaces
         IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId);
 
         IEnumerable<FileInfoDTO> GetImportantFiles(int empId);
+
+        IEnumerable<FileInfoDTO> Search(string searchContent);
+
+        IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId);
+
+        IEnumerable<FileInfoDTO> GetSharedFiles(int empId);
+
+        IEnumerable<FileInfoDTO> GetTrashContents(int empId);
     }
 }
