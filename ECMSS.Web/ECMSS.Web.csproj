@@ -2043,7 +2043,6 @@
     <Content Include="assets\routes\app.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="assets\libs\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
