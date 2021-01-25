@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECMSS.DTO
 {
     public class FileInfoDTO
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Enter file name")]
         public string Name { get; set; }
+
         public int Owner { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string Tag { get; set; }

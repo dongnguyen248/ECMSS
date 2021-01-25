@@ -257,8 +257,7 @@ function changebackgroundFilextension(filename, optId, inpID) {
     let backgroundIcon = "";
     $(".listFileImport").css("display", "block");
     $(".listFileImport .list").append(
-        `<li id=${optId}>${filename} <a onclick='removefile("${optId}","${inpID}")' class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>`
-    );
+        String.format("<li id={0}>{1} <a onclick=\"removefile('{0}','{2}')\" class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>", optId, filename, inpID));
     let extension = getFileExtension(filename);
 
     if (extension === "doc" || extension === "docx") {
@@ -310,37 +309,35 @@ function getFilename(fullPath) {
     }
 }
 
-async function addFavorite(obj, fileId) {
-    try {
-        await api.post(`FileFavorite/AddOrRemoveFavoriteFile?fileId=${fileId}&employeeId=${EMPLOYEE_ID}`);
+function addFavorite(obj, fileId) {
+    api.post("FileFavorite/AddOrRemoveFavoriteFile?fileId=" + fileId + "&employeeId=" + EMPLOYEE_ID).then(function () {
         var img = obj.children;
         var src =
             $(img).attr("src") === "/assets/imgs/ico_fav.png"
                 ? "/assets/imgs/ico_fav_blue_on.png"
                 : "/assets/imgs/ico_fav.png";
         $(img).attr("src", src);
-    } catch (error) {
-        console.log(error);
-    }
+    }).catch(function (error) {
+        console.log(error)
+    });
 }
 
-async function addImportant(obj, fileId) {
-    try {
-        await api.post(`FileImportant/AddOrRemoveImportantFile?fileId=${fileId}&employeeId=${EMPLOYEE_ID}`);
+function addImportant(obj, fileId) {
+    api.post("FileImportant/AddOrRemoveImportantFile?fileId=" + fileId + "&employeeId=" + EMPLOYEE_ID).then(function () {
         if (!$(obj).hasClass('backgroundImp')) {
             $(obj).addClass('backgroundImp');
         } else {
             $(obj).removeClass('backgroundImp');
         }
-    } catch (error) {
+    }).catch(function (error) {
         console.log(error);
-    }
+    });
 }
 
 function searchContent() {
     var inpTxt = $("#txtSearch").val().trim();
     if (inpTxt.length > 0) {
-        $("#tbMainDefault").DataTable().ajax.url(`api/FileInfo/Search?searchContent=${inpTxt}`).load();
+        $("#tbMainDefault").DataTable().ajax.url("api/FileInfo/Search?searchContent=" + inpTxt).load();
     } else {
         $("#tbMainDefault").DataTable().ajax.url(ROOT_DT_URL).load();
     }
@@ -348,7 +345,7 @@ function searchContent() {
 
 $("#tab1C a").click(function () {
     var txt = $(this).text();
-    $(".areacBox .txt p").text(`Shortcut Box>${txt}`);
+    $(".areacBox .txt p").text("Shortcut Box>" + txt);
 });
 
 $(document).on("click", "#tab2C .sidebar-menu1 a", function () {
@@ -357,4 +354,17 @@ $(document).on("click", "#tab2C .sidebar-menu1 a", function () {
     var path = dfs(root, desElem);
     $(".areacBox .txt p").text(path);
     tempPath = "";
+});
+
+$("#frm-create-directory").submit(function (event) {
+    event.preventDefault();
+    var dirName = $(this).find("input[name='dirName']").val();
+    var parentName = $(this).find("input[name='parentName']").val();
+    parentName = parentName.substring(parentName.lastIndexOf(">") + 1).trim();
+    api.post("Directory/CreateDirectory?dirName=" + dirName + "&parentName=" + parentName).then(function () {
+        initTreeFolder();
+        $.notify("Create content successfully", "success");
+    }).catch(function () {
+        $.notify("Create content failed, check your input and try again", "error");
+    });
 });

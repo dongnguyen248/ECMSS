@@ -3,6 +3,8 @@ using ECMSS.Data;
 using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
+using ECMSS.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -41,6 +43,22 @@ namespace ECMSS.Services
             var idParam = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
             var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetPathFromDirId @DirId", idParam).FirstOrDefault();
             return directory.Name;
+        }
+
+        public void CreateDirectory(string dirName, string parentName)
+        {
+            try
+            {
+                var dir = _directoryRepository.GetSingle(x => x.Name == parentName);
+                string path = $@"{ConfigHelper.Read("FileUploadPath")}{GetPathFromDirId(dir.Id)}\";
+                _directoryRepository.Add(new Directory { Name = dirName, ParentId = dir.Id });
+                FileHelper.CreatePath(path, dirName);
+                _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

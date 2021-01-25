@@ -204,6 +204,8 @@
     <Compile Include="Extensions\Auth\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Extensions\Auth\JwtAuthenticationAttribute.cs" />
     <Compile Include="Extensions\Auth\JwtManager.cs" />
+    <Compile Include="Extensions\CustomBundles\CssMinify.cs" />
+    <Compile Include="Extensions\CustomBundles\StyleBundle.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2033,6 +2035,7 @@
     <Content Include="assets\libs\fontawesome-free-5.15.1\webfonts\fa-solid-900.svg" />
     <Content Include="assets\libs\jquery-3.5.1.min.js" />
     <Content Include="assets\libs\moment.min.js" />
+    <Content Include="assets\libs\notify.min.js" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\.idea\vcs.xml" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\dist\vanilla-router.js" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\dist\vanilla-router.min.js" />

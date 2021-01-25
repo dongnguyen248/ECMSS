@@ -1,6 +1,5 @@
-﻿$(document).ready(async function () {
-    try {
-        const response = await api.get(`/Directory/GetTreeDirectory`);
+﻿function initTreeFolder() {
+    api.get("/Directory/GetTreeDirectory").then(function (response) {
         $(".mycontList .treefdBox").html(
             renderTreeFolder(listToTree(response.data), "sidebar-menu1", true)
         );
@@ -10,12 +9,12 @@
         $(".addFolderTreeBox2").html(
             renderTreeFolder(listToTree(response.data), "sidebar-menu2", false)
         );
-    } catch (error) {
-        console.log(error);
-    }
 
-    $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
-});
+        $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
+    }).catch(function (error) {
+        console.log(error)
+    });
+};
 
 function initDataTable(url) {
     $("#tbMainDefault").DataTable({
@@ -38,38 +37,33 @@ function initDataTable(url) {
                     if (configDT.trashRoute) {
                         configDT.trashRoute = !configDT.trashRoute;
 
-                        return `<div class="contentTitle">
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value="">
-                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                                    </label>
-                                </div>
-                                <a class="important ${importantClass}"><i class="fas fa-info"></i></a>
-                                <a class="addfavorite">
-                                    <img src="${favoriteImgSrc}" alt="icon_start" />
-                                </a>
-                                <a class="contentname">
-                                    ${data}
-                                </a>
-                            </div>`;
+                        return String.format("<div class='contentTitle'>" +
+                            "<div class='checkbox'>" +
+                            "<label>" +
+                            "<input type='checkbox' value=''>" +
+                            "<span class='cr'><i class='cr-icon glyphicon glyphicon-ok'></i></span>" +
+                            "</label>" +
+                            "</div>" +
+                            "<a class='important {0}'><i class='fas fa-info'></i></a>" +
+                            "<a class='addfavorite'>" +
+                            "<img src='{1}' alt='icon_start' />" +
+                            "</a>" +
+                            "<a class='contentname'>{2}</a>" +
+                            "</div>", importantClass, favoriteImgSrc, data);
                     }
-                    return `<div class="contentTitle">
-                                <div class="checkbox">
-                                    <label >
-                                        <input type="checkbox" value="">
-                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
-                                    </label>
-                                </div>
-                                <a class="important ${importantClass}" onclick="addImportant(this, ${row["Id"]})"><i class="fas fa-info"></i></a>
-                                <a class="addfavorite" onclick="addFavorite(this, ${row["Id"]})">
-                                    <img src="${favoriteImgSrc}" alt="icon_start" />
-                                </a>
-                                <a href="/open-content-${row["Id"]}"
-                                   class="contentname">
-                                    ${data}
-                                </a>
-                            </div>`;
+                    return String.format("<div class='contentTitle'>" +
+                        "<div class='checkbox'>" +
+                        "<label>" +
+                        "<input type='checkbox' value=''>" +
+                        "<span class='cr'><i class='cr-icon glyphicon glyphicon-ok'></i></span>" +
+                        "</label>" +
+                        "</div>" +
+                        "<a class='important {0}' onclick='addImportant(this, {1})'><i class='fas fa-info'></i></a>" +
+                        "<a class='addfavorite' onclick='addFavorite(this, {1})'>" +
+                        "<img src='{2}' alt='icon_start' />" +
+                        "</a>" +
+                        "<a href='/open-content-{1}' class='contentname'>{3}</a>" +
+                        "</div>", importantClass, row['Id'], favoriteImgSrc, data);
                 }
             },
             { data: "Owner" },
@@ -118,17 +112,18 @@ function renderTreeFolder(children, rootClass, renderLink) {
         }
     }
     return (
-        `<ul ${childrenName ? `class='${childrenName}'` : ""}>` +
+        String.format("<ul {0}>", childrenName ? "class='" + childrenName + "'" : "") +
         children
             .map(
-                (node) =>
-                    `<li class='treeview'>` +
-                    `<a ${renderLink ? `href='/get-by-dir-${node.Id}'` : ""}>` +
-                    "<img src='/assets/imgs/ico_folder_off.png' alt='Folder Image' /> " +
-                    node.Name +
-                    "</a>" +
-                    renderTreeFolder(node.Childrens, rootClass, renderLink) +
-                    "</li>"
+                function (node) {
+                    return "<li class='treeview'>" +
+                        String.format("<a {0}>", renderLink ? "href='/get-by-dir-" + node.Id + "'" : "") +
+                        "<img src='/assets/imgs/ico_folder_off.png' alt='Folder Image' /> " +
+                        node.Name +
+                        "</a>" +
+                        renderTreeFolder(node.Childrens, rootClass, renderLink) +
+                        "</li>"
+                }
             )
             .join("\n") +
         "</ul>"
