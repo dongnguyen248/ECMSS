@@ -7,10 +7,12 @@ namespace ECMSS.Services.Interfaces
     {
         IEnumerable<DirectoryDTO> GetTreeDirectories();
 
-        void CreateDirectory(string dirName, string parentName);
+        void CreateDirectory(string dirName, string path);
 
-        string GetPathFromFileId(int fileId);
+        void DeleteDirectory(int empId, string path);
 
-        string GetPathFromDirId(int dirId);
+        DirectoryDTO GetDirFromFileId(int fileId);
+
+        DirectoryDTO GetDirFromId(int dirId);
     }
 }

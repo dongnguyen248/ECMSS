@@ -12,6 +12,14 @@ namespace ECMSS.Utilities
             }
         }
 
+        public static void DeleteFolder(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path);
+            }
+        }
+
         public static string CreatePath(string path, string subPath)
         {
             string fullPath = path + subPath;

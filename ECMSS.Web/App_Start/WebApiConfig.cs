@@ -9,7 +9,7 @@ namespace ECMSS.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            //config.Filters.Add(new AuthorizeAttribute());
+            config.Filters.Add(new AuthorizeAttribute());
 
             config.MapHttpAttributeRoutes();
 

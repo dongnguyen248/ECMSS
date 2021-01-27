@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonConstants.cs" />
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="Encryptor.cs" />
     <Compile Include="FileHelper.cs" />

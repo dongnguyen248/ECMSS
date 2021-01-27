@@ -1,4 +1,5 @@
 ﻿using ECMSS.Services.Interfaces;
+using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
 using System.Net;
 using System.Net.Http;
@@ -7,7 +8,7 @@ using System.Web.Http;
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class FileFavoriteController : ApiController
+    public class FileFavoriteController : ApiControllerCore
     {
         private readonly IFileFavoriteService _fileFavoriteService;
 
@@ -17,11 +18,11 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage AddOrRemoveFavoriteFile(int fileId, int employeeId)
+        public HttpResponseMessage AddOrRemoveFavoriteFile(int fileId)
         {
             try
             {
-                _fileFavoriteService.AddOrRemoveFavoriteFile(fileId, employeeId);
+                _fileFavoriteService.AddOrRemoveFavoriteFile(fileId, _emp.Id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch

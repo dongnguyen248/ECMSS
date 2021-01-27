@@ -7,16 +7,16 @@ namespace ECMSS.Web.Extensions.Auth
 {
     public static class JwtManager
     {
-        private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+        private const string SECRET_KEY = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string username, int expireMinutes = 20)
+        public static string GenerateToken(string epLiteId, int expireMinutes = 20)
         {
-            var symmetricKey = Convert.FromBase64String(Secret);
+            var symmetricKey = Convert.FromBase64String(SECRET_KEY);
             var tokenHandler = new JwtSecurityTokenHandler();
             var now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, username) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, epLiteId) }),
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -35,7 +35,7 @@ namespace ECMSS.Web.Extensions.Auth
                 {
                     return null;
                 }
-                var symmetricKey = Convert.FromBase64String(Secret);
+                var symmetricKey = Convert.FromBase64String(SECRET_KEY);
                 var validationParameters = new TokenValidationParameters()
                 {
                     RequireExpirationTime = true,

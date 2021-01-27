@@ -1,5 +1,6 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
+using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
 using System.Net;
 using System.Net.Http;
@@ -8,7 +9,7 @@ using System.Web.Http;
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class FileHistoryController : ApiController
+    public class FileHistoryController : ApiControllerCore
     {
         private readonly IFileHistoryService _fileHistoryService;
 

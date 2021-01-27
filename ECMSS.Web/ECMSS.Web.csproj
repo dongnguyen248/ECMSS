@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Core\ApiControllerCore.cs" />
     <Compile Include="Api\DepartmentController.cs" />
     <Compile Include="Api\DirectoryController.cs" />
     <Compile Include="Api\EmployeeController.cs" />
@@ -2035,7 +2036,7 @@
     <Content Include="assets\libs\fontawesome-free-5.15.1\webfonts\fa-solid-900.svg" />
     <Content Include="assets\libs\jquery-3.5.1.min.js" />
     <Content Include="assets\libs\moment.min.js" />
-    <Content Include="assets\libs\notify.min.js" />
+    <Content Include="assets\libs\sweetalert.min.js" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\.idea\vcs.xml" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\dist\vanilla-router.js" />
     <Content Include="assets\libs\vanilla-router-v.1.2.7\dist\vanilla-router.min.js" />

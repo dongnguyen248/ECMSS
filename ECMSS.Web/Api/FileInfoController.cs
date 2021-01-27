@@ -1,5 +1,6 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
+using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
 using ECMSS.Web.Models;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Web.Http;
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class FileInfoController : ApiController
+    public class FileInfoController : ApiControllerCore
     {
         private readonly IFileInfoService _fileInfoService;
 
@@ -21,9 +22,9 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFileInfosByUserId(int empId)
+        public IHttpActionResult GetFileInfos()
         {
-            var fileInfos = _fileInfoService.GetFileInfosByUserId(empId);
+            var fileInfos = _fileInfoService.GetFileInfosByUserId(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -39,7 +40,7 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public string[] GetFileUrl(int id)
         {
-            return _fileInfoService.GetFileUrl(id);
+            return _fileInfoService.GetFileUrl(id, _emp.Id);
         }
 
         [HttpPost]
@@ -57,17 +58,17 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFavoriteFiles(int empId)
+        public IHttpActionResult GetFavoriteFiles()
         {
-            var fileInfos = _fileInfoService.GetFavoriteFiles(empId);
+            var fileInfos = _fileInfoService.GetFavoriteFiles(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
-        public IHttpActionResult GetImportantFiles(int empId)
+        public IHttpActionResult GetImportantFiles()
         {
-            var fileInfos = _fileInfoService.GetImportantFiles(empId);
+            var fileInfos = _fileInfoService.GetImportantFiles(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -81,28 +82,29 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetDepartmentFiles(int empId)
+        public IHttpActionResult GetDepartmentFiles()
         {
-            var fileInfos = _fileInfoService.GetDepartmentFiles(empId);
+            var fileInfos = _fileInfoService.GetDepartmentFiles(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
-        public IHttpActionResult GetSharedFiles(int empId)
+        public IHttpActionResult GetSharedFiles()
         {
-            var fileInfos = _fileInfoService.GetSharedFiles(empId);
+            var fileInfos = _fileInfoService.GetSharedFiles(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
-        
+
         [HttpGet]
-        public IHttpActionResult GetTrashContents(int empId)
+        public IHttpActionResult GetTrashContents()
         {
-            var fileInfos = _fileInfoService.GetTrashContents(empId);
+            var fileInfos = _fileInfoService.GetTrashContents(_emp.Id);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
+
         private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
         {
             var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
@@ -111,14 +113,19 @@ namespace ECMSS.Web.Api
                 Id = x.Id,
                 Name = x.Name,
                 Owner = x.Employee.EpLiteId,
-                Modifier = fileHistory.Employee.EpLiteId,
-                Size = fileHistory.Size,
+                Modifier = GetFileHistory(x).Employee.EpLiteId,
+                Size = GetFileHistory(x).Size,
                 SecurityLevel = "",
-                Version = fileHistory.Version,
-                ModifiedDate = fileHistory.ModifiedDate,
+                Version = GetFileHistory(x).Version,
+                ModifiedDate = GetFileHistory(x).ModifiedDate,
                 IsFavorite = x.FileFavorites.Count > 0,
                 IsImportant = x.FileImportants.Count > 0
             });
+        }
+
+        private FileHistoryDTO GetFileHistory(FileInfoDTO fileInfo)
+        {
+            return fileInfo.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault();
         }
     }
 }

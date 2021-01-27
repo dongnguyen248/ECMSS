@@ -1,9 +1,4 @@
-﻿:root {
-    --main-border-color: #ccc;
-    --main-color: #337ab7;
-}
-
-/* Override the default bootstrap behavior where horizontal description lists 
+﻿/* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
@@ -254,7 +249,7 @@ a {
     display: inline-block;
     height: 28px;
     margin-left: 18px;
-    width: 102px;
+    width: 110px;
     text-align: center;
     line-height: 28px;
     border: 1px solid #4987c9;
@@ -266,16 +261,27 @@ a {
     padding-left: 15px;
 }
 
+.btn-delete-folder,
+.btn-delete-file,
 .btn_create {
     display: inline-block;
     height: 28px;
     margin-left: 18px;
-    width: 102px;
     text-align: center;
     line-height: 28px;
     border: 1px solid #4987c9;
     border-radius: 4px;
 }
+
+.btn_create {
+    width: 155px;
+}
+
+.btn-delete-folder,
+.btn-delete-file {
+    width: 100px;
+}
+
 
 .create_new {
     background: url("/assets/imgs/bg_new.gif") no-repeat 0 50%;
@@ -324,9 +330,9 @@ a {
 #tabs li {
     float: left;
     list-style: none;
-    border-top: 1px solid var(--main-border-color);
-    border-left: 1px solid var(--main-border-color);
-    border-right: 1px solid var(--main-border-color);
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     margin-right: 5px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -372,7 +378,7 @@ a {
             color: #666666;
             background: #eee;
             outline: none;
-            border-bottom: solid 1px var(--main-border-color);
+            border-bottom: solid 1px #ccc;
         }
 
             #tabs li a:hover,
@@ -423,7 +429,7 @@ a {
     }
 
     .tab_on > ul > li a:hover {
-        color: var(--main-color) !important;
+        color: #337ab7 !important;
     }
 
     .tab_on > ul > li:first-child {
@@ -604,7 +610,7 @@ a {
 }
 
 .mycontList {
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     border-width: 0 1px 1px 1px;
     background: #fff;
     height: 450px;
@@ -789,7 +795,7 @@ a {
 
 .form-control:focus {
     border-color: #cccccc !important;
-    --webkit-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
 
@@ -808,7 +814,7 @@ a {
     height: 25px;
     padding-left: 8px;
     line-height: 24px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     width: 145px;
 }
 
@@ -912,7 +918,7 @@ a {
         font-weight: bold;
         margin-left: 12px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:nth-child(2) {
@@ -926,7 +932,7 @@ a {
         font-weight: bold;
         margin-left: 15px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:nth-child(3) {
@@ -940,7 +946,7 @@ a {
         font-weight: bold;
         margin-left: 45px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:nth-child(4) {
@@ -954,7 +960,7 @@ a {
         font-weight: bold;
         margin-left: 74px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:nth-child(5) {
@@ -968,7 +974,7 @@ a {
         font-weight: bold;
         margin-left: 49px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:last-child {
@@ -982,7 +988,7 @@ a {
         font-weight: bold;
         margin-left: 12px;
         border-radius: 4px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
     .safe_btn_box a:hover {
@@ -1029,7 +1035,7 @@ a {
     width: 851px;
     background: #fafafa;
     color: #222;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
 }
 
 .PartL {
@@ -1049,13 +1055,13 @@ a {
 
     .firtL th {
         background: #f2f2f2;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
         padding: 10px 1px 10px 5px;
         text-align: center !important;
     }
 
 .account01 {
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     background: #fff;
     padding: 5px 10px 5px 10px;
 }
@@ -1128,9 +1134,9 @@ a {
 
 #tabs2 li {
     list-style: none;
-    border-top: 1px solid var(--main-border-color);
-    border-left: 1px solid var(--main-border-color);
-    border-right: 1px solid var(--main-border-color);
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
     margin-right: 0px;
     outline: none;
 }
@@ -1152,9 +1158,9 @@ a {
         #tabs2 li a.inactive {
             background: #fff;
             color: #5685bc;
-            border-top: 1px solid var(--main-border-color);
-            border-left: 1px solid var(--main-border-color);
-            border-right: 1px solid var(--main-border-color);
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
         }
 
 .tabcontent {
@@ -1167,7 +1173,7 @@ a {
         height: 25px;
         padding-left: 8px;
         line-height: 24px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
         width: 145px;
         outline-color: transparent !important;
         outline-style: none !important;
@@ -1211,7 +1217,7 @@ a {
 
 .maxH {
     height: 320px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     background: rgb(255, 255, 255);
 }
 
@@ -1328,7 +1334,7 @@ a {
     top: 124px;*/
     position: absolute;
     z-index: 100;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     background: #f6f6f6;
     overflow: scroll;
     width: 500px;
@@ -1353,7 +1359,7 @@ ol {
     .contentSelect > select {
         width: 300px;
         border-radius: 1px;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
     }
 
 .treeCon1 {
@@ -1372,7 +1378,7 @@ ol {
 .allForder > input {
     display: inline-block !important;
     width: 414px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     height: 29px;
     line-height: 29px;
     padding-left: 11px;
@@ -1383,7 +1389,7 @@ ol {
 .nameNewContent,
 .locationContent {
     margin: 10px 0px 10px 23px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     width: 552px;
     height: 36px;
 }
@@ -1391,7 +1397,7 @@ ol {
     .nameNewContent > span,
     .locationContent > span {
         background: #f2f2f2;
-        border: 1px solid var(--main-border-color);
+        border: 1px solid #ccc;
         height: 34px;
         display: inline-block;
         line-height: 34px;
@@ -1437,7 +1443,7 @@ ol {
     overflow: scroll;
     width: 554px;
     height: 300px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
 }
 
 /*Open folder css*/
@@ -1650,7 +1656,7 @@ ol {
 
 .btnMove {
     display: inline-block;
-    background: var(--main-color);
+    background: #337ab7;
     color: #cedff2;
     height: 20px;
     line-height: 20px;
@@ -1707,7 +1713,7 @@ ol {
 .important {
     display: inline-block;
     width: 18px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     height: 17px;
     text-align: center;
     font-size: 11px;
@@ -1822,7 +1828,7 @@ ol {
 .important {
     display: inline-block;
     width: 18px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid #ccc;
     height: 17px;
     text-align: center;
     font-size: 11px;
@@ -1836,4 +1842,45 @@ ol {
     width: 600px;
     top: 20%;
     left: 28%;
+}
+
+.btn-warning:hover {
+    border: 1px solid #4987c9 !important;
+}
+
+.btn-danger:hover {
+    border: 1px solid #4987c9 !important;
+}
+
+.swal-footer {
+    text-align: center;
+}
+
+.swal-modal {
+    width: 300px;
+}
+
+.swal-button {
+    padding: 8px 24px;
+}
+
+.swal-button--cancel:focus {
+    overflow: hidden;
+    box-shadow: none !important;
+}
+
+.swal2-popup .swal-button--cancel:focus {
+    box-shadow: none !important;
+}
+
+.swal-overlay--show-modal .swal-modal {
+    will-change: unset;
+}
+
+.selectbackground {
+    background: #dfe1e4;
+}
+
+.hidelement {
+    display: none;
 }

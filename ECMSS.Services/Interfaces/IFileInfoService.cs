@@ -9,7 +9,7 @@ namespace ECMSS.Services.Interfaces
 
         IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId);
 
-        string[] GetFileUrl(int id);
+        string[] GetFileUrl(int id, int empId);
 
         void UploadNewFile(FileInfoDTO fileInfo);
 

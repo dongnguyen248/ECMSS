@@ -1,17 +1,10 @@
-﻿using ECMSS.Services.Interfaces;
+﻿using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
-using System.Web.Http;
 
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class EmployeeController : ApiController
+    public class EmployeeController : ApiControllerCore
     {
-        private readonly IEmployeeService _employeeService;
-
-        public EmployeeController(IEmployeeService employeeService)
-        {
-            _employeeService = employeeService;
-        }
     }
 }

@@ -31,7 +31,7 @@ namespace ECMSS.Services
             {
                 fileHistory.Modifier = _employeeRepository.GetSingle(x => x.EpLiteId == fileHistory.ModifierUser).Id;
                 string filePath = ConfigHelper.Read("FileUploadPath");
-                filePath += $"{_directoryService.GetPathFromFileId(fileHistory.FileId)}/{fileHistory.FileName}";
+                filePath += $"{_directoryService.GetDirFromFileId(fileHistory.FileId).Name}/{fileHistory.FileName}";
                 FileHelper.SaveFile(filePath, fileHistory.FileData);
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
                 _unitOfWork.Commit();

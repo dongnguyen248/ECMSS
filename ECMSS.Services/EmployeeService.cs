@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECMSS.Data;
+using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 
@@ -16,6 +17,11 @@ namespace ECMSS.Services
             _unitOfWork = unitOfWork;
             _employeeRepository = _unitOfWork.EmployeeRepository;
             _mapper = mapper;
+        }
+
+        public EmployeeDTO GetEmployeeByEpLiteId(string epLiteId)
+        {
+            return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingle(e => e.EpLiteId == epLiteId));
         }
     }
 }

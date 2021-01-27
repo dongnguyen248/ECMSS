@@ -6,9 +6,11 @@ namespace ECMSS.Web.Api
     [AllowAnonymous]
     public class TokenController : ApiController
     {
-        public string Get(string epLiteId)
+        public string GetToken(string epLiteId)
         {
-            return JwtManager.GenerateToken(epLiteId);
+            string token = JwtManager.GenerateToken(epLiteId);
+            var user = JwtManager.GetPrincipal(token);
+            return token;
         }
     }
 }

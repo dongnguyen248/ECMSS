@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿"use strict";
+
+$(document).ready(function () {
     //hide side bar
     $("#btn_area").click(function () {
         var padding = $("#ecmcontent").css("padding-left");
@@ -21,17 +23,6 @@
     $(".tab_on").hide();
     $(".tab_on:first").show();
 
-    $("#tabs li a").click(function () {
-        var t = $(this).attr("id");
-        if ($(this).hasClass("inactive")) {
-            $("#tabs li a").addClass("inactive");
-            $(this).removeClass("inactive");
-
-            $(".tab_on").hide();
-            $("#" + t + "C").fadeIn("slow");
-        }
-    });
-
     //change Tab on  add new file modal
     $("#tabs2 li a:not(:first)").addClass("inactive");
     $(".tabcontent").hide();
@@ -50,8 +41,8 @@
 });
 
 $(document).ajaxStop(function () {
-    //check extension when show file
     $(".contentname").each(function () {
+        var backgroundIcon = "";
         var text = $(this).text();
         var fileExtension = text.split(".").pop().trim();
         if (fileExtension === "doc" || fileExtension === "docx") {
@@ -175,41 +166,45 @@ $(document).on("click", ".sidebar-menu1 li", function (e) {
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
     } else {
-        $(this)
-            .children()
-            .children()
-            .attr("src", "/assets/imgs/ico_folder_off.png");
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_off.png");
         $(this).children("span").remove();
     }
+
+    $(".sidebar-menu1").find(".selectbackground").removeClass("selectbackground");
+    $(this).children("a").addClass("selectbackground");
 });
 
-var tempPath = "";
-function dfs(srcElem, desElem) {
-    $(srcElem)
-        .children()
-        .each(function () {
-            if ($(this).find(desElem).length > 0) {
-                tempPath +=
-                    $(this)
-                        .clone()
-                        .children(":not(a)")
-                        .remove()
-                        .end()
-                        .children("a")
-                        .text()
-                        .trim() + ">";
-            }
-            dfs($(this), desElem);
-        });
-    tempPath = tempPath.replace(">>", ">");
-    return tempPath;
+
+function wrapDfs(srcElem, desElem) {
+    var path = "";
+    function dfs(srcElem, desElem) {
+        $(srcElem)
+            .children()
+            .each(function () {
+                if ($(this).find(desElem).length > 0) {
+                    path +=
+                        $(this)
+                            .clone()
+                            .children(":not(a)")
+                            .remove()
+                            .end()
+                            .children("a")
+                            .text()
+                            .trim() + ">";
+                }
+                dfs($(this), desElem);
+            });
+        path = path.replace(">>", ">");
+        return path.substr(0, path.length - 1).trim();
+    }
+    return dfs(srcElem, desElem);
 }
+
 
 function selectFolder(id, cls) {
     var desElem = $("#btnGetPath");
-    var path = "PoscoVST>" + dfs($(cls), desElem);
-    $(id).val(path.slice(0, -1));
-    tempPath = "";
+    var path = "PoscoVST>" + wrapDfs($(cls), desElem);
+    $(id).val(path);
 }
 
 //upload file
@@ -228,9 +223,8 @@ $("#fileupload").click(function () {
 
     //call event Change(affter select file) of input
     $(inpFullID).change(function () {
-        let image = event.target.files[0];
-        let filename = event.target.files[0].name;
-        let checkExists = 0;
+        var filename = event.target.files[0].name;
+        var checkExists = 0;
         var elements = document.getElementsByClassName("inpImport");
 
         if (elements.length > 1) {
@@ -254,11 +248,10 @@ $("#fileupload").click(function () {
 });
 
 function changebackgroundFilextension(filename, optId, inpID) {
-    let backgroundIcon = "";
+    var backgroundIcon = "";
     $(".listFileImport").css("display", "block");
-    $(".listFileImport .list").append(
-        String.format("<li id={0}>{1} <a onclick=\"removefile('{0}','{2}')\" class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>", optId, filename, inpID));
-    let extension = getFileExtension(filename);
+    $(".listFileImport .list").append(String.format("<li id={0}>{1} <a onclick=\"removefile('{0}','{2}')\" class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>", optId, filename, inpID));
+    var extension = getFileExtension(filename);
 
     if (extension === "doc" || extension === "docx") {
         backgroundIcon = "/assets/imgs/ico_doc_on.png";
@@ -266,12 +259,7 @@ function changebackgroundFilextension(filename, optId, inpID) {
         backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
     } else if (extension === "ppt" || extension === "pptx") {
         backgroundIcon = "/assets/imgs/ico_ppt_on.png";
-    } else if (
-        extension === "jpg" ||
-        extension === "gif" ||
-        extension === "jpg" ||
-        extension === "jpeg"
-    ) {
+    } else if (extension === "jpg" || extension === "gif" || extension === "jpg" || extension === "jpeg") {
         backgroundIcon = "/assets/imgs/ico_img_on.png";
     } else {
         backgroundIcon = "/assets/imgs/ico_pdf_on.png";
@@ -309,40 +297,6 @@ function getFilename(fullPath) {
     }
 }
 
-function addFavorite(obj, fileId) {
-    api.post("FileFavorite/AddOrRemoveFavoriteFile?fileId=" + fileId + "&employeeId=" + EMPLOYEE_ID).then(function () {
-        var img = obj.children;
-        var src =
-            $(img).attr("src") === "/assets/imgs/ico_fav.png"
-                ? "/assets/imgs/ico_fav_blue_on.png"
-                : "/assets/imgs/ico_fav.png";
-        $(img).attr("src", src);
-    }).catch(function (error) {
-        console.log(error)
-    });
-}
-
-function addImportant(obj, fileId) {
-    api.post("FileImportant/AddOrRemoveImportantFile?fileId=" + fileId + "&employeeId=" + EMPLOYEE_ID).then(function () {
-        if (!$(obj).hasClass('backgroundImp')) {
-            $(obj).addClass('backgroundImp');
-        } else {
-            $(obj).removeClass('backgroundImp');
-        }
-    }).catch(function (error) {
-        console.log(error);
-    });
-}
-
-function searchContent() {
-    var inpTxt = $("#txtSearch").val().trim();
-    if (inpTxt.length > 0) {
-        $("#tbMainDefault").DataTable().ajax.url("api/FileInfo/Search?searchContent=" + inpTxt).load();
-    } else {
-        $("#tbMainDefault").DataTable().ajax.url(ROOT_DT_URL).load();
-    }
-}
-
 $("#tab1C a").click(function () {
     var txt = $(this).text();
     $(".areacBox .txt p").text("Shortcut Box>" + txt);
@@ -351,20 +305,55 @@ $("#tab1C a").click(function () {
 $(document).on("click", "#tab2C .sidebar-menu1 a", function () {
     var root = $(".sidebar-menu1");
     var desElem = $(this);
-    var path = dfs(root, desElem);
+    var path = wrapDfs(root, desElem);
     $(".areacBox .txt p").text(path);
-    tempPath = "";
 });
 
-$("#frm-create-directory").submit(function (event) {
-    event.preventDefault();
-    var dirName = $(this).find("input[name='dirName']").val();
-    var parentName = $(this).find("input[name='parentName']").val();
-    parentName = parentName.substring(parentName.lastIndexOf(">") + 1).trim();
-    api.post("Directory/CreateDirectory?dirName=" + dirName + "&parentName=" + parentName).then(function () {
-        initTreeFolder();
-        $.notify("Create content successfully", "success");
-    }).catch(function () {
-        $.notify("Create content failed, check your input and try again", "error");
-    });
+$("#tabs li a").click(function () {
+    var id = $(this).attr("id");
+    if ($(this).hasClass("inactive")) {
+        $("#tabs li a").addClass("inactive");
+        $(this).removeClass("inactive");
+        $(".tab_on").hide();
+        $("#" + id + "C").fadeIn("slow");
+    }
+
+    if (id == "tab1") {
+        $("#btn-delete-folder").addClass("hidelement");
+    } else {
+        $("#btn-delete-folder").removeClass("hidelement");
+    }
 });
+
+function filterFile(type = "") {
+    $.fn.dataTable.ext.search.pop();
+    var extensions = [];
+    switch (type) {
+        case "":
+            break;
+        case "powerpoint":
+            extensions = ["ppt", "pptx"];
+            break;
+        case "excel":
+            extensions = ["xls", "xlsx"];
+            break;
+        case "word":
+            extensions = ["doc", "docx"];
+            break;
+        case "pdf":
+            extensions = ["pdf"];
+            break;
+        case "image":
+            extensions = ["jpg", "gif", "jpg", "jpeg"];
+            break;
+        default:
+            break;
+    }
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        if (extensions.length === 0) {
+            return true;
+        }
+        return extensions.includes(data[0].split(".").pop().trim());
+    });
+    $("#tbMainDefault").DataTable().draw();
+}
