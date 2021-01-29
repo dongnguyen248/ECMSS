@@ -2,7 +2,6 @@
 const ROOT_DT_URL = "api/FileInfo/GetFileInfos";
 
 window.addEventListener("load", function () {
-
     initDataTable(ROOT_DT_URL);
 
     router.add("/", function () {

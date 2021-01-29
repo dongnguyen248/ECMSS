@@ -16,6 +16,7 @@ namespace ECMSS.Web.Api
             _employeeService = employeeService;
         }
 
+        [HttpGet]
         public string GetToken(string epLiteId)
         {
             var employee = _employeeService.GetEmployeeByEpLiteId(epLiteId);
@@ -27,6 +28,7 @@ namespace ECMSS.Web.Api
             throw new HttpResponseException(HttpStatusCode.Unauthorized);
         }
 
+        [HttpGet]
         public IHttpActionResult GetTokenV2(string epLiteId)
         {
             var employee = _employeeService.GetEmployeeByEpLiteId(epLiteId);

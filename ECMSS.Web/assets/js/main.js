@@ -174,7 +174,6 @@ $(document).on("click", ".sidebar-menu1 li", function (e) {
     $(this).children("a").addClass("selectbackground");
 });
 
-
 function wrapDfs(srcElem, desElem) {
     var path = "";
     function dfs(srcElem, desElem) {
@@ -199,7 +198,6 @@ function wrapDfs(srcElem, desElem) {
     }
     return dfs(srcElem, desElem);
 }
-
 
 function selectFolder(id, cls) {
     var desElem = $("#btnGetPath");

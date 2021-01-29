@@ -11,7 +11,6 @@ function initTreeFolder() {
         $(".addFolderTreeBox2").html(
             renderTreeFolder(listToTree(response.data), "sidebar-menu2", false)
         );
-
         $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
     }).catch(function (error) {
         console.log(error)

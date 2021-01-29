@@ -7,7 +7,7 @@ namespace ECMSS.Web.Api
     [JwtAuthentication]
     public class EmployeeController : ApiController
     {
-        private IEmployeeService _employeeService;
+        private readonly IEmployeeService _employeeService;
 
         public EmployeeController(IEmployeeService employeeService)
         {

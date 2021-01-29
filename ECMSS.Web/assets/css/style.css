@@ -1,5 +1,5 @@
-﻿/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+﻿/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -25,7 +25,6 @@ a {
         color: #4987c9;
         text-decoration: none !important;
     }
-
 
 .Boxlayout {
     width: 200px;
@@ -281,7 +280,6 @@ a {
 .btn-delete-file {
     width: 100px;
 }
-
 
 .create_new {
     background: url("/assets/imgs/bg_new.gif") no-repeat 0 50%;
@@ -1281,7 +1279,6 @@ a {
         margin-bottom: 8px;
     }
 
-
 .subheader {
     line-height: 45px;
 }
@@ -1729,7 +1726,6 @@ ol {
     display: table;
     clear: both;
 }
-
 
 .checkbox {
     position: relative;
