@@ -8,5 +8,14 @@ namespace ECMSS.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult AuthGate(string empId)
+        {
+            if (Session["RequestToken"] == null)
+            {
+                Session["RequestToken"] = empId;
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

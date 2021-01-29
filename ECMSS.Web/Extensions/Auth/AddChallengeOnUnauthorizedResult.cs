@@ -29,7 +29,6 @@ namespace ECMSS.Web.Extensions.Auth
                     response.Headers.WwwAuthenticate.Add(Challenge);
                 }
             }
-
             return response;
         }
     }

@@ -8,6 +8,10 @@
 </head>
 
 <body>
+    @if (Session["RequestToken"] != null)
+    {
+        <input type="hidden" id="txtToken" value="@Session["RequestToken"]" />
+    }
     @{Html.RenderPartial("Header");}
     <div class="wrapper">
         <div class="ecmcontent" id="ecmcontent">

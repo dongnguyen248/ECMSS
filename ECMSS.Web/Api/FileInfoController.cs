@@ -1,6 +1,5 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
-using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
 using ECMSS.Web.Models;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Web.Http;
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class FileInfoController : ApiControllerCore
+    public class FileInfoController : ApiController
     {
         private readonly IFileInfoService _fileInfoService;
 
@@ -24,7 +23,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetFileInfos()
         {
-            var fileInfos = _fileInfoService.GetFileInfosByUserId(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetFileInfosByUserId(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -40,7 +40,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public string[] GetFileUrl(int id)
         {
-            return _fileInfoService.GetFileUrl(id, _emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            return _fileInfoService.GetFileUrl(id, empId);
         }
 
         [HttpPost]
@@ -60,7 +61,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetFavoriteFiles()
         {
-            var fileInfos = _fileInfoService.GetFavoriteFiles(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetFavoriteFiles(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -68,7 +70,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetImportantFiles()
         {
-            var fileInfos = _fileInfoService.GetImportantFiles(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetImportantFiles(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -84,7 +87,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetDepartmentFiles()
         {
-            var fileInfos = _fileInfoService.GetDepartmentFiles(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetDepartmentFiles(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -92,7 +96,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetSharedFiles()
         {
-            var fileInfos = _fileInfoService.GetSharedFiles(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetSharedFiles(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
@@ -100,7 +105,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetTrashContents()
         {
-            var fileInfos = _fileInfoService.GetTrashContents(_emp.Id);
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfos = _fileInfoService.GetTrashContents(empId);
             var result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }

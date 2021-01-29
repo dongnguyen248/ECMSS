@@ -65,9 +65,6 @@ namespace ECMSS.Services
             result[1] = isOwnerOrShared ? $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][false]" : null;
             result[2] = fileInfo.Name;
 
-            result[0] = Encryptor.Encrypt(result[0]);
-            result[1] = result[1] != null ? Encryptor.Encrypt(result[1]) : null;
-
             return result;
         }
 

@@ -1,6 +1,5 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
-using ECMSS.Web.Api.Core;
 using ECMSS.Web.Extensions.Auth;
 using System.Collections.Generic;
 using System.Net;
@@ -10,7 +9,7 @@ using System.Web.Http;
 namespace ECMSS.Web.Api
 {
     [JwtAuthentication]
-    public class DirectoryController : ApiControllerCore
+    public class DirectoryController : ApiController
     {
         private readonly IDirectoryService _directoryService;
 
@@ -44,7 +43,8 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                _directoryService.DeleteDirectory(_emp.Id, path);
+                var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+                _directoryService.DeleteDirectory(empId, path);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch
