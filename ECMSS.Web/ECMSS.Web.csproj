@@ -265,6 +265,7 @@
     <Content Include="assets\imgs\icheck\red.png" />
     <Content Include="assets\imgs\icheck\yellow%402x.png" />
     <Content Include="assets\imgs\icheck\yellow.png" />
+    <Content Include="assets\imgs\icons\icon-ecm-colored.ico" />
     <Content Include="assets\imgs\ico_all_on.png" />
     <Content Include="assets\imgs\ico_contentList_del.png" />
     <Content Include="assets\imgs\ico_doc_on.png" />

@@ -11,10 +11,7 @@ namespace ECMSS.Web.Controllers
 
         public ActionResult AuthGate(string empId)
         {
-            if (Session["RequestToken"] == null)
-            {
-                Session["RequestToken"] = empId;
-            }
+            Session["RequestToken"] = empId;
             return RedirectToAction("Index");
         }
     }
