@@ -47,7 +47,7 @@ namespace ECMSS.Services
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
-        private DirectoryDTO GetDirFromPath(string path)
+        public DirectoryDTO GetDirFromPath(string path)
         {
             var args = new SqlParameter { ParameterName = "Path", SqlDbType = SqlDbType.NVarChar, Value = path };
             var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromPath @Path", args).FirstOrDefault();

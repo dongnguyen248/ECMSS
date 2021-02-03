@@ -1,4 +1,5 @@
 ﻿"use strict";
+
 const ROOT_DT_URL = "api/FileInfo/GetFileInfos";
 
 window.addEventListener("load", function () {

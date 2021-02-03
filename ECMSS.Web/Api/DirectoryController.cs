@@ -24,6 +24,12 @@ namespace ECMSS.Web.Api
             return _directoryService.GetTreeDirectories();
         }
 
+        [HttpGet]
+        public DirectoryDTO GetDirectoryFromPath(string path)
+        {
+            return _directoryService.GetDirFromPath(path);
+        }
+
         [HttpPost]
         public HttpResponseMessage CreateDirectory(string dirName, string path)
         {

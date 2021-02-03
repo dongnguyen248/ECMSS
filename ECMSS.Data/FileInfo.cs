@@ -31,7 +31,6 @@ namespace ECMSS.Data
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
     
-        public virtual Directory Directory { get; set; }
         public virtual Employee Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileHistory> FileHistories { get; set; }
@@ -43,5 +42,6 @@ namespace ECMSS.Data
         public virtual ICollection<Trash> Trashes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileShare> FileShares { get; set; }
+        public virtual Directory Directory { get; set; }
     }
 }

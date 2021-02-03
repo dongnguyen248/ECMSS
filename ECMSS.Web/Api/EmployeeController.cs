@@ -1,5 +1,7 @@
-﻿using ECMSS.Services.Interfaces;
+﻿using ECMSS.DTO;
+using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace ECMSS.Web.Api
@@ -12,6 +14,12 @@ namespace ECMSS.Web.Api
         public EmployeeController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
+        }
+
+        [HttpGet]
+        public IEnumerable<EmployeeDTO> GetEmployeesByName(string empName)
+        {
+            return _employeeService.GetEmployeesByName(empName);
         }
     }
 }

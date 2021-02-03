@@ -75,9 +75,7 @@ namespace ECMSS.Services
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
                 string filePath = ConfigHelper.Read("FileUploadPath");
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
-                FileHelper.SaveFile(filePath, fileInfo.FileData);
                 _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
-
                 FileHistoryDTO fileHistory = new FileHistoryDTO
                 {
                     FileId = fileInfo.Id,
@@ -87,6 +85,7 @@ namespace ECMSS.Services
                     Version = "0.1"
                 };
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                FileHelper.SaveFile(filePath, fileInfo.FileData);
                 _unitOfWork.Commit();
             }
             catch (Exception ex)
@@ -130,6 +129,32 @@ namespace ECMSS.Services
         {
             var sharedFiles = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Count > 0, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(sharedFiles);
+        }
+
+        public FileInfoDTO AddNewFile(FileInfoDTO fileInfo)
+        {
+            try
+            {
+                string filePath = ConfigHelper.Read("FileUploadPath");
+                filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
+                var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
+                FileHistoryDTO fileHistory = new FileHistoryDTO
+                {
+                    FileId = fileInfo.Id,
+                    Modifier = fileInfo.Owner,
+                    Size = fileInfo.FileData.Length / 1024,
+                    StatusId = 1,
+                    Version = "0.1"
+                };
+                _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                FileHelper.SaveFile(filePath, fileInfo.FileData);
+                _unitOfWork.Commit();
+                return _mapper.Map<FileInfoDTO>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

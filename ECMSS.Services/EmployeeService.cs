@@ -3,6 +3,7 @@ using ECMSS.Data;
 using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace ECMSS.Services
 {
@@ -22,6 +23,11 @@ namespace ECMSS.Services
         public EmployeeDTO GetEmployeeByEpLiteId(string epLiteId)
         {
             return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingle(e => e.EpLiteId == epLiteId));
+        }
+
+        public IEnumerable<EmployeeDTO> GetEmployeesByName(string empName)
+        {
+            return _mapper.Map<IEnumerable<EmployeeDTO>>(_employeeRepository.GetMany(e => (e.FirstName + " " + e.LastName).Contains(empName), x => x.Department));
         }
     }
 }

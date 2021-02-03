@@ -18,9 +18,11 @@ namespace ECMSS.Data
         public int EmployeeId { get; set; }
         public int Authority { get; set; }
         public System.Guid Id { get; set; }
+        public int Permission { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual FileAuthority FileAuthority { get; set; }
         public virtual FileInfo FileInfo { get; set; }
+        public virtual FilePermission FilePermission { get; set; }
     }
 }

@@ -53,6 +53,7 @@
     <Compile Include="FileHistoryDTO.cs" />
     <Compile Include="FileImportantDTO.cs" />
     <Compile Include="FileInfoDTO.cs" />
+    <Compile Include="FilePermissionDTO.cs" />
     <Compile Include="FileShareDTO.cs" />
     <Compile Include="FileStatusDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

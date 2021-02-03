@@ -66,7 +66,7 @@ $(document).ajaxStop(function () {
 });
 
 function addnewclass(id) {
-    var checkbox = $("#" + id);
+    var checkbox = $(".positionBox input[data-emp-id=" + id + "]");
     var checked = checkbox.prop("checked");
     if (checked) {
         checkbox.parent().parent().addClass("checked");
@@ -74,8 +74,11 @@ function addnewclass(id) {
         checkbox.parent().parent().removeClass("checked");
     }
 }
-function addnew() {
-    $("#addnew").modal("show");
+
+function addNew() {
+    var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+    $(".PartL .firtL .account01").text(curEmp.EpLiteId);
+    $("#addNew").modal("show");
 }
 
 function createnew() {

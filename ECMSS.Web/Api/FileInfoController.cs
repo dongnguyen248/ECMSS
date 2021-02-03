@@ -133,5 +133,19 @@ namespace ECMSS.Web.Api
         {
             return fileInfo.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault();
         }
+
+        [HttpPost]
+        public HttpResponseMessage AddNewFile(FileInfoDTO fileInfo)
+        {
+            try
+            {
+                var result = _fileInfoService.AddNewFile(fileInfo);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

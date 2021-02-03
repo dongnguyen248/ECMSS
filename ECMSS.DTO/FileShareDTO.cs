@@ -12,5 +12,6 @@ namespace ECMSS.DTO
         public virtual EmployeeDTO Employee { get; set; }
         public virtual FileAuthorityDTO FileAuthority { get; set; }
         public virtual FileInfoDTO FileInfo { get; set; }
+        public virtual FilePermissionDTO FilePermission { get; set; }
     }
 }

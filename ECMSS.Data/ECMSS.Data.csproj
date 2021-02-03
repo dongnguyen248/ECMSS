@@ -92,6 +92,9 @@
     <Compile Include="FileInfo.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>
+    <Compile Include="FilePermission.cs">
+      <DependentUpon>ECM.tt</DependentUpon>
+    </Compile>
     <Compile Include="FileShare.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>

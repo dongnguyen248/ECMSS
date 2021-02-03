@@ -14,5 +14,7 @@ namespace ECMSS.Services.Interfaces
         DirectoryDTO GetDirFromFileId(int fileId);
 
         DirectoryDTO GetDirFromId(int dirId);
+
+        DirectoryDTO GetDirFromPath(string path);
     }
 }

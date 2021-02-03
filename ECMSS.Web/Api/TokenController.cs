@@ -19,10 +19,10 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public string GetToken(string epLiteId)
         {
-            var employee = _employeeService.GetEmployeeByEpLiteId(epLiteId);
-            if (employee != null)
+            var curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
+            if (curEmp != null)
             {
-                string token = JwtManager.GenerateToken(employee.EpLiteId, employee.Id, EXPIRE_MINUTES);
+                string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id, EXPIRE_MINUTES);
                 return token;
             }
             throw new HttpResponseException(HttpStatusCode.Unauthorized);
@@ -31,11 +31,11 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetTokenV2(string epLiteId)
         {
-            var employee = _employeeService.GetEmployeeByEpLiteId(epLiteId);
-            if (employee != null)
+            var curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
+            if (curEmp != null)
             {
-                string token = JwtManager.GenerateToken(employee.EpLiteId, employee.Id, EXPIRE_MINUTES);
-                return Ok(new { token, empName = $"{employee.LastName} {employee.FirstName}" });
+                string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id, EXPIRE_MINUTES);
+                return Ok(new { token, curEmp });
             }
             throw new HttpResponseException(HttpStatusCode.Unauthorized);
         }

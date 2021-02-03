@@ -1,7 +1,8 @@
 ﻿"use strict";
 
-function initTreeFolder() {
-    api.get("/Directory/GetTreeDirectory").then(function (response) {
+async function initTreeFolder() {
+    try {
+        var response = await api.get("/Directory/GetTreeDirectory");
         $(".mycontList .treefdBox").html(
             renderTreeFolder(listToTree(response.data), "sidebar-menu1", true)
         );
@@ -12,9 +13,9 @@ function initTreeFolder() {
             renderTreeFolder(listToTree(response.data), "sidebar-menu2", false)
         );
         $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
-    }).catch(function (error) {
-        console.log(error)
-    });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 function initDataTable(url) {
@@ -142,32 +143,34 @@ function searchContent() {
     }
 }
 
-function addImportant(obj, fileId) {
-    api.post("FileImportant/AddOrRemoveImportantFile?fileId=" + fileId).then(function () {
+async function addImportant(obj, fileId) {
+    try {
+        await api.post("FileImportant/AddOrRemoveImportantFile?fileId=" + fileId);
         if (!$(obj).hasClass('backgroundImp')) {
             $(obj).addClass('backgroundImp');
         } else {
             $(obj).removeClass('backgroundImp');
         }
-    }).catch(function (error) {
+    } catch (error) {
         console.log(error);
-    });
+    }
 }
 
-function addFavorite(obj, fileId) {
-    api.post("FileFavorite/AddOrRemoveFavoriteFile?fileId=" + fileId).then(function () {
+async function addFavorite(obj, fileId) {
+    try {
+        await api.post("FileFavorite/AddOrRemoveFavoriteFile?fileId=" + fileId);
         var img = obj.children;
         var src =
             $(img).attr("src") === "/assets/imgs/ico_fav.png"
                 ? "/assets/imgs/ico_fav_blue_on.png"
                 : "/assets/imgs/ico_fav.png";
         $(img).attr("src", src);
-    }).catch(function (error) {
+    } catch (error) {
         console.log(error);
-    });
+    }
 }
 
-$("#frm-create-directory").submit(function (event) {
+$("#frm-create-directory").submit(async function (event) {
     event.preventDefault();
     var dirName = $(this).find("input[name='dirName']").val();
     var path = $(this).find("input[name='parentName']").val();
@@ -175,17 +178,19 @@ $("#frm-create-directory").submit(function (event) {
     path = path.substring(path.indexOf(">") + 1).trim();
     path = path.replaceAll(">", "/");
 
-    api.post("Directory/CreateDirectory?dirName=" + dirName + "&path=" + path).then(function () {
+    try {
+        await api.post("Directory/CreateDirectory?dirName=" + dirName + "&path=" + path);
         initTreeFolder();
         swal("Success!", "Create content successfully!", "success");
         $("#createnew").modal("hide");
-    }).catch(function () {
+    } catch (error) {
         swal("Failed!", "Create content failed, check your input and try again!", "error");
-    });
+    }
 });
 
-function openContent(fileId) {
-    api.get(String.format("FileInfo/GetFileUrl?id={0}", fileId)).then(function (response) {
+async function openContent(fileId) {
+    try {
+        var response = await api.get(String.format("FileInfo/GetFileUrl?id={0}", fileId));
         var fileUrl = response.data;
 
         $("#changefile .modal-footer center a:nth-child(1)").attr(
@@ -203,9 +208,9 @@ function openContent(fileId) {
 
         $("#nameContent").val(fileUrl[2]);
         $("#changefile").modal("show");
-    }).catch(function (error) {
+    } catch (error) {
         console.log(error);
-    });
+    }
 }
 
 function deleteFile() {
@@ -247,16 +252,17 @@ function deleteFolder() {
             buttons: true,
             dangerMode: true,
         })
-            .then(function (willDelete) {
+            .then(async function (willDelete) {
                 if (willDelete) {
-                    api.post("Directory/DeleteDirectory?path=" + path).then(function () {
+                    try {
+                        await api.post("Directory/DeleteDirectory?path=" + path);
                         initTreeFolder();
                         swal("Success!", "Delete content successfully!", "success");
                         $("#createnew").modal("hide");
                         router.navigateTo("/");
-                    }).catch(function () {
+                    } catch (error) {
                         swal("Failed!", "Delete content failed, try again later!", "error");
-                    });
+                    }
                 } else {
                     swal("Your content file is safe!");
                 }
@@ -264,4 +270,95 @@ function deleteFolder() {
     } else {
         swal("Please select a folder you want delete!");
     }
+}
+
+$("#tab3C > a > img").click(async function () {
+    var empName = $("#tab3C > input[name='empName']").val();
+    try {
+        var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", empName));
+        var emps = response.data;
+        $(emps).each(function (index, value) {
+            var checkElem = $(".positionSearch").find("table input[data-emp-id='" + value.Id + "']").length > 0;
+            if (!checkElem) {
+                $("#userList").append(
+                    String.format("<tr>" +
+                        "<td>" +
+                        "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange=\"addnewclass({0})\" />" +
+                        "<span> {1} {2} [{3}]</span>" +
+                        "</td>" +
+                        "</tr>", value.Id, value.LastName, value.FirstName, value.Department.Name)
+                );
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+$(document).on("click", "#btnAddNewFile", async function () {
+    var listFileSelected = $("#inputhidden").children();
+    var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+    if ($(listFileSelected).length == 0) {
+        swal("Failed!", "No file has been selected yet!", "error");
+    } else {
+        //var result = await addFileInfo(listFileSelected, curEmp);
+        var isFavorite = $("#chktype:checked").length > 0
+        console.log(isFavorite);
+    }
+});
+
+async function addFileInfo(listFileSelected, curEmp) {
+    var path = $("#folderPath").val();
+    path = path.substring(path.indexOf(">") + 1).trim();
+    path = path.replaceAll(">", "/");
+    var dir = await getDirFromPath(path);
+    $(listFileSelected).each(async function (index, value) {
+        var fileInfo = {
+            FileData: await fileToByteArray($(value).prop("files")[0]),
+            Name: $(value).val().split(/(\\|\/)/g).pop(),
+            Owner: curEmp.Id,
+            Tag: $(".input_hashtag input[name='tag']").val(),
+            DirectoryId: dir.Id
+        }
+        try {
+            var response = await api.post("FileInfo/AddNewFile", fileInfo);
+            swal("Success!", "Create content successfully!", "success");
+            $("#addNew").modal("hide");
+            return response.data;
+        } catch (error) {
+            swal("Failed!", "add file failed, check your input and try again!", "error");
+        }
+    });
+}
+
+async function getDirFromPath(path) {
+    try {
+        var response = await api.get(String.format("Directory/GetDirectoryFromPath?path={0}", path));
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function fileToByteArray(file) {
+    return new Promise((resolve, reject) => {
+        try {
+            var reader = new FileReader();
+            var fileByteArray = [];
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = (evt) => {
+                if (evt.target.readyState == FileReader.DONE) {
+                    var arrayBuffer = evt.target.result,
+                        array = new Uint8Array(arrayBuffer);
+                    for (byte of array) {
+                        fileByteArray.push(byte);
+                    }
+                }
+                resolve(fileByteArray);
+            }
+        }
+        catch (error) {
+            reject(error);
+        }
+    })
 }

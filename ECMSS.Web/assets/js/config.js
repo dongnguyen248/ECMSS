@@ -7,8 +7,9 @@
         data: {
             epLiteId: getEpLiteUserFromInp()
         }, success: function (data) {
-            localStorage.token = data.token;
-            $(".top-right .username").text(data.empName);
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("curEmp", JSON.stringify(data.curEmp));
+            $(".top-right .username").text(data.curEmp.LastName + " " + data.curEmp.FirstName);
         }, error: function () {
             swal("Failed!", "Validation error, you need access via EpLite", "error");
             window.stop();
@@ -38,7 +39,7 @@ const router = new Router({
 const api = axios.create({
     baseURL: "https://localhost:44372/api/",
     timeout: 5000,
-    headers: { "Authorization": "Bearer " + localStorage.token }
+    headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
 });
 
 var configDT = {

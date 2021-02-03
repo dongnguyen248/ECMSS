@@ -273,7 +273,7 @@ a {
 }
 
 .btn_create {
-    width: 155px;
+    width: 120px;
 }
 
 .btn-delete-folder,
@@ -1252,12 +1252,6 @@ a {
     position: relative;
     left: 27px;
     top: 174px;
-}
-
-.PartC p:last-child {
-    position: relative;
-    left: 27px;
-    top: 255px;
 }
 
 .PartR {
