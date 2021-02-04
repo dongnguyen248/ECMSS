@@ -31,13 +31,6 @@
           <Property Name="DepartmentId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="FileAuthority">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="FileFavorite">
           <Key>
             <PropertyRef Name="Id" />
@@ -90,7 +83,6 @@
           </Key>
           <Property Name="FileId" Type="int" Nullable="false" />
           <Property Name="EmployeeId" Type="int" Nullable="false" />
-          <Property Name="Authority" Type="int" Nullable="false" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Permission" Type="int" Nullable="false" />
         </EntityType>
@@ -272,18 +264,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Fk_FileShare_FileAuthority">
-          <End Role="FileAuthority" Type="Self.FileAuthority" Multiplicity="1" />
-          <End Role="FileShare" Type="Self.FileShare" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FileAuthority">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileShare">
-              <PropertyRef Name="Authority" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Fk_FileShare_FileInfo">
           <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
           <End Role="FileShare" Type="Self.FileShare" Multiplicity="*" />
@@ -324,7 +304,6 @@
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Directory" EntityType="Self.Directory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="FileAuthority" EntityType="Self.FileAuthority" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileFavorite" EntityType="Self.FileFavorite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileHistory" EntityType="Self.FileHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FileImportant" EntityType="Self.FileImportant" Schema="dbo" store:Type="Tables" />
@@ -386,10 +365,6 @@
             <End Role="Employee" EntitySet="Employee" />
             <End Role="FileShare" EntitySet="FileShare" />
           </AssociationSet>
-          <AssociationSet Name="Fk_FileShare_FileAuthority" Association="Self.Fk_FileShare_FileAuthority">
-            <End Role="FileAuthority" EntitySet="FileAuthority" />
-            <End Role="FileShare" EntitySet="FileShare" />
-          </AssociationSet>
           <AssociationSet Name="Fk_FileShare_FileInfo" Association="Self.Fk_FileShare_FileInfo">
             <End Role="FileInfo" EntitySet="FileInfo" />
             <End Role="FileShare" EntitySet="FileShare" />
@@ -432,14 +407,6 @@
           <NavigationProperty Name="FileFavorites" Relationship="ECMModel.Fk_FileFavorite_Employee" FromRole="Employee" ToRole="FileFavorite" />
           <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_Employee" FromRole="Employee" ToRole="FileImportant" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_Employee" FromRole="Employee" ToRole="FileShare" />
-        </EntityType>
-        <EntityType Name="FileAuthority">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileAuthority" FromRole="FileAuthority" ToRole="FileShare" />
         </EntityType>
         <EntityType Name="FileStatus">
           <Key>
@@ -484,7 +451,6 @@
         <EntityContainer Name="ECMEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="Employees" EntityType="Self.Employee" />
-          <EntitySet Name="FileAuthorities" EntityType="Self.FileAuthority" />
           <EntitySet Name="FileStatus1" EntityType="ECMModel.FileStatus" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <AssociationSet Name="Fk_Employee_Department" Association="Self.Fk_Employee_Department">
@@ -536,24 +502,7 @@
             <End Role="FileInfo" EntitySet="FileInfoes" />
             <End Role="Trash" EntitySet="Trashes" />
           </AssociationSet>
-          <EntitySet Name="FileShares" EntityType="ECMModel.FileShare" />
-          <AssociationSet Name="Fk_FileShare_Employee" Association="ECMModel.Fk_FileShare_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="FileShare" EntitySet="FileShares" />
-          </AssociationSet>
-          <AssociationSet Name="Fk_FileShare_FileAuthority" Association="ECMModel.Fk_FileShare_FileAuthority">
-            <End Role="FileAuthority" EntitySet="FileAuthorities" />
-            <End Role="FileShare" EntitySet="FileShares" />
-          </AssociationSet>
-          <AssociationSet Name="Fk_FileShare_FileInfo" Association="ECMModel.Fk_FileShare_FileInfo">
-            <End Role="FileInfo" EntitySet="FileInfoes" />
-            <End Role="FileShare" EntitySet="FileShares" />
-          </AssociationSet>
           <EntitySet Name="FilePermissions" EntityType="ECMModel.FilePermission" />
-          <AssociationSet Name="Fk_FileShare_FilePermission" Association="ECMModel.Fk_FileShare_FilePermission">
-            <End Role="FilePermission" EntitySet="FilePermissions" />
-            <End Role="FileShare" EntitySet="FileShares" />
-          </AssociationSet>
           <EntitySet Name="Directories" EntityType="ECMModel.Directory" />
           <AssociationSet Name="Fk_Directory_Seft" Association="ECMModel.Fk_Directory_Seft">
             <End Role="Directory" EntitySet="Directories" />
@@ -562,6 +511,19 @@
           <AssociationSet Name="Fk_FileInfo_Directory" Association="ECMModel.Fk_FileInfo_Directory">
             <End Role="Directory" EntitySet="Directories" />
             <End Role="FileInfo" EntitySet="FileInfoes" />
+          </AssociationSet>
+          <EntitySet Name="FileShares" EntityType="ECMModel.FileShare" />
+          <AssociationSet Name="Fk_FileShare_Employee" Association="ECMModel.Fk_FileShare_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="FileShare" EntitySet="FileShares" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileShare_FileInfo" Association="ECMModel.Fk_FileShare_FileInfo">
+            <End Role="FileInfo" EntitySet="FileInfoes" />
+            <End Role="FileShare" EntitySet="FileShares" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_FileShare_FilePermission" Association="ECMModel.Fk_FileShare_FilePermission">
+            <End Role="FilePermission" EntitySet="FilePermissions" />
+            <End Role="FileShare" EntitySet="FileShares" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="FileInfo">
@@ -579,8 +541,8 @@
           <NavigationProperty Name="FileFavorites" Relationship="ECMModel.Fk_FileFavorite_FileInfo" FromRole="FileInfo" ToRole="FileFavorite" />
           <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_FileInfo" FromRole="FileInfo" ToRole="FileImportant" />
           <NavigationProperty Name="Trashes" Relationship="ECMModel.Fk_Trash_FileInfo" FromRole="FileInfo" ToRole="Trash" />
-          <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
           <NavigationProperty Name="Directory" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="FileInfo" ToRole="Directory" />
+          <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
         </EntityType>
         <Association Name="Fk_FileInfo_Employee">
           <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
@@ -734,56 +696,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="FileShare">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="FileId" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
-          <Property Name="Authority" Type="Int32" Nullable="false" />
-          <Property Name="Id" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileShare_Employee" FromRole="FileShare" ToRole="Employee" />
-          <NavigationProperty Name="FileAuthority" Relationship="ECMModel.Fk_FileShare_FileAuthority" FromRole="FileShare" ToRole="FileAuthority" />
-          <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileShare" ToRole="FileInfo" />
-          <Property Name="Permission" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="FilePermission" Relationship="ECMModel.Fk_FileShare_FilePermission" FromRole="FileShare" ToRole="FilePermission" />
-        </EntityType>
-        <Association Name="Fk_FileShare_Employee">
-          <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileShare">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Fk_FileShare_FileAuthority">
-          <End Type="ECMModel.FileAuthority" Role="FileAuthority" Multiplicity="1" />
-          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FileAuthority">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileShare">
-              <PropertyRef Name="Authority" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Fk_FileShare_FileInfo">
-          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="1" />
-          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FileInfo">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileShare">
-              <PropertyRef Name="FileId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="FilePermission">
           <Key>
             <PropertyRef Name="Id" />
@@ -792,18 +704,6 @@
           <Property Name="Permission" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FilePermission" FromRole="FilePermission" ToRole="FileShare" />
         </EntityType>
-        <Association Name="Fk_FileShare_FilePermission">
-          <End Type="ECMModel.FilePermission" Role="FilePermission" Multiplicity="1" />
-          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FilePermission">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="FileShare">
-              <PropertyRef Name="Permission" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Directory">
           <Key>
             <PropertyRef Name="Id" />
@@ -839,6 +739,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="FileShare">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Permission" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileShare_Employee" FromRole="FileShare" ToRole="Employee" />
+          <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileShare" ToRole="FileInfo" />
+          <NavigationProperty Name="FilePermission" Relationship="ECMModel.Fk_FileShare_FilePermission" FromRole="FileShare" ToRole="FilePermission" />
+        </EntityType>
+        <Association Name="Fk_FileShare_Employee">
+          <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileShare">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileShare_FileInfo">
+          <End Type="ECMModel.FileInfo" Role="FileInfo" Multiplicity="1" />
+          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileShare">
+              <PropertyRef Name="FileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_FileShare_FilePermission">
+          <End Type="ECMModel.FilePermission" Role="FilePermission" Multiplicity="1" />
+          <End Type="ECMModel.FileShare" Role="FileShare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FilePermission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FileShare">
+              <PropertyRef Name="Permission" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -862,14 +810,6 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FileAuthorities">
-            <EntityTypeMapping TypeName="ECMModel.FileAuthority">
-              <MappingFragment StoreEntitySet="FileAuthority">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -941,17 +881,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FileShares">
-            <EntityTypeMapping TypeName="ECMModel.FileShare">
-              <MappingFragment StoreEntitySet="FileShare">
-                <ScalarProperty Name="Permission" ColumnName="Permission" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Authority" ColumnName="Authority" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="FileId" ColumnName="FileId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FilePermissions">
             <EntityTypeMapping TypeName="ECMModel.FilePermission">
               <MappingFragment StoreEntitySet="FilePermission">
@@ -966,6 +895,16 @@
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FileShares">
+            <EntityTypeMapping TypeName="ECMModel.FileShare">
+              <MappingFragment StoreEntitySet="FileShare">
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

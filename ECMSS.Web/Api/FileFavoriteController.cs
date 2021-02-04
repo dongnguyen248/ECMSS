@@ -1,5 +1,7 @@
-﻿using ECMSS.Services.Interfaces;
+﻿using ECMSS.DTO;
+using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -17,12 +19,24 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage AddOrRemoveFavoriteFile(int fileId)
+        public HttpResponseMessage AddOrRemoveFavoriteFile(FileFavoriteDTO fileFavorite)
         {
             try
             {
-                var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-                _fileFavoriteService.AddOrRemoveFavoriteFile(fileId, empId);
+                _fileFavoriteService.AddOrRemoveFavoriteFile(fileFavorite);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+        [HttpPost]
+        public HttpResponseMessage AddFavoriteFiles(IEnumerable<FileFavoriteDTO> fileFavorites)
+        {
+            try
+            {
+                _fileFavoriteService.AddFavoriteFiles(fileFavorites);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch

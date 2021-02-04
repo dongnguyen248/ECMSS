@@ -29,6 +29,11 @@ namespace ECMSS.Repositories
             return _dbSet.Add(entity);
         }
 
+        public IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities)
+        {
+            return _dbSet.AddRange(entities);
+        }
+
         public TEntity Delete(object id)
         {
             TEntity entity = _dbSet.Find(id);

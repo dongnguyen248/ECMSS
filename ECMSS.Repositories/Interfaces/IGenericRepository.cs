@@ -8,6 +8,8 @@ namespace ECMSS.Repositories.Interfaces
     {
         TEntity Add(TEntity entity);
 
+        IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
+
         TEntity Delete(object id);
 
         TEntity Delete(TEntity entity);

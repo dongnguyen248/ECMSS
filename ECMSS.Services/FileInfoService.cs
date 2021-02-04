@@ -56,7 +56,9 @@ namespace ECMSS.Services
         {
             string[] result = new string[3];
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
-            var isOwnerOrShared = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId || x.FileShares.Count(s => s.EmployeeId == empId) > 0)) != null;
+            var isOwnerOrShared = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId ||
+                                                                                    x.FileShares.Count(s => s.EmployeeId == empId &&
+                                                                                                       s.Permission == CommonConstants.EDIT_PERMISSION) > 0)) != null;
 
             string filePath = ConfigHelper.Read("FileUploadPath");
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";

@@ -6,7 +6,7 @@ namespace ECMSS.DTO
     {
         public int FileId { get; set; }
         public int EmployeeId { get; set; }
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public virtual EmployeeDTO Employee { get; set; }
         public virtual FileInfoDTO FileInfo { get; set; }

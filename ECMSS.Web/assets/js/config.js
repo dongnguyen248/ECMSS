@@ -7,6 +7,7 @@
         data: {
             epLiteId: getEpLiteUserFromInp()
         }, success: function (data) {
+            localStorage.clear();
             localStorage.setItem("token", data.token);
             localStorage.setItem("curEmp", JSON.stringify(data.curEmp));
             $(".top-right .username").text(data.curEmp.LastName + " " + data.curEmp.FirstName);
@@ -36,12 +37,14 @@ const router = new Router({
     mode: "history"
 });
 
-const api = axios.create({
+var api = axios.create({
     baseURL: "https://localhost:44372/api/",
-    timeout: 5000,
-    headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+    timeout: 5000
 });
+axios.defaults.headers.common = { "Authorization": "Bearer " + localStorage.getItem("token") }
 
 var configDT = {
     trashRoute: false
 };
+
+$.fn.dataTable.ext.errMode = "none";

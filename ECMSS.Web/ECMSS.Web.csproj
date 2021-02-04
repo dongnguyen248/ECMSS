@@ -193,6 +193,7 @@
     <Compile Include="Api\FileHistoryController.cs" />
     <Compile Include="Api\FileImportantController.cs" />
     <Compile Include="Api\FileInfoController.cs" />
+    <Compile Include="Api\FileShareController.cs" />
     <Compile Include="Api\TokenController.cs" />
     <Compile Include="Api\WSInfoController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />

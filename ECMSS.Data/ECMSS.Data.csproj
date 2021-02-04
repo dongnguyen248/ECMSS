@@ -77,9 +77,6 @@
     <Compile Include="Employee.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>
-    <Compile Include="FileAuthority.cs">
-      <DependentUpon>ECM.tt</DependentUpon>
-    </Compile>
     <Compile Include="FileFavorite.cs">
       <DependentUpon>ECM.tt</DependentUpon>
     </Compile>

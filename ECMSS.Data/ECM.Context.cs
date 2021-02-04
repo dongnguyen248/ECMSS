@@ -27,7 +27,6 @@ namespace ECMSS.Data
     
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<FileAuthority> FileAuthorities { get; set; }
         public virtual DbSet<FileStatus> FileStatus1 { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<FileInfo> FileInfoes { get; set; }
@@ -35,8 +34,8 @@ namespace ECMSS.Data
         public virtual DbSet<FileFavorite> FileFavorites { get; set; }
         public virtual DbSet<FileImportant> FileImportants { get; set; }
         public virtual DbSet<Trash> Trashes { get; set; }
-        public virtual DbSet<FileShare> FileShares { get; set; }
         public virtual DbSet<FilePermission> FilePermissions { get; set; }
         public virtual DbSet<Directory> Directories { get; set; }
+        public virtual DbSet<FileShare> FileShares { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ECMSS.Data;
+using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace ECMSS.Services
 {
@@ -19,12 +21,25 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public void AddOrRemoveFavoriteFile(int fileId, int employeeId)
+        public void AddFavoriteFiles(IEnumerable<FileFavoriteDTO> fileFavorites)
         {
-            FileFavorite fileFavorite = _fileFavoriteRepository.GetSingle(x => x.FileId == fileId && x.EmployeeId == employeeId);
+            try
+            {
+                _fileFavoriteRepository.AddRange(_mapper.Map<IEnumerable<FileFavorite>>(fileFavorites));
+                _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AddOrRemoveFavoriteFile(FileFavoriteDTO fileFavoriteDTO)
+        {
+            FileFavorite fileFavorite = _fileFavoriteRepository.GetSingle(x => x.FileId == fileFavoriteDTO.FileId && x.EmployeeId == fileFavoriteDTO.EmployeeId);
             if (fileFavorite == null)
             {
-                fileFavorite = new FileFavorite { Id = Guid.NewGuid(), FileId = fileId, EmployeeId = employeeId };
+                fileFavorite = new FileFavorite { Id = Guid.NewGuid(), FileId = fileFavoriteDTO.FileId, EmployeeId = fileFavoriteDTO.EmployeeId };
                 _fileFavoriteRepository.Add(fileFavorite);
             }
             else

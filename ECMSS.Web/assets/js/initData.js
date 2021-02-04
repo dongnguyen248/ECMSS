@@ -28,6 +28,7 @@ function initDataTable(url) {
         ajax: {
             url: url,
             dataSrc: "fileInfos",
+            async: true,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", "Bearer " + localStorage.token);
             }
@@ -40,7 +41,6 @@ function initDataTable(url) {
                     var importantClass = row["IsImportant"] ? "backgroundImp" : "";
                     if (configDT.trashRoute) {
                         configDT.trashRoute = !configDT.trashRoute;
-
                         return String.format("<div class='contentTitle'>" +
                             "<div class='checkbox'>" +
                             "<label>" +
@@ -63,7 +63,7 @@ function initDataTable(url) {
                         "</label>" +
                         "</div>" +
                         "<a class='important {0}' onclick='addImportant(this, {1})'><i class='fas fa-info'></i></a>" +
-                        "<a class='addfavorite' onclick='addFavorite(this, {1})'>" +
+                        "<a class='addfavorite' onclick='addOrRemoveFavorite(this, {1})'>" +
                         "<img src='{2}' alt='icon_start' />" +
                         "</a>" +
                         "<a onclick='openContent({1})' class='contentname'>{3}</a>" +
@@ -156,9 +156,16 @@ async function addImportant(obj, fileId) {
     }
 }
 
-async function addFavorite(obj, fileId) {
+async function addOrRemoveFavorite(obj, fileId) {
     try {
-        await api.post("FileFavorite/AddOrRemoveFavoriteFile?fileId=" + fileId);
+        var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+
+        var fileFavorite = {
+            FileId: fileId,
+            EmployeeId: curEmp.Id
+        };
+
+        await api.post("FileFavorite/AddOrRemoveFavoriteFile", fileFavorite);
         var img = obj.children;
         var src =
             $(img).attr("src") === "/assets/imgs/ico_fav.png"
@@ -296,23 +303,84 @@ $("#tab3C > a > img").click(async function () {
 });
 
 $(document).on("click", "#btnAddNewFile", async function () {
-    var listFileSelected = $("#inputhidden").children();
+    var listFileSelected = $("#inputhidden").children().toArray();
+    var isFavorite = $("#chktype:checked").length > 0
     var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+    var shareReads = $("#bodysub2 table tr input").toArray();
+    var shareEdits = $("#bodysub1 table tr input").toArray();
+
     if ($(listFileSelected).length == 0) {
         swal("Failed!", "No file has been selected yet!", "error");
     } else {
-        //var result = await addFileInfo(listFileSelected, curEmp);
-        var isFavorite = $("#chktype:checked").length > 0
-        console.log(isFavorite);
+        var fileInfos = await addFileInfo(listFileSelected, curEmp);
+        if (isFavorite) {
+            await addFavorites(fileInfos, curEmp.Id);
+        }
+        if (shareReads.length > 0 || shareEdits.length > 0) {
+            await shareFile(fileInfos, shareReads, shareEdits);
+        }
+        resetFileInfoModal();
     }
 });
 
+async function shareFile(fileInfos, shareReads, shareEdits) {
+    try {
+        var fileShares = [];
+        for (var i = 0; i < fileInfos.length; i++) {
+            if (shareReads.length > 0) {
+                for (var r = 0; r < shareReads.length; r++) {
+                    var fileShare = {
+                        FileId: fileInfos[i].Id,
+                        EmployeeId: $(shareReads[r]).attr("data-emp-id"),
+                        Permission: 1
+                    }
+                    fileShares.push(fileShare);
+                }
+            }
+            if (shareEdits.length > 0) {
+                for (var r = 0; r < shareEdits.length; r++) {
+                    var fileShare = {
+                        FileId: fileInfos[i].Id,
+                        EmployeeId: $(shareEdits[r]).attr("data-emp-id"),
+                        Permission: 2
+                    }
+                    fileShares.push(fileShare);
+                }
+            }
+        }
+        await api.post("FileShare/AddFileShares", fileShares);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+async function addFavorites(fileInfos, empId) {
+    try {
+        var fileFavorites = [];
+        for (var i = 0; i < fileInfos.length; i++) {
+            var fileFavorite = {
+                FileId: fileInfos[i].Id,
+                EmployeeId: empId
+            };
+            fileFavorites.push(fileFavorite);
+        }
+        await api.post("FileFavorite/AddFavoriteFiles", fileFavorites);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
 async function addFileInfo(listFileSelected, curEmp) {
     var path = $("#folderPath").val();
+    var elems = listFileSelected;
     path = path.substring(path.indexOf(">") + 1).trim();
     path = path.replaceAll(">", "/");
     var dir = await getDirFromPath(path);
-    $(listFileSelected).each(async function (index, value) {
+    var result = [];
+    for (var i = 0; i < elems.length; i++) {
+        var value = elems[i];
         var fileInfo = {
             FileData: await fileToByteArray($(value).prop("files")[0]),
             Name: $(value).val().split(/(\\|\/)/g).pop(),
@@ -324,11 +392,19 @@ async function addFileInfo(listFileSelected, curEmp) {
             var response = await api.post("FileInfo/AddNewFile", fileInfo);
             swal("Success!", "Create content successfully!", "success");
             $("#addNew").modal("hide");
-            return response.data;
+            result.push(response.data);
         } catch (error) {
             swal("Failed!", "add file failed, check your input and try again!", "error");
         }
-    });
+    }
+    return result;
+}
+
+function resetFileInfoModal() {
+    $("#inputhidden").children().remove();
+    $(".listFileImport .list").children().remove();
+    $(".listFileImport").css("display", "none");
+    $("#folderPath").text("PoscoVST");
 }
 
 async function getDirFromPath(path) {
@@ -348,8 +424,8 @@ function fileToByteArray(file) {
             reader.readAsArrayBuffer(file);
             reader.onloadend = (evt) => {
                 if (evt.target.readyState == FileReader.DONE) {
-                    var arrayBuffer = evt.target.result,
-                        array = new Uint8Array(arrayBuffer);
+                    var arrayBuffer = evt.target.result;
+                    var array = new Uint8Array(arrayBuffer);
                     for (byte of array) {
                         fileByteArray.push(byte);
                     }
