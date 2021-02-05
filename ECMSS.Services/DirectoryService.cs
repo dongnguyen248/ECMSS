@@ -16,6 +16,7 @@ namespace ECMSS.Services
     {
         private readonly IGenericRepository<Directory> _directoryRepository;
         private readonly IGenericRepository<Employee> _employeeRepository;
+        private readonly IGenericRepository<FileInfo> _fileInfoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -24,6 +25,7 @@ namespace ECMSS.Services
             _unitOfWork = unitOfWork;
             _directoryRepository = _unitOfWork.DirectoryRepository;
             _employeeRepository = _unitOfWork.EmployeeRepository;
+            _fileInfoRepository = _unitOfWork.FileInfoRepository;
             _mapper = mapper;
         }
 
@@ -85,7 +87,11 @@ namespace ECMSS.Services
                     throw new Exception("Invalid path or does not have permission to delete this directory");
                 }
                 string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{path}/";
-                _directoryRepository.Delete(dir.Id);
+
+                var filesInDir = _fileInfoRepository.GetMany(x => x.DirectoryId == dir.Id);
+                _fileInfoRepository.RemoveRange(filesInDir);
+
+                _directoryRepository.Remove(dir.Id);
                 FileHelper.DeleteFolder(fullPath);
                 _unitOfWork.Commit();
             }

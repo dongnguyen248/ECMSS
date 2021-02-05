@@ -221,7 +221,7 @@ async function openContent(fileId) {
 }
 
 function deleteFile() {
-    var selectedFile = $(".checkbox input:checked");
+    var selectedFile = $(".checkbox input:checked").toArray();
     if (selectedFile.length > 0) {
         swal({
             title: "Are you sure?",
@@ -230,12 +230,20 @@ function deleteFile() {
             buttons: true,
             dangerMode: true,
         })
-            .then(function (willDelete) {
+            .then(async function (willDelete) {
                 if (willDelete) {
-                    $(selectedFile).each(function (index, value) {
-                        //Code
+                    fileIds = [];
+                    for (var i = 0; i < selectedFile.length; i++) {
+                        fileIds.push(parseInt($(selectedFile[i]).val()));
+                    }
+                    try {
+                        await api.post("Trash/AddFilesToTrash", fileIds);
+                        initTreeFolder();
+                        router.navigateTo("/");
                         swal("Poof! Your imaginary file has been deleted!", { icon: "success" });
-                    });
+                    } catch (error) {
+                        swal("Failed!", "Delete content failed, try again later!", "error");
+                    }
                 } else {
                     swal("You file is safe!");
                 }
@@ -374,6 +382,7 @@ async function addFavorites(fileInfos, empId) {
 
 async function addFileInfo(listFileSelected, curEmp) {
     var path = $("#folderPath").val();
+    var isSuccess = false;
     var elems = listFileSelected;
     path = path.substring(path.indexOf(">") + 1).trim();
     path = path.replaceAll(">", "/");
@@ -390,14 +399,19 @@ async function addFileInfo(listFileSelected, curEmp) {
         }
         try {
             var response = await api.post("FileInfo/AddNewFile", fileInfo);
-            swal("Success!", "Create content successfully!", "success");
-            $("#addNew").modal("hide");
             result.push(response.data);
+            isSuccess = true
         } catch (error) {
-            swal("Failed!", "add file failed, check your input and try again!", "error");
+            var isSuccess = false;
         }
     }
-    return result;
+    if (isSuccess) {
+        swal("Success!", "Create content successfully!", "success");
+        $("#addNew").modal("hide");
+        return result;
+    }
+    swal("Failed!", "add file failed, check your input and try again!", "error");
+    return null;
 }
 
 function resetFileInfoModal() {

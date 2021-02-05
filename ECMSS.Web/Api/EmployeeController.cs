@@ -21,5 +21,13 @@ namespace ECMSS.Web.Api
         {
             return _employeeService.GetEmployeesByName(empName);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public EmployeeDTO GetEmployeeFromToken()
+        {
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            return _employeeService.GetEmployeeById(empId);
+        }
     }
 }

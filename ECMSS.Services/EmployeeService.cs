@@ -25,6 +25,11 @@ namespace ECMSS.Services
             return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingle(e => e.EpLiteId == epLiteId));
         }
 
+        public EmployeeDTO GetEmployeeById(int empId)
+        {
+            return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingleById(empId));
+        }
+
         public IEnumerable<EmployeeDTO> GetEmployeesByName(string empName)
         {
             return _mapper.Map<IEnumerable<EmployeeDTO>>(_employeeRepository.GetMany(e => (e.FirstName + " " + e.LastName).Contains(empName), x => x.Department));

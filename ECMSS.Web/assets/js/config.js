@@ -1,16 +1,15 @@
 ﻿"use strict";
 
 (function () {
+    localStorage.setItem("token", getTokenFromInp());
+
     $.ajax({
         type: "GET",
-        url: "/api/Token/GetTokenV2",
-        data: {
-            epLiteId: getEpLiteUserFromInp()
-        }, success: function (data) {
-            localStorage.clear();
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("curEmp", JSON.stringify(data.curEmp));
-            $(".top-right .username").text(data.curEmp.LastName + " " + data.curEmp.FirstName);
+        url: "/api/Employee/GetEmployeeFromToken",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        success: function (data) {
+            localStorage.setItem("curEmp", JSON.stringify(data));
+            $(".top-right .username").text(data.LastName + " " + data.FirstName);
         }, error: function () {
             swal("Failed!", "Validation error, you need access via EpLite", "error");
             window.stop();
@@ -18,7 +17,7 @@
     });
 })();
 
-function getEpLiteUserFromInp() {
+function getTokenFromInp() {
     var token = $("#txtToken").val();
     $("#txtToken").remove();
     return token;
@@ -37,11 +36,11 @@ const router = new Router({
     mode: "history"
 });
 
-var api = axios.create({
+const api = axios.create({
     baseURL: "https://localhost:44372/api/",
-    timeout: 5000
+    timeout: 5000,
+    headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
 });
-axios.defaults.headers.common = { "Authorization": "Bearer " + localStorage.getItem("token") }
 
 var configDT = {
     trashRoute: false

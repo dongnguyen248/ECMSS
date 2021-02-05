@@ -195,7 +195,7 @@
     <Compile Include="Api\FileInfoController.cs" />
     <Compile Include="Api\FileShareController.cs" />
     <Compile Include="Api\TokenController.cs" />
-    <Compile Include="Api\WSInfoController.cs" />
+    <Compile Include="Api\TrashController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

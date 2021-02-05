@@ -27,17 +27,5 @@ namespace ECMSS.Web.Api
             }
             throw new HttpResponseException(HttpStatusCode.Unauthorized);
         }
-
-        [HttpGet]
-        public IHttpActionResult GetTokenV2(string epLiteId)
-        {
-            var curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
-            if (curEmp != null)
-            {
-                string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id, EXPIRE_MINUTES);
-                return Ok(new { token, curEmp });
-            }
-            throw new HttpResponseException(HttpStatusCode.Unauthorized);
-        }
     }
 }

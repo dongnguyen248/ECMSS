@@ -142,8 +142,8 @@ namespace ECMSS.Services
                 var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
                 FileHistoryDTO fileHistory = new FileHistoryDTO
                 {
-                    FileId = fileInfo.Id,
-                    Modifier = fileInfo.Owner,
+                    FileId = result.Id,
+                    Modifier = result.Owner,
                     Size = fileInfo.FileData.Length / 1024,
                     StatusId = 1,
                     Version = "0.1"

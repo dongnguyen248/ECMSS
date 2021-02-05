@@ -44,7 +44,7 @@ namespace ECMSS.Services
             }
             else
             {
-                _fileFavoriteRepository.Delete(fileFavorite);
+                _fileFavoriteRepository.Remove(fileFavorite);
             }
             _unitOfWork.Commit();
         }

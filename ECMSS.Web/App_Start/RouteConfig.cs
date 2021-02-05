@@ -11,8 +11,8 @@ namespace ECMSS.Web
 
             routes.MapRoute(
               name: "AuthGate",
-              url: "AuthGate/{empId}",
-              defaults: new { controller = "Home", action = "AuthGate", empId = UrlParameter.Optional }
+              url: "AuthGate/{token}",
+              defaults: new { controller = "Home", action = "AuthGate", token = UrlParameter.Optional }
            );
 
             routes.MapRoute(

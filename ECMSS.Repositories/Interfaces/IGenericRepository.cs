@@ -10,9 +10,11 @@ namespace ECMSS.Repositories.Interfaces
 
         IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
 
-        TEntity Delete(object id);
+        TEntity Remove(object id);
 
-        TEntity Delete(TEntity entity);
+        TEntity Remove(TEntity entity);
+
+        IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities);
 
         void Update(TEntity entity);
 

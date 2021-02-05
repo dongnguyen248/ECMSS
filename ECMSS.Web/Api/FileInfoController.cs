@@ -113,6 +113,7 @@ namespace ECMSS.Web.Api
 
         private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
         {
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
             return fileInfos.Select(x => new FileInfoViewModel
             {
@@ -124,8 +125,8 @@ namespace ECMSS.Web.Api
                 SecurityLevel = "",
                 Version = GetFileHistory(x).Version,
                 ModifiedDate = GetFileHistory(x).ModifiedDate,
-                IsFavorite = x.FileFavorites.Count > 0,
-                IsImportant = x.FileImportants.Count > 0
+                IsFavorite = x.FileFavorites.Where(f => f.EmployeeId == empId).Count() > 0,
+                IsImportant = x.FileImportants.Where(i => i.EmployeeId == empId).Count() > 0
             });
         }
 

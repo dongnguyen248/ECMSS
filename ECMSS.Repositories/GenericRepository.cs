@@ -34,19 +34,31 @@ namespace ECMSS.Repositories
             return _dbSet.AddRange(entities);
         }
 
-        public TEntity Delete(object id)
+        public TEntity Remove(object id)
         {
             TEntity entity = _dbSet.Find(id);
             return _dbSet.Remove(entity);
         }
 
-        public TEntity Delete(TEntity entity)
+        public TEntity Remove(TEntity entity)
         {
             if (_dbContext.Entry(entity).State == EntityState.Detached)
             {
                 _dbSet.Attach(entity);
             }
             return _dbSet.Remove(entity);
+        }
+
+        public IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                if (_dbContext.Entry(entity).State == EntityState.Detached)
+                {
+                    _dbSet.Attach(entity);
+                }
+            }
+            return _dbSet.RemoveRange(entities);
         }
 
         public void Update(TEntity entity)

@@ -29,7 +29,7 @@ namespace ECMSS.Services
             }
             else
             {
-                _fileImportantRepository.Delete(fileImportant);
+                _fileImportantRepository.Remove(fileImportant);
             }
             _unitOfWork.Commit();
         }

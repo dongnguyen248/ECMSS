@@ -40,31 +40,6 @@ $(document).ready(function () {
     });
 });
 
-$(document).ajaxStop(function () {
-    $(".contentname").each(function () {
-        var backgroundIcon = "";
-        var text = $(this).text();
-        var fileExtension = text.split(".").pop().trim();
-        if (fileExtension === "doc" || fileExtension === "docx") {
-            backgroundIcon = "/assets/imgs/ico_doc_on.png";
-        } else if (fileExtension === "xls" || fileExtension === "xlsx") {
-            backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
-        } else if (fileExtension === "ppt" || fileExtension === "pptx") {
-            backgroundIcon = "/assets/imgs/ico_ppt_on.png";
-        } else if (
-            fileExtension === "jpg" ||
-            fileExtension === "gif" ||
-            fileExtension === "jpg" ||
-            fileExtension === "jpeg"
-        ) {
-            backgroundIcon = "/assets/imgs/ico_img_on.png";
-        } else {
-            backgroundIcon = "/assets/imgs/ico_pdf_on.png";
-        }
-        $(this).css("background-image", "url(" + backgroundIcon + ")");
-    });
-});
-
 function addnewclass(id) {
     var checkbox = $(".positionBox input[data-emp-id=" + id + "]");
     var checked = checkbox.prop("checked");
@@ -358,3 +333,28 @@ function filterFile(type = "") {
     });
     $("#tbMainDefault").DataTable().draw();
 }
+
+$('#tbMainDefault').on('draw.dt', function () {
+    $(".contentname").each(function () {
+        var backgroundIcon = "";
+        var text = $(this).text();
+        var fileExtension = text.split(".").pop().trim();
+        if (fileExtension === "doc" || fileExtension === "docx") {
+            backgroundIcon = "/assets/imgs/ico_doc_on.png";
+        } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+            backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
+        } else if (fileExtension === "ppt" || fileExtension === "pptx") {
+            backgroundIcon = "/assets/imgs/ico_ppt_on.png";
+        } else if (
+            fileExtension === "jpg" ||
+            fileExtension === "gif" ||
+            fileExtension === "jpg" ||
+            fileExtension === "jpeg"
+        ) {
+            backgroundIcon = "/assets/imgs/ico_img_on.png";
+        } else {
+            backgroundIcon = "/assets/imgs/ico_pdf_on.png";
+        }
+        $(this).css("background-image", "url(" + backgroundIcon + ")");
+    });
+});

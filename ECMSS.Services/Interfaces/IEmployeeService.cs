@@ -7,6 +7,8 @@ namespace ECMSS.Services.Interfaces
     {
         EmployeeDTO GetEmployeeByEpLiteId(string epLiteId);
 
+        EmployeeDTO GetEmployeeById(int empId);
+
         IEnumerable<EmployeeDTO> GetEmployeesByName(string empName);
     }
 }
