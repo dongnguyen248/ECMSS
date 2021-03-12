@@ -66,7 +66,6 @@ namespace ECMSS.Web.Extensions.Auth
                 empInfo.Add("EpLiteId", actionContext.Request.Headers.Authorization.Parameter);
                 empInfo.Add("Id", GetPrincipal(requestToken).Claims.FirstOrDefault(m => m.Type.Contains("nameidentifier")).Value);
             }
-
             return empInfo;
         }
     }

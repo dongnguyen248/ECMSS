@@ -6,6 +6,7 @@ using ECMSS.Services.Interfaces;
 using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -60,7 +61,16 @@ namespace ECMSS.Services
                                                                                     x.FileShares.Count(s => s.EmployeeId == empId &&
                                                                                                        s.Permission == CommonConstants.EDIT_PERMISSION) > 0)) != null;
 
-            string filePath = ConfigHelper.Read("FileUploadPath");
+            string filePath = string.Empty;
+            if (Debugger.IsAttached)
+            {
+                filePath = ConfigHelper.Read("FileUploadPath");
+            }
+            else
+            {
+                filePath = "http://172.25.216.127:8081/TempSS/";
+            }
+
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
             result[0] = $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][true]";

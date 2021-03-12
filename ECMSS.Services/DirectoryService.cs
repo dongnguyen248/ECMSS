@@ -89,8 +89,10 @@ namespace ECMSS.Services
                 string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{path}/";
 
                 var filesInDir = _fileInfoRepository.GetMany(x => x.DirectoryId == dir.Id);
-                _fileInfoRepository.RemoveRange(filesInDir);
-
+                if (filesInDir.Any())
+                {
+                    _fileInfoRepository.RemoveRange(filesInDir);
+                }
                 _directoryRepository.Remove(dir.Id);
                 FileHelper.DeleteFolder(fullPath);
                 _unitOfWork.Commit();

@@ -1179,7 +1179,7 @@ a {
         max-width: 311px !important;
     }
 
-    .tabcontent img {
+    .tabcontent > img {
         position: relative;
         bottom: 2px;
         right: 4px;
@@ -1214,6 +1214,7 @@ a {
 }
 
 .maxH {
+    overflow-y: auto;
     height: 320px;
     border: 1px solid #ccc;
     background: rgb(255, 255, 255);
@@ -1256,8 +1257,11 @@ a {
 
 .PartR {
     width: 345px;
-    text-align: center;
 }
+
+    .PartR .sub2 {
+        text-align: center;
+    }
 
     .PartR .sub1 {
         border: 1px solid #ccd0d3;
@@ -1271,6 +1275,10 @@ a {
     .PartR .sub2,
     .PartR .sub4 {
         margin-bottom: 8px;
+    }
+
+    .PartR table {
+        margin-left: 8px;
     }
 
 .subheader {
@@ -1766,7 +1774,6 @@ ol {
         margin-left: 0.04em;
     }
 
-.checkbox label input[type="checkbox"],
 .radio label input[type="radio"] {
     display: none;
 }
@@ -1872,5 +1879,39 @@ ol {
 }
 
 .hidelement {
+    display: none;
+}
+
+.bdr0 {
+    padding-right: 5px;
+}
+
+.bdr1 {
+    padding-right: 5px;
+}
+
+.groupUser {
+    display: none;
+}
+
+.activeUser {
+    display: table-row;
+}
+
+#organList .name-dept > :first-child {
+    padding-right: 5px;
+}
+
+#tab3C a img {
+    top: -2px;
+    position: relative;
+    left: -4px;
+}
+
+.dept-list label {
+    margin-bottom: unset;
+}
+
+table#tbMainDefault input[type="checkbox"] {
     display: none;
 }

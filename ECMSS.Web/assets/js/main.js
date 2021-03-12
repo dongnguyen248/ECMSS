@@ -15,9 +15,11 @@ $(document).ready(function () {
     $("#showAllFolder").click(function () {
         $(".listFolder").slideToggle("fast");
     });
+
     $("#showFolder").click(function () {
         $(".listFolder1").slideToggle("fast");
     });
+
     //config tabs on homepage
     $("#tabs li a:not(:first)").addClass("inactive");
     $(".tab_on").hide();
@@ -40,13 +42,13 @@ $(document).ready(function () {
     });
 });
 
-function addnewclass(id) {
+function addNewClass(id) {
     var checkbox = $(".positionBox input[data-emp-id=" + id + "]");
     var checked = checkbox.prop("checked");
     if (checked) {
-        checkbox.parent().parent().addClass("checked");
+        checkbox.closest("tr").addClass("checked");
     } else {
-        checkbox.parent().parent().removeClass("checked");
+        checkbox.closest("tr").removeClass("checked");
     }
 }
 
@@ -63,21 +65,17 @@ function createnew() {
 // btn move left move right
 var $bottom_each = $(".safe_btn_box a");
 var $bottom_select = $(".subsecondL");
+
 $bottom_each.click(function () {
     $bottom_each.removeClass("active");
     $(this).addClass("active");
 });
+
 $bottom_select.click(function () {
     $bottom_select.removeClass("active");
     $(this).addClass("active");
 });
 
-function moveToRight(id) {
-    $("#userList .checked").appendTo("#" + id + " table tbody");
-}
-function moveToLeft(id) {
-    $("#" + id + " .checked").appendTo("#userList");
-}
 $("#listAllcheck").click(function () {
     var checkbox = $("#userList input:checkbox")
         .not(this)
@@ -95,11 +93,13 @@ function deleteAllSelect(id) {
 }
 
 function moveToUp(idFrom, idTo) {
-    $("#" + idFrom + " .checked").appendTo("#" + idTo);
+    $("#" + idFrom + " .checked").appendTo("#" + idTo + " table tbody");
 }
+
 function moveToDown(idFrom, idTo) {
-    $("#" + idFrom + " .checked").appendTo("#" + idTo);
+    $("#" + idFrom + " .checked").appendTo("#" + idTo + " table tbody");
 }
+
 //open folder and Change image folder
 $(document).on("click", ".sidebar-menu li", function (e) {
     e.stopPropagation();
@@ -107,9 +107,7 @@ $(document).on("click", ".sidebar-menu li", function (e) {
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
-        $(
-            '<span onclick=selectFolder("#folderPath",".sidebar-menu") class="btnMove" id="btnGetPath" >Select <i class="fas fa-angle-right"></i></span>'
-        ).insertAfter($(this).children("a"));
+        $("<span onclick=selectFolder('#folderPath','.sidebar-menu') class='btnMove' id='btnGetPath' >Select <i class='fas fa-angle-right'></i></span>").insertAfter($(this).children("a"));
     } else {
         $(this)
             .children()
@@ -345,12 +343,7 @@ $('#tbMainDefault').on('draw.dt', function () {
             backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
         } else if (fileExtension === "ppt" || fileExtension === "pptx") {
             backgroundIcon = "/assets/imgs/ico_ppt_on.png";
-        } else if (
-            fileExtension === "jpg" ||
-            fileExtension === "gif" ||
-            fileExtension === "jpg" ||
-            fileExtension === "jpeg"
-        ) {
+        } else if (fileExtension === "jpg" || fileExtension === "gif" || fileExtension === "jpg" || fileExtension === "jpeg") {
             backgroundIcon = "/assets/imgs/ico_img_on.png";
         } else {
             backgroundIcon = "/assets/imgs/ico_pdf_on.png";
@@ -358,3 +351,98 @@ $('#tbMainDefault').on('draw.dt', function () {
         $(this).css("background-image", "url(" + backgroundIcon + ")");
     });
 });
+
+function changeActiveStatus(obj) {
+    var isChecked = $(obj).prop("checked");
+    if (isChecked) {
+        $(obj).closest("tr").addClass("checked");
+    } else {
+        $(obj).closest("tr").removeClass("checked");
+    }
+}
+
+function resetFileInfoModal() {
+    $("#inputhidden").children().remove();
+    $(".listFileImport .list").children().remove();
+    $(".listFileImport").css("display", "none");
+    $("#folderPath").text("PoscoVST");
+}
+
+function fileToByteArray(file) {
+    return new Promise((resolve, reject) => {
+        try {
+            var reader = new FileReader();
+            var fileByteArray = [];
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = (evt) => {
+                if (evt.target.readyState == FileReader.DONE) {
+                    var arrayBuffer = evt.target.result;
+                    var array = new Uint8Array(arrayBuffer);
+                    for (byte of array) {
+                        fileByteArray.push(byte);
+                    }
+                }
+                resolve(fileByteArray);
+            }
+        }
+        catch (error) {
+            reject(error);
+        }
+    })
+}
+
+function selectEmpsInDept(fromId, toId) {
+    var fromElem = $("tr[data-dept-id='" + fromId + "']");
+    var toElem = $("tr[data-dept-id='" + toId + "']");
+    var empElems = fromElem.nextUntil(toElem);
+    var isRootChecked = fromElem.find("input:checkbox").prop("checked");
+
+    $(empElems).each(function (index, value) {
+        var elem = $(empElems[index]).find("input:checkbox");
+        elem.prop("checked", isRootChecked);
+        elem.change();
+    });
+}
+
+function moveToLeft(id) {
+    var tabActive = $("#tabs2").children().children(".active").attr("id");
+    if (tabActive == "tab3") {
+        var listChecked = $("#" + id + " .checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).find("input[data-emp-id]").attr("data-emp-id");
+            if ($("#userList").find("input[data-emp-id='" + empId + "']").length === 0) {
+                $(value).appendTo("#userList");
+            }
+        });
+    } else if (tabActive == "tab4") {
+        $("#" + id + " .checked").remove();
+    }
+}
+
+function moveToRight(id) {
+    var tabActive = $("#tabs2").children().children(".active").attr("id");
+    var tblWrap = $("#" + id + " table tbody");
+    if (tabActive == "tab3") {
+        var listChecked = $("#userList .checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).find("input[data-emp-id]").attr("data-emp-id");
+            if ($("#PartR").find("input[data-emp-id='" + empId + "']").length === 0) {
+                $(value).appendTo(tblWrap);
+            }
+        });
+    } else if (tabActive == "tab4") {
+        var listChecked = $("#organList tr.checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).attr("data-emp-id");
+            if ($("#PartR").find("input[data-emp-id='" + empId + "']").length === 0) {
+                var empName = $(value).find("div.d_tooltip").text();
+                var newElem = String.format("<tr class='checked'>" +
+                    "<td>" +
+                    "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange='addNewClass({0})' checked><span> {1}</span>" +
+                    "</td>" +
+                    "</tr>", empId, empName);
+                $(newElem).clone().appendTo(tblWrap);
+            }
+        });
+    }
+}

@@ -30,5 +30,19 @@ namespace ECMSS.Web.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        [HttpPost]
+        public HttpResponseMessage CleanTrash(int[] fileIds)
+        {
+            try
+            {
+                _trashService.CleanTrash(fileIds);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace ECMSS.Services.Interfaces
         EmployeeDTO GetEmployeeById(int empId);
 
         IEnumerable<EmployeeDTO> GetEmployeesByName(string empName);
+
+        IEnumerable<EmployeeDTO> GetEmployeesByDeptId(int deptId);
     }
 }

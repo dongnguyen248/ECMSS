@@ -1,4 +1,6 @@
-﻿"use strict";
+﻿(function () {
+    initDepartments();
+})();
 
 async function initTreeFolder() {
     try {
@@ -17,6 +19,10 @@ async function initTreeFolder() {
         console.log(error);
     }
 };
+
+function isTrashUrl() {
+    return window.location.pathname === "/trash-content";
+}
 
 function initDataTable(url) {
     $("#tbMainDefault").DataTable({
@@ -237,9 +243,12 @@ function deleteFile() {
                         fileIds.push(parseInt($(selectedFile[i]).val()));
                     }
                     try {
-                        await api.post("Trash/AddFilesToTrash", fileIds);
-                        initTreeFolder();
-                        router.navigateTo("/");
+                        if (isTrashUrl()) {
+                            await api.post("Trash/CleanTrash", fileIds);
+                        } else {
+                            await api.post("Trash/AddFilesToTrash", fileIds);
+                        }
+                        router.navigateTo(window.location.pathname);
                         swal("Poof! Your imaginary file has been deleted!", { icon: "success" });
                     } catch (error) {
                         swal("Failed!", "Delete content failed, try again later!", "error");
@@ -287,29 +296,6 @@ function deleteFolder() {
     }
 }
 
-$("#tab3C > a > img").click(async function () {
-    var empName = $("#tab3C > input[name='empName']").val();
-    try {
-        var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", empName));
-        var emps = response.data;
-        $(emps).each(function (index, value) {
-            var checkElem = $(".positionSearch").find("table input[data-emp-id='" + value.Id + "']").length > 0;
-            if (!checkElem) {
-                $("#userList").append(
-                    String.format("<tr>" +
-                        "<td>" +
-                        "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange=\"addnewclass({0})\" />" +
-                        "<span> {1} {2} [{3}]</span>" +
-                        "</td>" +
-                        "</tr>", value.Id, value.LastName, value.FirstName, value.Department.Name)
-                );
-            }
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});
-
 $(document).on("click", "#btnAddNewFile", async function () {
     var listFileSelected = $("#inputhidden").children().toArray();
     var isFavorite = $("#chktype:checked").length > 0
@@ -327,6 +313,7 @@ $(document).on("click", "#btnAddNewFile", async function () {
         if (shareReads.length > 0 || shareEdits.length > 0) {
             await shareFile(fileInfos, shareReads, shareEdits);
         }
+        router.navigateTo(window.location.pathname);
         resetFileInfoModal();
     }
 });
@@ -414,13 +401,6 @@ async function addFileInfo(listFileSelected, curEmp) {
     return null;
 }
 
-function resetFileInfoModal() {
-    $("#inputhidden").children().remove();
-    $(".listFileImport .list").children().remove();
-    $(".listFileImport").css("display", "none");
-    $("#folderPath").text("PoscoVST");
-}
-
 async function getDirFromPath(path) {
     try {
         var response = await api.get(String.format("Directory/GetDirectoryFromPath?path={0}", path));
@@ -430,25 +410,82 @@ async function getDirFromPath(path) {
     }
 }
 
-function fileToByteArray(file) {
-    return new Promise((resolve, reject) => {
-        try {
-            var reader = new FileReader();
-            var fileByteArray = [];
-            reader.readAsArrayBuffer(file);
-            reader.onloadend = (evt) => {
-                if (evt.target.readyState == FileReader.DONE) {
-                    var arrayBuffer = evt.target.result;
-                    var array = new Uint8Array(arrayBuffer);
-                    for (byte of array) {
-                        fileByteArray.push(byte);
-                    }
-                }
-                resolve(fileByteArray);
+$("#tab3C > a > img").click(async function () {
+    var empName = $("#tab3C > input[name='empName']").val();
+    try {
+        var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", empName));
+        var emps = response.data;
+        $(emps).each(function (index, value) {
+            var checkElem = $(".positionSearch").find("table input[data-emp-id='" + value.Id + "']").length > 0;
+            if (!checkElem) {
+                $("#userList").append(
+                    String.format("<tr>" +
+                        "<td>" +
+                        "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange=\"addNewClass({0})\" />" +
+                        "<span> {1} {2} [{3}]</span>" +
+                        "</td>" +
+                        "</tr>", value.Id, value.LastName, value.FirstName, value.Department.Name)
+                );
             }
-        }
-        catch (error) {
-            reject(error);
-        }
-    })
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+async function initDepartments() {
+    try {
+        var response = await api.get("Department/GetDepartments");
+        var depts = response.data;
+        $(depts).each(function (index, value) {
+            var nextElemId = index + 1 <= depts.length - 1 ? depts[index + 1].Id : null;
+            $("#organList").append(String.format(
+                "<tr class='dept-list' data-dept-id='{0}'>" +
+                "<td class= 'bdr0'>" +
+                "<div>" +
+                "<label>" +
+                "<input type='checkbox' onclick='selectEmpsInDept({0}, {2})'>" +
+                "</label>" +
+                "</div>" +
+                "</td>" +
+                "<td class='name-dept'>" +
+                "<strong>{1}</strong>" +
+                "<a href='#' onclick='showUser({0})'>" +
+                "<img src='/assets/imgs/btn_show_peo.gif' />" +
+                "</a>" +
+                "</td>" +
+                "</tr>", value.Id, value.Name, nextElemId
+            ));
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function showUser(deptId) {
+    try {
+        var response = await api.get("Employee/GetEmployeesByDeptId?deptId=" + deptId);
+        var emps = response.data;
+        $(emps).each(function (index, value) {
+            var elem = $("#organList").find("tr[data-emp-id='" + value.Id + "']");
+            if (elem.length === 0) {
+                $("#organList tr[data-dept-id='" + deptId + "']").after(String.format("<tr class='groupUser activeUser' data-emp-id='{0}'>" +
+                    "<td class='bdr1'>" +
+                    "<div>" +
+                    "<label>" +
+                    "<input type='checkbox' onchange='changeActiveStatus(this)'>" +
+                    "</label>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='d_tooltip'>{1}</div>" +
+                    "</td>" +
+                    "</tr>", value.Id, String.format("{0} {1}", value.LastName, value.FirstName)));
+            } else {
+                elem.toggleClass("activeUser");
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }

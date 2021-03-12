@@ -28,7 +28,6 @@ window.addEventListener("load", function () {
     });
 
     router.add("/trash-content", function () {
-        configDT.trashRoute = true;
         $("#tbMainDefault").DataTable().ajax.url("api/FileInfo/GetTrashContents").load();
     });
 

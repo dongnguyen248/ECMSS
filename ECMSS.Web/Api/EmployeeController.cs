@@ -29,5 +29,11 @@ namespace ECMSS.Web.Api
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _employeeService.GetEmployeeById(empId);
         }
+
+        [HttpGet]
+        public IEnumerable<EmployeeDTO> GetEmployeesByDeptId(int deptId)
+        {
+            return _employeeService.GetEmployeesByDeptId(deptId);
+        }
     }
 }

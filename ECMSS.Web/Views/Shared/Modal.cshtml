@@ -121,7 +121,7 @@
                                                 </table>
                                                 <div class="secondL">
                                                     <ul id="tabs2">
-                                                        <li> <a id="tab3" class="subsecondL">Name</a> </li>
+                                                        <li> <a id="tab3" class="subsecondL active">Name</a> </li>
                                                         <li>
                                                             <a id="tab4" class="subsecondL">Organization</a>
                                                         </li>
@@ -157,14 +157,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="tabcontent" id="tab4C">
-                                                    <input type="text" name="name" value="" />
-                                                    <a>
-                                                        <img src="~/assets/imgs/btn_search.gif" alt="search img" />
-                                                    </a>
                                                     <div class="count_box">
                                                         <div class="maxH">
                                                             <table class="normalTb">
-                                                                <tbody id="deptList"></tbody>
+                                                                <tbody id="organList">
+                                                                </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
@@ -198,10 +195,10 @@
                                                 </a>
                                             </p>
                                         </div>
-                                        <div class="PartR">
+                                        <div class="PartR" id="PartR">
                                             <div class="sub1">
                                                 <div class="subheader">
-                                                    <p> Edit/Copy/Read/Print</p>
+                                                    <p> Edit/Read</p>
                                                     <span class="helpsub1">
                                                         <a> <img src="~/assets/imgs/ico_help.png" alt="help Text" /></a>
                                                     </span>
@@ -213,9 +210,7 @@
                                             </div>
                                             <div class="bodysub1" id="bodysub1">
                                                 <table>
-                                                    <tr>
-                                                        <td></td>
-                                                    </tr>
+                                                    <tbody></tbody>
                                                 </table>
                                             </div>
                                             <div class="sub2">
@@ -228,24 +223,20 @@
                                             </div>
                                             <div class="sub1">
                                                 <div class="subheader">
-                                                    <p class="header2">Copy/Read/Print</p>
+                                                    <p class="header2">Read</p>
                                                     <span class="helpsub1">
                                                         <a href="">
-                                                            <img src="~/assets/imgs/ico_help.png"
-                                                                 alt="help Text" />
+                                                            <img src="~/assets/imgs/ico_help.png" alt="help Text" />
                                                         </a>
                                                     </span>
                                                     <span>
-                                                        <a onclick="deleteAllSelect('bodysub2')"
-                                                           class="btn btn-default delselectsub1">Delete All</a>
+                                                        <a onclick="deleteAllSelect('bodysub2')" class="btn btn-default delselectsub1">Delete All</a>
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="bodysub1" id="bodysub2">
                                                 <table>
-                                                    <tr>
-                                                        <td></td>
-                                                    </tr>
+                                                    <tbody></tbody>
                                                 </table>
                                             </div>
                                         </div>

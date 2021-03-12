@@ -240,6 +240,7 @@
     <Content Include="assets\imgs\btn_refresh1.png" />
     <Content Include="assets\imgs\btn_refresh2.png" />
     <Content Include="assets\imgs\btn_search.gif" />
+    <Content Include="assets\imgs\btn_show_peo.gif" />
     <Content Include="assets\imgs\btn_top_blue_src.png" />
     <Content Include="assets\imgs\btn_treeMove_R.png" />
     <Content Include="assets\imgs\btn_white_S.png" />
@@ -292,6 +293,8 @@
     <Content Include="assets\imgs\ico_music_on.png" />
     <Content Include="assets\imgs\ico_pdf_on.png" />
     <Content Include="assets\imgs\ico_ppt_on.png" />
+    <Content Include="assets\imgs\ico_tree_off.gif" />
+    <Content Include="assets\imgs\ico_tree_on.gif" />
     <Content Include="assets\imgs\ico_tv_on.png" />
     <Content Include="assets\imgs\ico_xlsx_on.png" />
     <Content Include="assets\imgs\logo_ecm.png" />

@@ -2,6 +2,7 @@
 using ECMSS.Data;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
+using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -11,14 +12,16 @@ namespace ECMSS.Services
     {
         private IGenericRepository<Trash> _trashRepository;
         private IGenericRepository<FileInfo> _fileInfoRepository;
+        private IDirectoryService _directoryService;
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
 
-        public TrashService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TrashService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
         {
             _unitOfWork = unitOfWork;
             _trashRepository = _unitOfWork.TrashRepository;
             _fileInfoRepository = _unitOfWork.FileInfoRepository;
+            _directoryService = directoryService;
             _mapper = mapper;
         }
 
@@ -40,6 +43,27 @@ namespace ECMSS.Services
                 }
                 _trashRepository.AddRange(trashes);
                 _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CleanTrash(int[] fileIds)
+        {
+            try
+            {
+                for (int i = 0; i < fileIds.Length; i++)
+                {
+                    int fileId = fileIds[i];
+                    var dir = _directoryService.GetDirFromFileId(fileId);
+                    var fileInfo = _fileInfoRepository.GetSingleById(fileId);
+                    _fileInfoRepository.Remove(fileInfo);
+                    string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{dir.Name}/{fileInfo.Name}";
+                    FileHelper.DeleteFile(fullPath);
+                    _unitOfWork.Commit();
+                }
             }
             catch (Exception ex)
             {
