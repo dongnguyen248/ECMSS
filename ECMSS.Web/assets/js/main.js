@@ -299,6 +299,16 @@ $("#tabs li a").click(function () {
     }
 });
 
+$("#tab1C a").click(function (event) {
+    var target = $(event.target);
+    var href = target.attr("href");
+    if (href === "/trash-content") {
+        $("#btn-recover-file").removeClass("hidelement");
+    } else {
+        $("#btn-recover-file").addClass("hidelement");
+    }
+});
+
 function filterFile(type = "") {
     $.fn.dataTable.ext.search.pop();
     var extensions = [];
@@ -391,19 +401,6 @@ function fileToByteArray(file) {
     })
 }
 
-function selectEmpsInDept(fromId, toId) {
-    var fromElem = $("tr[data-dept-id='" + fromId + "']");
-    var toElem = $("tr[data-dept-id='" + toId + "']");
-    var empElems = fromElem.nextUntil(toElem);
-    var isRootChecked = fromElem.find("input:checkbox").prop("checked");
-
-    $(empElems).each(function (index, value) {
-        var elem = $(empElems[index]).find("input:checkbox");
-        elem.prop("checked", isRootChecked);
-        elem.change();
-    });
-}
-
 function moveToLeft(id) {
     var tabActive = $("#tabs2").children().children(".active").attr("id");
     if (tabActive == "tab3") {
@@ -445,4 +442,8 @@ function moveToRight(id) {
             }
         });
     }
+}
+
+function isTrashUrl() {
+    return window.location.pathname === "/trash-content";
 }

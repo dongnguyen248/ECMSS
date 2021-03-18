@@ -84,6 +84,7 @@ namespace ECMSS.Services
         {
             try
             {
+                fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
                 string filePath = ConfigHelper.Read("FileUploadPath");
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
@@ -147,6 +148,7 @@ namespace ECMSS.Services
         {
             try
             {
+                fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 string filePath = ConfigHelper.Read("FileUploadPath");
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
                 var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));

@@ -44,5 +44,19 @@ namespace ECMSS.Web.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        [HttpPost]
+        public HttpResponseMessage RecoverFile(int[] fileIds)
+        {
+            try
+            {
+                _trashService.RecoverFile(fileIds);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
     }
 }

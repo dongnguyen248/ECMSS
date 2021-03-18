@@ -20,10 +20,6 @@ async function initTreeFolder() {
     }
 };
 
-function isTrashUrl() {
-    return window.location.pathname === "/trash-content";
-}
-
 function initDataTable(url) {
     $("#tbMainDefault").DataTable({
         columnDefs: [{ orderable: false, targets: 0 }],
@@ -262,6 +258,21 @@ function deleteFile() {
     }
 }
 
+async function recoverFile() {
+    try {
+        var selectedFile = $(".checkbox input:checked").toArray();
+        var fileIds = [];
+        for (var i = 0; i < selectedFile.length; i++) {
+            fileIds.push(parseInt($(selectedFile[i]).val()));
+        }
+        await api.post("Trash/RecoverFile", fileIds);
+        router.navigateTo(window.location.pathname);
+        swal("Your file has been recover!", { icon: "success" });
+    } catch (error) {
+        swal("Failed!", "Recover content failed, try again later!", "error");
+    }
+}
+
 function deleteFolder() {
     var selectedElem = $('.sidebar-menu1').find('.selectbackground');
     var root = $(".sidebar-menu1");
@@ -487,5 +498,43 @@ async function showUser(deptId) {
         });
     } catch (error) {
         console.log(error);
+    }
+}
+
+async function selectEmpsInDept(fromId, toId) {
+    var fromElem = $("tr[data-dept-id='" + fromId + "']");
+    var toElem = $("tr[data-dept-id='" + toId + "']");
+    var empElems = fromElem.nextUntil(toElem);
+    var isRootChecked = fromElem.find("input:checkbox").prop("checked");
+
+    if (empElems.length === 0) {
+        var response = await api.get("Employee/GetEmployeesByDeptId?deptId=" + fromId);
+        var emps = response.data;
+        $(emps).each(function (index, value) {
+            var elem = $("#organList").find("tr[data-emp-id='" + value.Id + "']");
+            if (elem.length === 0) {
+                $("#organList tr[data-dept-id='" + fromId + "']").after(String.format("<tr class='groupUser' data-emp-id='{0}'>" +
+                    "<td class='bdr1'>" +
+                    "<div>" +
+                    "<label>" +
+                    "<input type='checkbox' onchange='changeActiveStatus(this)'>" +
+                    "</label>" +
+                    "</div>" +
+                    "</td>" +
+                    "<td>" +
+                    "<div class='d_tooltip'>{1}</div>" +
+                    "</td>" +
+                    "</tr>", value.Id, String.format("{0} {1}", value.LastName, value.FirstName)));
+            }
+        });
+        empElems = fromElem.nextUntil(toElem);
+    }
+
+    if (empElems.length > 0) {
+        $(empElems).each(function (index, value) {
+            var elem = $(empElems[index]).find("input:checkbox");
+            elem.prop("checked", isRootChecked);
+            elem.change();
+        });
     }
 }

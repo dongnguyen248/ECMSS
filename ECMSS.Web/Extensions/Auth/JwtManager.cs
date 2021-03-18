@@ -12,7 +12,7 @@ namespace ECMSS.Web.Extensions.Auth
     {
         private const string SECRET_KEY = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string epLiteId, int empId, int expireMinutes = 20)
+        public static string GenerateToken(string epLiteId, int empId, int expireMinutes = 60 * 24)
         {
             var symmetricKey = Convert.FromBase64String(SECRET_KEY);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -23,7 +23,7 @@ namespace ECMSS.Web.Extensions.Auth
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
-            SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securityToken);
             return token;
         }
@@ -59,7 +59,7 @@ namespace ECMSS.Web.Extensions.Auth
         {
             string requestToken = null;
             var authRequest = actionContext.Request.Headers.Authorization;
-            Dictionary<string, string> empInfo = new Dictionary<string, string>();
+            var empInfo = new Dictionary<string, string>();
             if (authRequest != null)
             {
                 requestToken = authRequest.Parameter;

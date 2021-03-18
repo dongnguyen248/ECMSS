@@ -5,5 +5,7 @@
         void AddFilesToTrash(int[] fileIds, int empId);
 
         void CleanTrash(int[] fileIds);
+
+        void RecoverFile(int[] fileIds);
     }
 }

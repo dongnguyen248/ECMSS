@@ -10,11 +10,11 @@ namespace ECMSS.Services
 {
     public class TrashService : ITrashService
     {
-        private IGenericRepository<Trash> _trashRepository;
-        private IGenericRepository<FileInfo> _fileInfoRepository;
-        private IDirectoryService _directoryService;
-        private IUnitOfWork _unitOfWork;
-        private IMapper _mapper;
+        private readonly IGenericRepository<Trash> _trashRepository;
+        private readonly IGenericRepository<FileInfo> _fileInfoRepository;
+        private readonly IDirectoryService _directoryService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public TrashService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
         {
@@ -64,6 +64,26 @@ namespace ECMSS.Services
                     FileHelper.DeleteFile(fullPath);
                     _unitOfWork.Commit();
                 }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void RecoverFile(int[] fileIds)
+        {
+            try
+            {
+                List<Trash> trashes = new List<Trash>();
+                for (int i = 0; i < fileIds.Length; i++)
+                {
+                    int fileId = fileIds[i];
+                    var file = _trashRepository.GetSingle(f => f.FileId == fileId);
+                    trashes.Add(file);
+                }
+                _trashRepository.RemoveRange(trashes);
+                _unitOfWork.Commit();
             }
             catch (Exception ex)
             {
