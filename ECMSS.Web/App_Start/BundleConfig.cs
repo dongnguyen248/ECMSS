@@ -13,6 +13,7 @@ namespace ECMSS.Web
                .Include("~/assets/libs/bootstrap-3.3.7-dist/css/bootstrap.min.css", new CssRewriteUrlTransform())
                .Include("~/assets/libs/DataTables/DataTables-1.10.23/css/jquery.dataTables.min.css", new CssRewriteUrlTransform())
                .Include("~/assets/libs/DataTables/DataTables-1.10.23/css/dataTables.bootstrap.min.css", new CssRewriteUrlTransform())
+               .Include("~/assets/libs/jquery-ui-1.12.1/jquery-ui.min.css", new CssRewriteUrlTransform())
                .Include("~/assets/libs/fontawesome-free-5.15.1/css/all.min.css", new CssRewriteUrlTransform())
                .Include("~/assets/css/style.css", new CssRewriteUrlTransform()));
 
@@ -22,6 +23,7 @@ namespace ECMSS.Web
                 "~/assets/libs/axios-0.21.1/dist/axios.min.js",
                 "~/assets/libs/vanilla-router-v.1.2.7/dist/vanilla-router.min.js",
                 "~/assets/libs/DataTables/DataTables-1.10.23/js/jquery.dataTables.min.js",
+                "~/assets/libs/jquery-ui-1.12.1/jquery-ui.min.js",
                 "~/assets/libs/bootstrap-3.3.7-dist/js/bootstrap.min.js",
                 "~/assets/libs/moment.min.js",
                 "~/assets/js/config.js",

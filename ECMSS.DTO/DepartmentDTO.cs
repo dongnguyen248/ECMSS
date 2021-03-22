@@ -7,5 +7,6 @@ namespace ECMSS.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<EmployeeDTO> Employees { get; set; }
+        public virtual ICollection<DirectoryDTO> Directories { get; set; }
     }
 }

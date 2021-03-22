@@ -229,7 +229,7 @@ function changebackgroundFilextension(filename, optId, inpID) {
 
     if (extension === "doc" || extension === "docx") {
         backgroundIcon = "/assets/imgs/ico_doc_on.png";
-    } else if (extension === "xls" || extension === "xlsx") {
+    } else if (extension === "xls" || extension === "xlsx" || extension === "xlsm" || extension === "csv") {
         backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
     } else if (extension === "ppt" || extension === "pptx") {
         backgroundIcon = "/assets/imgs/ico_ppt_on.png";
@@ -319,7 +319,7 @@ function filterFile(type = "") {
             extensions = ["ppt", "pptx"];
             break;
         case "excel":
-            extensions = ["xls", "xlsx"];
+            extensions = ["xls", "xlsx", "xlsm", "csv"];
             break;
         case "word":
             extensions = ["doc", "docx"];
@@ -349,7 +349,7 @@ $('#tbMainDefault').on('draw.dt', function () {
         var fileExtension = text.split(".").pop().trim();
         if (fileExtension === "doc" || fileExtension === "docx") {
             backgroundIcon = "/assets/imgs/ico_doc_on.png";
-        } else if (fileExtension === "xls" || fileExtension === "xlsx") {
+        } else if (fileExtension === "xls" || fileExtension === "xlsx" || fileExtension === "xlsm" || fileExtension === "csv") {
             backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
         } else if (fileExtension === "ppt" || fileExtension === "pptx") {
             backgroundIcon = "/assets/imgs/ico_ppt_on.png";

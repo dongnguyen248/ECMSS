@@ -24,11 +24,13 @@ namespace ECMSS.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public Nullable<int> ParentId { get; set; }
+        public Nullable<int> DepartmentId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Directory> Childrens { get; set; }
         public virtual Directory Parent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileInfo> FileInfoes { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

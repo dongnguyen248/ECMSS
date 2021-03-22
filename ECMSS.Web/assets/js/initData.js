@@ -1,5 +1,13 @@
 ﻿(function () {
     initDepartments();
+
+    $("#tbMainDefault th").resizable({
+        handles: "e",
+        minWidth: 15,
+        stop: function (e, ui) {
+            $(this).width(ui.size.width);
+        }
+    });
 })();
 
 async function initTreeFolder() {
@@ -111,7 +119,7 @@ function listToTree(list) {
 function renderTreeFolder(children, rootClass, renderLink) {
     var childrenName;
     if (children[0]) {
-        if (children[0].Name === "Root") {
+        if (children[0].ParentId === null) {
             childrenName = rootClass;
         } else {
             childrenName = "treeview-menu";

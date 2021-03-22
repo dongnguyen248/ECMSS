@@ -21,7 +21,8 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IEnumerable<DirectoryDTO> GetTreeDirectory()
         {
-            return _directoryService.GetTreeDirectories();
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            return _directoryService.GetTreeDirectories(empId);
         }
 
         [HttpGet]

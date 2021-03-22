@@ -26,13 +26,14 @@
         <EntityTypeShape EntityType="ECMModel.Trash" Width="1.5" PointX="8.25" PointY="9" />
         <AssociationConnector Association="ECMModel.Fk_Trash_FileInfo" />
         <EntityTypeShape EntityType="ECMModel.FilePermission" Width="1.5" PointX="14.125" PointY="4.75" />
-        <EntityTypeShape EntityType="ECMModel.Directory" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="ECMModel.Directory" Width="1.5" PointX="0.75" PointY="4.375" />
         <AssociationConnector Association="ECMModel.Fk_Directory_Seft" />
         <AssociationConnector Association="ECMModel.Fk_FileInfo_Directory" />
         <EntityTypeShape EntityType="ECMModel.FileShare" Width="1.5" PointX="11.375" PointY="4.875" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_Employee" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_FileInfo" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_FilePermission" />
+        <AssociationConnector Association="ECMModel.Fk_Directory_Department" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

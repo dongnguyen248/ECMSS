@@ -29,10 +29,12 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<DirectoryDTO> GetTreeDirectories()
+        public IEnumerable<DirectoryDTO> GetTreeDirectories(int empId)
         {
-            var res = _mapper.Map<IEnumerable<DirectoryDTO>>(_directoryRepository.GetAll());
-            return res;
+            int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
+            var args = new SqlParameter { ParameterName = "DeptId", SqlDbType = SqlDbType.Int, Value = deptId };
+            var directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", args);
+            return _mapper.Map<IEnumerable<DirectoryDTO>>(directories);
         }
 
         public DirectoryDTO GetDirFromFileId(int fileId)

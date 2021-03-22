@@ -11,8 +11,10 @@ namespace ECMSS.DTO
         public string Name { get; set; }
 
         public int? ParentId { get; set; }
+        public int? DepartmentId { get; set; }
         public virtual ICollection<DirectoryDTO> Childrens { get; set; }
         public virtual DirectoryDTO Parent { get; set; }
         public virtual ICollection<FileInfoDTO> FileInfoes { get; set; }
+        public virtual DepartmentDTO Department { get; set; }
     }
 }

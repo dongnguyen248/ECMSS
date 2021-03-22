@@ -5,7 +5,7 @@ namespace ECMSS.Services.Interfaces
 {
     public interface IDirectoryService
     {
-        IEnumerable<DirectoryDTO> GetTreeDirectories();
+        IEnumerable<DirectoryDTO> GetTreeDirectories(int empId);
 
         void CreateDirectory(string dirName, string path);
 

@@ -19,6 +19,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="ParentId" Type="int" />
+          <Property Name="DepartmentId" Type="int" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -108,6 +109,18 @@
           <Property Name="FileId" Type="int" Nullable="false" />
           <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
+        <Association Name="Fk_Directory_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Directory" Type="Self.Directory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directory">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Fk_Directory_Seft">
           <End Role="Directory" Type="Self.Directory" Multiplicity="0..1" />
           <End Role="Directory1" Type="Self.Directory" Multiplicity="*" />
@@ -157,7 +170,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_FileFavorite_FileInfo">
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FileFavorite" Type="Self.FileFavorite" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FileInfo">
@@ -181,7 +196,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_FileHistory_FileInfo">
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FileHistory" Type="Self.FileHistory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FileInfo">
@@ -217,7 +234,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_FileImportant_FileInfo">
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FileImportant" Type="Self.FileImportant" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FileInfo">
@@ -265,7 +284,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_FileShare_FileInfo">
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FileShare" Type="Self.FileShare" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FileInfo">
@@ -289,7 +310,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Fk_Trash_FileInfo">
-          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1" />
+          <End Role="FileInfo" Type="Self.FileInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Trash" Type="Self.Trash" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FileInfo">
@@ -313,6 +336,10 @@
           <EntitySet Name="FileStatus" EntityType="Self.FileStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trash" EntityType="Self.Trash" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Fk_Directory_Department" Association="Self.Fk_Directory_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Directory" EntitySet="Directory" />
+          </AssociationSet>
           <AssociationSet Name="Fk_Directory_Seft" Association="Self.Fk_Directory_Seft">
             <End Role="Directory" EntitySet="Directory" />
             <End Role="Directory1" EntitySet="Directory" />
@@ -389,6 +416,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Employees" Relationship="Self.Fk_Employee_Department" FromRole="Department" ToRole="Employee" />
+          <NavigationProperty Name="Directories" Relationship="ECMModel.Fk_Directory_Department" FromRole="Department" ToRole="Directory" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
@@ -524,6 +552,10 @@
           <AssociationSet Name="Fk_FileShare_FilePermission" Association="ECMModel.Fk_FileShare_FilePermission">
             <End Role="FilePermission" EntitySet="FilePermissions" />
             <End Role="FileShare" EntitySet="FileShares" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_Directory_Department" Association="ECMModel.Fk_Directory_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Directory" EntitySet="Directories" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="FileInfo">
@@ -714,6 +746,8 @@
           <NavigationProperty Name="Childrens" Relationship="ECMModel.Fk_Directory_Seft" FromRole="Directory" ToRole="Directory1" />
           <NavigationProperty Name="Parent" Relationship="ECMModel.Fk_Directory_Seft" FromRole="Directory1" ToRole="Directory" />
           <NavigationProperty Name="FileInfoes" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="Directory" ToRole="FileInfo" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="ECMModel.Fk_Directory_Department" FromRole="Directory" ToRole="Department" />
         </EntityType>
         <Association Name="Fk_Directory_Seft">
           <End Type="ECMModel.Directory" Role="Directory" Multiplicity="0..1" />
@@ -784,6 +818,18 @@
             </Principal>
             <Dependent Role="FileShare">
               <PropertyRef Name="Permission" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_Directory_Department">
+          <End Type="ECMModel.Department" Role="Department" Multiplicity="0..1" />
+          <End Type="ECMModel.Directory" Role="Directory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directory">
+              <PropertyRef Name="DepartmentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -892,6 +938,7 @@
           <EntitySetMapping Name="Directories">
             <EntityTypeMapping TypeName="ECMModel.Directory">
               <MappingFragment StoreEntitySet="Directory">
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

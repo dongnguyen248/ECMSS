@@ -13,7 +13,7 @@ namespace ECMSS.Web.Controllers
         {
             Session["RequestToken"] = null;
             Session["RequestToken"] = token;
-            return RedirectToAction("Index");
+            return View("Index");
         }
     }
 }
