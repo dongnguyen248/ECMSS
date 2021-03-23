@@ -11,14 +11,6 @@ $(document).ready(function () {
             $("#ecmcontent").css({ "padding-left": "200px" });
         }
     });
-    //show all folder for select location
-    $("#showAllFolder").click(function () {
-        $(".listFolder").slideToggle("fast");
-    });
-
-    $("#showFolder").click(function () {
-        $(".listFolder1").slideToggle("fast");
-    });
 
     //config tabs on homepage
     $("#tabs li a:not(:first)").addClass("inactive");
@@ -40,6 +32,24 @@ $(document).ready(function () {
             $("#" + t + "C").fadeIn("slow");
         }
     });
+
+    $("#changefile .modal-footer a").click(function () {
+        $("#changefile").modal("hide");
+    });
+
+    //show all folder for select location
+    $("#showAllFolder").click(function () {
+        $(".listFolder").slideToggle("fast");
+    });
+
+    $("#showFolder").click(function () {
+        $(".listFolder1").slideToggle("fast");
+    });
+});
+
+$(document).delegate("#btnGetPath", "click", function (event) {
+    $(event.target).closest(".listFolder").slideToggle("fast");
+    $(event.target).closest(".listFolder1").slideToggle("fast");
 });
 
 function addNewClass(id) {

@@ -68,7 +68,7 @@ namespace ECMSS.Services
             }
             else
             {
-                filePath = "http://172.25.216.127:8081/TempSS/";
+                filePath = "http://172.25.216.127:8081/FileSS/";
             }
 
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
