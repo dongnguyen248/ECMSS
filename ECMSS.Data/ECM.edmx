@@ -70,6 +70,7 @@
           <Property Name="CreatedDate" Type="date" />
           <Property Name="Tag" Type="nvarchar" MaxLength="500" />
           <Property Name="DirectoryId" Type="int" Nullable="false" />
+          <Property Name="SecurityLevel" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="FilePermission">
           <Key>
@@ -575,6 +576,7 @@
           <NavigationProperty Name="Trashes" Relationship="ECMModel.Fk_Trash_FileInfo" FromRole="FileInfo" ToRole="Trash" />
           <NavigationProperty Name="Directory" Relationship="ECMModel.Fk_FileInfo_Directory" FromRole="FileInfo" ToRole="Directory" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
+          <Property Name="SecurityLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="Fk_FileInfo_Employee">
           <End Type="ECMModel.Employee" Role="Employee" Multiplicity="1" />
@@ -878,6 +880,7 @@
           <EntitySetMapping Name="FileInfoes">
             <EntityTypeMapping TypeName="ECMModel.FileInfo">
               <MappingFragment StoreEntitySet="FileInfo">
+                <ScalarProperty Name="SecurityLevel" ColumnName="SecurityLevel" />
                 <ScalarProperty Name="DirectoryId" ColumnName="DirectoryId" />
                 <ScalarProperty Name="Tag" ColumnName="Tag" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

@@ -243,7 +243,7 @@ function changebackgroundFilextension(filename, optId, inpID) {
         backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
     } else if (extension === "ppt" || extension === "pptx") {
         backgroundIcon = "/assets/imgs/ico_ppt_on.png";
-    } else if (extension === "jpg" || extension === "gif" || extension === "jpg" || extension === "jpeg") {
+    } else if (extension === "jpg" || extension === "gif" || extension === "png" || extension === "jpeg") {
         backgroundIcon = "/assets/imgs/ico_img_on.png";
     } else {
         backgroundIcon = "/assets/imgs/ico_pdf_on.png";
@@ -338,7 +338,7 @@ function filterFile(type = "") {
             extensions = ["pdf"];
             break;
         case "image":
-            extensions = ["jpg", "gif", "jpg", "jpeg"];
+            extensions = ["jpg", "gif", "png", "jpeg"];
             break;
         default:
             break;
@@ -363,7 +363,7 @@ $('#tbMainDefault').on('draw.dt', function () {
             backgroundIcon = "/assets/imgs/ico_xlsx_on.png";
         } else if (fileExtension === "ppt" || fileExtension === "pptx") {
             backgroundIcon = "/assets/imgs/ico_ppt_on.png";
-        } else if (fileExtension === "jpg" || fileExtension === "gif" || fileExtension === "jpg" || fileExtension === "jpeg") {
+        } else if (fileExtension === "jpg" || fileExtension === "gif" || fileExtension === "png" || fileExtension === "jpeg") {
             backgroundIcon = "/assets/imgs/ico_img_on.png";
         } else {
             backgroundIcon = "/assets/imgs/ico_pdf_on.png";

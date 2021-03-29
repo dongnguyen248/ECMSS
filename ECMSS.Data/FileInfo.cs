@@ -30,6 +30,7 @@ namespace ECMSS.Data
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
+        public string SecurityLevel { get; set; }
     
         public virtual Employee Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

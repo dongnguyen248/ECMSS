@@ -42,8 +42,4 @@ const api = axios.create({
     headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
 });
 
-var configDT = {
-    trashRoute: false
-};
-
 $.fn.dataTable.ext.errMode = "none";

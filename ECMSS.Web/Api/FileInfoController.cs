@@ -122,7 +122,7 @@ namespace ECMSS.Web.Api
                 Owner = x.Employee.EpLiteId,
                 Modifier = GetFileHistory(x).Employee.EpLiteId,
                 Size = GetFileHistory(x).Size,
-                SecurityLevel = "",
+                SecurityLevel = x.SecurityLevel,
                 Version = GetFileHistory(x).Version,
                 ModifiedDate = GetFileHistory(x).ModifiedDate,
                 IsFavorite = x.FileFavorites.Where(f => f.EmployeeId == empId).Count() > 0,

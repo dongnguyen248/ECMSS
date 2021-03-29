@@ -49,8 +49,7 @@ function initDataTable(url) {
                 render: function (data, type, row) {
                     var favoriteImgSrc = row["IsFavorite"] ? "/assets/imgs/ico_fav_blue_on.png" : "/assets/imgs/ico_fav.png";
                     var importantClass = row["IsImportant"] ? "backgroundImp" : "";
-                    if (configDT.trashRoute) {
-                        configDT.trashRoute = !configDT.trashRoute;
+                    if (isTrashUrl()) {
                         return String.format("<div class='contentTitle'>" +
                             "<div class='checkbox'>" +
                             "<label>" +
@@ -394,6 +393,7 @@ async function addFileInfo(listFileSelected, curEmp) {
     path = path.replaceAll(">", "/");
     var dir = await getDirFromPath(path);
     var result = [];
+
     for (var i = 0; i < elems.length; i++) {
         var value = elems[i];
         var fileInfo = {
@@ -401,7 +401,8 @@ async function addFileInfo(listFileSelected, curEmp) {
             Name: $(value).val().split(/(\\|\/)/g).pop(),
             Owner: curEmp.Id,
             Tag: $(".input_hashtag input[name='tag']").val(),
-            DirectoryId: dir.Id
+            DirectoryId: dir.Id,
+            SecurityLevel: $("#security-option").find(".active").text().trim()
         }
         try {
             var response = await api.post("FileInfo/AddNewFile", fileInfo);

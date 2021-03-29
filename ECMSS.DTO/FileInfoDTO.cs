@@ -16,6 +16,7 @@ namespace ECMSS.DTO
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
+        public string SecurityLevel { get; set; }
 
         public virtual DirectoryDTO Directory { get; set; }
         public virtual EmployeeDTO Employee { get; set; }
