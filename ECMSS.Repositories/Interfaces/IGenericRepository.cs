@@ -32,6 +32,8 @@ namespace ECMSS.Repositories.Interfaces
 
         IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows, params Expression<Func<TEntity, object>>[] includes);
 
+        IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes);
+
         TEntity GetSingleById(object id);
 
         TEntity GetSingle(Expression<Func<TEntity, bool>> condition);
@@ -39,5 +41,7 @@ namespace ECMSS.Repositories.Interfaces
         TEntity GetSingle(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
 
         IEnumerable<TEntity> ExecuteQuery(string query, params object[] parameters);
+
+        bool CheckContains(Expression<Func<TEntity, bool>> predicate);
     }
 }

@@ -7,8 +7,10 @@ using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using FileInfo = ECMSS.Data.FileInfo;
 
 namespace ECMSS.Services
 {
@@ -74,7 +76,7 @@ namespace ECMSS.Services
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
             result[0] = $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][true]";
-            result[1] = isOwnerOrShared ? $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][false]" : null;
+            result[1] = isOwnerOrShared && IsSupportFile(fileInfo.Name) ? $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][false]" : null;
             result[2] = fileInfo.Name;
 
             return result;
@@ -121,7 +123,16 @@ namespace ECMSS.Services
 
         public IEnumerable<FileInfoDTO> Search(string searchContent)
         {
-            var result = _fileInfoRepository.GetMany(x => (x.Name.Contains(searchContent) || x.Employee.EpLiteId == searchContent) && x.Trashes.Count == 0, _includes);
+            searchContent = StringHelper.StringNormalization(searchContent);
+            var result = _fileInfoRepository.Find(delegate (FileInfo f)
+            {
+                if ((StringHelper.StringNormalization(f.Name).IndexOf(searchContent, StringComparison.CurrentCultureIgnoreCase) >= 0 || f.Employee.EpLiteId.Contains(searchContent))
+                && f.Trashes.Count == 0)
+                {
+                    return true;
+                }
+                return false;
+            }, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
@@ -169,6 +180,17 @@ namespace ECMSS.Services
             {
                 throw ex;
             }
+        }
+
+        private bool IsSupportFile(string fileName)
+        {
+            string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".csv", ".ppt", ".pptx", ".pdf" };
+            var ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
+            if (fileTrackingExtensions.Any(ext.Equals))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

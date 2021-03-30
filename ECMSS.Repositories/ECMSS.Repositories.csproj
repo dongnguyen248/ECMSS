@@ -62,6 +62,10 @@
       <Project>{947c1e8b-3f48-4bb3-99ca-8b6a0091ff31}</Project>
       <Name>ECMSS.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ECMSS.Utilities\ECMSS.Utilities.csproj">
+      <Project>{42a916b6-79d4-4566-852d-14128fa23a85}</Project>
+      <Name>ECMSS.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

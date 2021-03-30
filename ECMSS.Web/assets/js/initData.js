@@ -215,10 +215,10 @@ async function openContent(fileId) {
         );
 
         if (fileUrl[1]) {
-            $("#changefile .modal-footer center a:nth-child(2)").removeAttr("disabled");
+            $("#changefile .modal-footer center a:nth-child(2)").css("display", "");
             $("#changefile .modal-footer center a:nth-child(2)").attr("href", "ECMProtocol: " + fileUrl[1]);
         } else {
-            $("#changefile .modal-footer center a:nth-child(2)").attr("disabled", "disabled");
+            $("#changefile .modal-footer center a:nth-child(2)").css("display", "none");
             $("#changefile .modal-footer center a:nth-child(2)").removeAttr("href");
         }
 
@@ -435,6 +435,7 @@ $("#tab3C > a > img").click(async function () {
     try {
         var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", empName));
         var emps = response.data;
+        $("#userList").html("");
         $(emps).each(function (index, value) {
             var checkElem = $(".positionSearch").find("table input[data-emp-id='" + value.Id + "']").length > 0;
             if (!checkElem) {

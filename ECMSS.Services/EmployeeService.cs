@@ -3,6 +3,8 @@ using ECMSS.Data;
 using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
+using ECMSS.Utilities;
+using System;
 using System.Collections.Generic;
 
 namespace ECMSS.Services
@@ -37,7 +39,18 @@ namespace ECMSS.Services
 
         public IEnumerable<EmployeeDTO> GetEmployeesByName(string empName)
         {
-            return _mapper.Map<IEnumerable<EmployeeDTO>>(_employeeRepository.GetMany(e => (e.FirstName + " " + e.LastName).Contains(empName), x => x.Department));
+            empName = StringHelper.StringNormalization(empName);
+            return _mapper.Map<IEnumerable<EmployeeDTO>>(_employeeRepository.Find(delegate (Employee e)
+            {
+                if (StringHelper.StringNormalization(e.LastName + " " + e.FirstName).IndexOf(empName, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }, x => x.Department));
         }
     }
 }

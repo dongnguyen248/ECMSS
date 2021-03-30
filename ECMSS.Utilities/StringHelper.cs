@@ -22,7 +22,14 @@ namespace ECMSS.Utilities
             return fileName;
         }
 
-        public static string ConvertToUnSign(string input)
+        public static string StringNormalization(string input)
+        {
+            input = ConvertToUnSign(input);
+            input = RemoveExtraSpace(input);
+            return input;
+        }
+
+        private static string ConvertToUnSign(string input)
         {
             input = input.Trim();
             for (int i = 0x20; i < 0x30; i++)
@@ -37,6 +44,13 @@ namespace ECMSS.Utilities
                 str2 = str2.Remove(str2.IndexOf("?"), 1);
             }
             return str2;
+        }
+
+        private static string RemoveExtraSpace(this string input)
+        {
+            Regex trimmer = new Regex(@"\s\s+");
+            input = trimmer.Replace(input, " ").Trim();
+            return input;
         }
     }
 }

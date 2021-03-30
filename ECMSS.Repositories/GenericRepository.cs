@@ -130,5 +130,20 @@ namespace ECMSS.Repositories
         {
             return _dbSet.SqlQuery(query, parameters).AsNoTracking();
         }
+
+        public bool CheckContains(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbSet.Count(predicate) > 0;
+        }
+
+        public IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = _dbSet.Include(includes[0]);
+            foreach (var include in includes.Skip(1))
+            {
+                query = query.Include(include);
+            }
+            return query.Where(condition).AsQueryable();
+        }
     }
 }
