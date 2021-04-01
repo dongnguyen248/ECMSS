@@ -46,6 +46,8 @@ function initDataTable(url) {
         columns: [
             {
                 data: "Name",
+                title: "FileName",
+                width: "50%",
                 render: function (data, type, row) {
                     var favoriteImgSrc = row["IsFavorite"] ? "/assets/imgs/ico_fav_blue_on.png" : "/assets/imgs/ico_fav.png";
                     var importantClass = row["IsImportant"] ? "backgroundImp" : "";
@@ -79,13 +81,14 @@ function initDataTable(url) {
                         "</div>", importantClass, row["Id"], favoriteImgSrc, data);
                 }
             },
-            { data: "Owner" },
-            { data: "Modifier" },
-            { data: "Size" },
-            { data: "SecurityLevel" },
-            { data: "Version" },
+            { data: "Owner", title: "Owner" },
+            { data: "Modifier", title: "Modifier" },
+            { data: "Size", title: "Size(kb)" },
+            { data: "SecurityLevel", title: "SecurityLevel" },
+            { data: "Version", title: "Version" },
             {
                 data: "ModifiedDate",
+                title: "ModifiedDate",
                 type: "date",
                 render: function (data) {
                     return data ? moment(data).format("DD/MM/yyyy") : "";

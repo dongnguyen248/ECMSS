@@ -75,8 +75,8 @@ namespace ECMSS.Services
 
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
-            result[0] = $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][true]";
-            result[1] = isOwnerOrShared && IsSupportFile(fileInfo.Name) ? $"<Download>[{fileInfo.Id}][{filePath}][{fileInfo.Employee.EpLiteId}][{version}][false]" : null;
+            result[0] = $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></true/>")}";
+            result[1] = isOwnerOrShared && IsSupportedFile(fileInfo.Name) ? $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></false/>")}" : null;
             result[2] = fileInfo.Name;
 
             return result;
@@ -182,7 +182,7 @@ namespace ECMSS.Services
             }
         }
 
-        private bool IsSupportFile(string fileName)
+        private bool IsSupportedFile(string fileName)
         {
             string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".csv", ".ppt", ".pptx", ".pdf" };
             var ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();

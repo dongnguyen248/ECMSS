@@ -309,7 +309,7 @@ $("#tabs li a").click(function () {
     }
 });
 
-$("#tab1C a").click(function (event) {
+$("#ecmcontent .areaL a").click(function (event) {
     var target = $(event.target);
     var href = target.attr("href");
     if (href === "/trash-content") {
