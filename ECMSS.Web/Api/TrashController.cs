@@ -9,7 +9,7 @@ namespace ECMSS.Web.Api
     [JwtAuthentication]
     public class TrashController : ApiController
     {
-        private ITrashService _trashService;
+        private readonly ITrashService _trashService;
 
         public TrashController(ITrashService trashService)
         {

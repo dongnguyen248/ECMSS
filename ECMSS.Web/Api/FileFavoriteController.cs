@@ -31,6 +31,7 @@ namespace ECMSS.Web.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
         [HttpPost]
         public HttpResponseMessage AddFavoriteFiles(IEnumerable<FileFavoriteDTO> fileFavorites)
         {

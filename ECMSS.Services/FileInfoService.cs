@@ -55,7 +55,7 @@ namespace ECMSS.Services
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public string[] GetFileUrl(int id, int empId)
+        public string[] GetFileUrl(int id, int empId, bool isShareUrl)
         {
             string[] result = new string[3];
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
@@ -72,14 +72,36 @@ namespace ECMSS.Services
             {
                 filePath = "http://172.25.216.127:8081/FileSS/";
             }
-
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
             result[0] = $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></true/>")}";
-            result[1] = isOwnerOrShared && IsSupportedFile(fileInfo.Name) ? $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></false/>")}" : null;
+            result[1] = (isOwnerOrShared || isShareUrl) && IsSupportedFile(fileInfo.Name) ? $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></false/>")}" : null;
             result[2] = fileInfo.Name;
-
             return result;
+        }
+
+        public string GetFileShareUrl(int id, int empId)
+        {
+            var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
+            var isOwner = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId)) != null;
+            string filePath = string.Empty;
+            if (Debugger.IsAttached)
+            {
+                filePath = ConfigHelper.Read("FileUploadPath");
+            }
+            else
+            {
+                filePath = "http://172.25.216.127:8081/FileSS/";
+            }
+            filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
+            string url = isOwner ? $"<FileShareUrl>{Encryptor.Encrypt($"</{fileInfo.Id}/>")}" : null;
+            return url;
+        }
+
+        public FileInfoDTO GetFileInfo(int id)
+        {
+            var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, _includes);
+            return _mapper.Map<FileInfoDTO>(fileInfo);
         }
 
         public void UploadNewFile(FileInfoDTO fileInfo)

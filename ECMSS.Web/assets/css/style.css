@@ -1056,6 +1056,7 @@ a {
         border: 1px solid #ccc;
         padding: 10px 1px 10px 5px;
         text-align: center !important;
+        width: 100px;
     }
 
 .account01 {
@@ -1902,6 +1903,10 @@ ol {
     margin-bottom: unset;
 }
 
+#tbMainDefault {
+    width: 100% !important;
+}
+
 table#tbMainDefault input[type="checkbox"] {
     display: none;
 }
@@ -1910,3 +1915,11 @@ table#tbMainDefault th,
 table#tbMainDefault td {
     white-space: nowrap;
 }
+
+.contentTitle > .dropdown {
+    float: right;
+}
+
+    .contentTitle > .dropdown > .dropdown-menu {
+        left: -63px !important;
+    }

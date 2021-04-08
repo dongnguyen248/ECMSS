@@ -9,7 +9,11 @@ namespace ECMSS.Services.Interfaces
 
         IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId);
 
-        string[] GetFileUrl(int id, int empId);
+        string[] GetFileUrl(int id, int empId, bool isShareUrl);
+
+        string GetFileShareUrl(int id, int empId);
+
+        FileInfoDTO GetFileInfo(int id);
 
         FileInfoDTO AddNewFile(FileInfoDTO fileInfo);
 

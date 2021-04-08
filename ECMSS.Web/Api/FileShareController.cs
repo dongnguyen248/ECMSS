@@ -11,7 +11,7 @@ namespace ECMSS.Web.Api
     [JwtAuthentication]
     public class FileShareController : ApiController
     {
-        private IFileShareService _fileShareService;
+        private readonly IFileShareService _fileShareService;
 
         public FileShareController(IFileShareService fileShareService)
         {

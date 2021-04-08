@@ -38,10 +38,17 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public string[] GetFileUrl(int id)
+        public string[] GetFileUrl(int id, bool isShareUrl = false)
         {
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            return _fileInfoService.GetFileUrl(id, empId);
+            return _fileInfoService.GetFileUrl(id, empId, isShareUrl);
+        }
+
+        [HttpGet]
+        public string GetFileShareUrl(int id)
+        {
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            return _fileInfoService.GetFileShareUrl(id, empId);
         }
 
         [HttpPost]
@@ -111,15 +118,34 @@ namespace ECMSS.Web.Api
             return Ok(new { fileInfos = result });
         }
 
+        [HttpGet]
+        public FileInfoViewModel GetFileInfo(int id)
+        {
+            var fileInfo = _fileInfoService.GetFileInfo(id);
+            var fileInfoVM = new FileInfoViewModel() 
+            {
+                Id = fileInfo.Id,
+                Name = fileInfo.Name,
+                Owner = fileInfo.Employee.EpLiteId,
+                CreatedDate = fileInfo.CreatedDate,
+                Modifier = GetFileHistory(fileInfo).Employee.EpLiteId,
+                Size = GetFileHistory(fileInfo).Size,
+                SecurityLevel = fileInfo.SecurityLevel,
+                Version = GetFileHistory(fileInfo).Version,
+                ModifiedDate = GetFileHistory(fileInfo).ModifiedDate
+            };
+            return fileInfoVM;
+        }
+
         private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
         {
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileHistory = fileInfos.Select(x => x.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault()).FirstOrDefault();
             return fileInfos.Select(x => new FileInfoViewModel
             {
                 Id = x.Id,
                 Name = x.Name,
                 Owner = x.Employee.EpLiteId,
+                CreatedDate = x.CreatedDate,
                 Modifier = GetFileHistory(x).Employee.EpLiteId,
                 Size = GetFileHistory(x).Size,
                 SecurityLevel = x.SecurityLevel,

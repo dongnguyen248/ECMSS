@@ -45,6 +45,7 @@ function initDataTable(url) {
         },
         columns: [
             {
+                //+ "<div class='dropdown'><a class=' dropdown-toggle' type='button' data-toggle='dropdown'><i class='fas fa-caret-down'></i></a><ul class='dropdown-menu'><li><a href='#'>Coppy Link to Eplite</a></li><li><a onclick='editFileContent({1})'>Edit Content</a></li></ul></div>" +
                 data: "Name",
                 title: "FileName",
                 width: "50%",
@@ -78,6 +79,7 @@ function initDataTable(url) {
                         "<img src='{2}' alt='icon_start' />" +
                         "</a>" +
                         "<a onclick='openContent({1})' class='contentname'>{3}</a>" +
+                        "<div class='dropdown'><a class='dropdown-toggle' type='button' data-toggle='dropdown'><i class='fas fa-caret-down'></i></a><ul class='dropdown-menu'><li><a onclick='getFileShareUrl({1})'>Copy Link</a></li><li><a onclick='editFileContent({1})'>Edit</a></li></ul></div>" +
                         "</div>", importantClass, row["Id"], favoriteImgSrc, data);
                 }
             },
@@ -230,6 +232,12 @@ async function openContent(fileId) {
     } catch (error) {
         console.log(error);
     }
+}
+
+async function getFileShareUrl(fileId) {
+    var response = await api.get(String.format("FileInfo/GetFileShareUrl?id={0}", fileId));
+    var fileUrl = "ECMProtocol: " + response.data;
+    copyToClipboard(fileUrl);
 }
 
 function deleteFile() {

@@ -166,15 +166,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tabcontent" id="tab5C">
-                                                <div class="count_box">
-                                                    <div class="maxH">
-                                                        <table class="normalTb">
-                                                            <tbody id="mailList"></tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="PartC">
                                             <p class="btn_move">
@@ -317,6 +308,254 @@
                 <center>
                     <a class="btn btn-primary">View</a>
                     <a class="btn btn-primary">Edit</a>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">
+                    Edit Content
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="popSubtitle1">
+                    <span class="subtitle">
+                        File Name
+                    </span>
+                    <div class="fileupload" id="fileupload" style="display:none;">
+                        <label class="floatR btn btn-default">
+                            <b>+</b><span> Add Contents</span>
+                        </label>
+                    </div>
+                    <span id="inputhidden"></span>
+                </div>
+                <div class="listFileImport">
+                    <ul class="list"></ul>
+                </div>
+                <div class="popSubtitle2">
+                    <div class="headersub2">
+                        <div class="lefsub2">
+                            <span class="subtitle2">
+                                Save Location
+                            </span>
+                            <label class="chktype">
+                                <input type="checkbox" id="chktype" name="name" value="" />
+                                Add Favorites
+                            </label>
+                        </div>
+                    </div>
+                    <div class="selectFolder">
+                        <div class="allForder">
+                            <input class="form-control" id="folderPath" readonly type="text" name="name" value="PoscoVST" />
+
+                            <a class="btn btn-default btn-sm" id="showAllFolder">All Content</a>
+                            <div class="listFolder" style="display:none">
+                                <div class="contentSelect">
+                                    <em>Content box selection</em>
+                                    <select>
+                                        <option value="value" selected>PoscoVST</option>
+                                    </select>
+                                </div>
+                                <div class="addFolderTreeBox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popSubtitle3">
+                    <div class="Security">
+                        <div class="headerSecurity">
+                            <span>Security grade</span>
+                        </div>
+                        <div class="bodySercurity">
+                            <div class="share_set">
+                                <ol>
+                                    <li class="grade1">
+                                        Specific employee sharing
+                                    </li>
+                                    <li class="grade2">
+                                        Department employee sharing
+                                    </li>
+                                    <li class="grade3">
+                                        Specific employee sharing
+                                    </li>
+                                    <li class="grade4">
+                                        All employee sharing
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="safe_btn_box" id="security-option">
+                                <a>
+                                    Secret
+                                </a>
+                                <a>
+                                    Secret A
+                                </a>
+                                <a>
+                                    Secret A/Not Open
+                                </a>
+                                <a>
+                                    Secret B/Not Open
+                                </a>
+                                <a>
+                                    Secret B
+                                </a>
+                                <a class="active">
+                                    Public
+                                </a>
+                            </div>
+                            <div class="tagSecurity">
+                                <span class="tag_1">TAG</span>
+                                <span class="tag_2">(Up to 20 characters per tag)</span>
+                                <div class="input_hashtag">
+                                    <input type="text" name="tag" value="#" />
+                                </div>
+                            </div>
+                            <div class="permission">
+                                <div class="titlePermission">
+                                    <span>Permission Setting</span>
+                                </div>
+                                <div class="positionBox">
+                                    <div class="positionSearch">
+                                        <div class="bodyPermistion">
+                                            <div class="PartL">
+                                                <table class="firtL">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Owner</th>
+                                                            <td class="account01"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="secondL">
+                                                    <ul id="tabs3">
+                                                        <li>
+                                                            <a id="tab6" class="subsecondL active">Name</a>
+                                                        </li>
+                                                        <li>
+                                                            <a id="tab7" class="subsecondL">Organization</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="tabcontent" id="tab6C">
+                                                    <input type="text" name="empName" value="" />
+                                                    <a>
+                                                        <img src="~/assets/imgs/btn_search.gif" alt="search img" />
+                                                    </a>
+
+                                                    <div class="count_box">
+                                                        <div class="allCheck">
+                                                            <span>
+                                                                <label class="i_check" for="listAllcheck">
+                                                                    <input class="checkbox_1" type="checkbox"
+                                                                           name="checkbox" id="listAllcheck" value="" />
+                                                                </label>
+                                                            </span>
+                                                            <p class="select_checkbox">Select All </p>
+                                                            <a onclick="deleteAllSelect('userList')"
+                                                               class="deleteAll1 btn btn-default">Delete All</a>
+                                                        </div>
+                                                        <div class="maxH">
+                                                            <table class="normalTb">
+                                                                <tbody id="userList">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tabcontent" id="tab7C">
+                                                    <div class="count_box">
+                                                        <div class="maxH">
+                                                            <table class="normalTb">
+                                                                <tbody id="organList">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="PartC">
+                                            <p class="btn_move">
+                                                <a onclick="moveToRight('bodysub1')" class="btn_move_W_add">
+                                                    <img src="~/assets/imgs/btn_personR.png" alt="Alternate Text" />
+                                                </a>
+                                                <a onclick="moveToLeft('bodysub1')" class="btn_move_W_add">
+                                                    <img src="~/assets/imgs/btn_personL.png" alt="Alternate Text" />
+                                                </a>
+                                            </p>
+                                            <p class="btn_move">
+                                                <a onclick="moveToRight('bodysub2')" class="btn_move_W_add">
+                                                    <img src="~/assets/imgs/btn_personR.png" alt="Alternate Text" />
+                                                </a>
+                                                <a onclick="moveToLeft('bodysub2')" class="btn_move_W_add">
+                                                    <img src="~/assets/imgs/btn_personL.png" alt="Alternate Text" />
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="PartR" id="PartR">
+                                            <div class="sub1">
+                                                <div class="subheader">
+                                                    <p> Edit/Read</p>
+                                                    <span class="helpsub1">
+                                                        <a> <img src="~/assets/imgs/ico_help.png" alt="help Text" /></a>
+                                                    </span>
+                                                    <span>
+                                                        <a onclick="deleteAllSelect('bodysub1')"
+                                                           class="btn btn-default delselectsub1">Delete All</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="bodysub1" id="bodysub1">
+                                                <table>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="sub2">
+                                                <a onclick="moveToDown('bodysub1', 'bodysub2')">
+                                                    <img src="~/assets/imgs/btn_personD.png" alt="Alternate Text" />
+                                                </a>
+                                                <a onclick="moveToUp('bodysub2', 'bodysub1')">
+                                                    <img src="~/assets/imgs/btn_personU.png" alt="Alternate Text" />
+                                                </a>
+                                            </div>
+                                            <div class="sub1">
+                                                <div class="subheader">
+                                                    <p class="header2">Read</p>
+                                                    <span class="helpsub1">
+                                                        <a href="">
+                                                            <img src="~/assets/imgs/ico_help.png" alt="help Text" />
+                                                        </a>
+                                                    </span>
+                                                    <span>
+                                                        <a onclick="deleteAllSelect('bodysub2')" class="btn btn-default delselectsub1">Delete All</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="bodysub1" id="bodysub2">
+                                                <table>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type="button" id="btnAddNewFile" class="btn btn-primary">Save</button>
                 </center>
             </div>
         </div>
