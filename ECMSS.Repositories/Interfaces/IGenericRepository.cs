@@ -16,6 +16,8 @@ namespace ECMSS.Repositories.Interfaces
 
         IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities);
 
+        void RemoveMulti(Expression<Func<TEntity, bool>> condition);
+
         void Update(TEntity entity);
 
         void Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);

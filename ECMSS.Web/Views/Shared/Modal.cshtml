@@ -62,39 +62,19 @@
                         <div class="bodySercurity">
                             <div class="share_set">
                                 <ol>
-                                    <li class="grade1">
-                                        Specific employee sharing
-                                    </li>
-                                    <li class="grade2">
-                                        Department employee sharing
-                                    </li>
-                                    <li class="grade3">
-                                        Specific employee sharing
-                                    </li>
-                                    <li class="grade4">
-                                        All employee sharing
-                                    </li>
+                                    <li class="grade1">Specific employee sharing</li>
+                                    <li class="grade2">Department employee sharing</li>
+                                    <li class="grade3">Specific employee sharing</li>
+                                    <li class="grade4">All employee sharing</li>
                                 </ol>
                             </div>
                             <div class="safe_btn_box" id="security-option">
-                                <a>
-                                    Secret
-                                </a>
-                                <a>
-                                    Secret A
-                                </a>
-                                <a>
-                                    Secret A/Not Open
-                                </a>
-                                <a>
-                                    Secret B/Not Open
-                                </a>
-                                <a>
-                                    Secret B
-                                </a>
-                                <a class="active">
-                                    Public
-                                </a>
+                                <a>Secret</a>
+                                <a>Secret A</a>
+                                <a>Secret A/Not Open</a>
+                                <a>Secret B/Not Open</a>
+                                <a>Secret B</a>
+                                <a class="active">Public</a>
                             </div>
                             <div class="tagSecurity">
                                 <span class="tag_1">TAG</span>
@@ -215,7 +195,7 @@
                                                 <div class="subheader">
                                                     <p class="header2">Read</p>
                                                     <span class="helpsub1">
-                                                        <a href="">
+                                                        <a>
                                                             <img src="~/assets/imgs/ico_help.png" alt="help Text" />
                                                         </a>
                                                     </span>
@@ -337,7 +317,7 @@
                     </div>
                     <span id="inputhidden"></span>
                 </div>
-                <div class="listFileImport">
+                <div class="listFileImportEdit" style="display:block">
                     <ul class="list"></ul>
                 </div>
                 <div class="popSubtitle2">
@@ -346,25 +326,21 @@
                             <span class="subtitle2">
                                 Save Location
                             </span>
-                            <label class="chktype">
-                                <input type="checkbox" id="chktype" name="name" value="" />
-                                Add Favorites
-                            </label>
                         </div>
                     </div>
                     <div class="selectFolder">
                         <div class="allForder">
-                            <input class="form-control" id="folderPath" readonly type="text" name="name" value="PoscoVST" />
+                            <input class="form-control" id="folderPathEdit" readonly type="text" name="name" value="PoscoVST" />
 
-                            <a class="btn btn-default btn-sm" id="showAllFolder">All Content</a>
-                            <div class="listFolder" style="display:none">
+                            <a class="btn btn-default btn-sm" id="showAllFolderEdit">All Content</a>
+                            <div class="listFolderEdit" style="display:none">
                                 <div class="contentSelect">
                                     <em>Content box selection</em>
                                     <select>
                                         <option value="value" selected>PoscoVST</option>
                                     </select>
                                 </div>
-                                <div class="addFolderTreeBox">
+                                <div class="addFolderTreeBoxEdit">
                                 </div>
                             </div>
                         </div>
@@ -378,39 +354,19 @@
                         <div class="bodySercurity">
                             <div class="share_set">
                                 <ol>
-                                    <li class="grade1">
-                                        Specific employee sharing
-                                    </li>
-                                    <li class="grade2">
-                                        Department employee sharing
-                                    </li>
-                                    <li class="grade3">
-                                        Specific employee sharing
-                                    </li>
-                                    <li class="grade4">
-                                        All employee sharing
-                                    </li>
+                                    <li class="grade1">Specific employee sharing</li>
+                                    <li class="grade2">Department employee sharing</li>
+                                    <li class="grade3">Specific employee sharing</li>
+                                    <li class="grade4">All employee sharing</li>
                                 </ol>
                             </div>
                             <div class="safe_btn_box" id="security-option">
-                                <a>
-                                    Secret
-                                </a>
-                                <a>
-                                    Secret A
-                                </a>
-                                <a>
-                                    Secret A/Not Open
-                                </a>
-                                <a>
-                                    Secret B/Not Open
-                                </a>
-                                <a>
-                                    Secret B
-                                </a>
-                                <a class="active">
-                                    Public
-                                </a>
+                                <a>Secret</a>
+                                <a>Secret A</a>
+                                <a>Secret A/Not Open</a>
+                                <a>Secret B/Not Open</a>
+                                <a>Secret B</a>
+                                <a class="active">Public</a>
                             </div>
                             <div class="tagSecurity">
                                 <span class="tag_1">TAG</span>
@@ -455,17 +411,15 @@
                                                         <div class="allCheck">
                                                             <span>
                                                                 <label class="i_check" for="listAllcheck">
-                                                                    <input class="checkbox_1" type="checkbox"
-                                                                           name="checkbox" id="listAllcheck" value="" />
+                                                                    <input class="checkbox_1" type="checkbox" name="checkbox" id="listAllcheck" value="" />
                                                                 </label>
                                                             </span>
                                                             <p class="select_checkbox">Select All </p>
-                                                            <a onclick="deleteAllSelect('userList')"
-                                                               class="deleteAll1 btn btn-default">Delete All</a>
+                                                            <a onclick="deleteAllSelect('userList')" class="deleteAll1 btn btn-default">Delete All</a>
                                                         </div>
                                                         <div class="maxH">
                                                             <table class="normalTb">
-                                                                <tbody id="userList">
+                                                                <tbody>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -475,7 +429,7 @@
                                                     <div class="count_box">
                                                         <div class="maxH">
                                                             <table class="normalTb">
-                                                                <tbody id="organList">
+                                                                <tbody id="organListEdit">
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -485,18 +439,18 @@
                                         </div>
                                         <div class="PartC">
                                             <p class="btn_move">
-                                                <a onclick="moveToRight('bodysub1')" class="btn_move_W_add">
+                                                <a onclick="moveToRight_Edit('editRole')" class="btn_move_W_add">
                                                     <img src="~/assets/imgs/btn_personR.png" alt="Alternate Text" />
                                                 </a>
-                                                <a onclick="moveToLeft('bodysub1')" class="btn_move_W_add">
+                                                <a onclick="moveToLeft_Edit('editRole')" class="btn_move_W_add">
                                                     <img src="~/assets/imgs/btn_personL.png" alt="Alternate Text" />
                                                 </a>
                                             </p>
                                             <p class="btn_move">
-                                                <a onclick="moveToRight('bodysub2')" class="btn_move_W_add">
+                                                <a onclick="moveToRight_Edit('viewRole')" class="btn_move_W_add">
                                                     <img src="~/assets/imgs/btn_personR.png" alt="Alternate Text" />
                                                 </a>
-                                                <a onclick="moveToLeft('bodysub2')" class="btn_move_W_add">
+                                                <a onclick="moveToLeft_Edit('viewRole')" class="btn_move_W_add">
                                                     <img src="~/assets/imgs/btn_personL.png" alt="Alternate Text" />
                                                 </a>
                                             </p>
@@ -509,21 +463,21 @@
                                                         <a> <img src="~/assets/imgs/ico_help.png" alt="help Text" /></a>
                                                     </span>
                                                     <span>
-                                                        <a onclick="deleteAllSelect('bodysub1')"
+                                                        <a onclick="deleteAllSelect('editRole')"
                                                            class="btn btn-default delselectsub1">Delete All</a>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="bodysub1" id="bodysub1">
+                                            <div class="bodysub1" id="editRole">
                                                 <table>
                                                     <tbody></tbody>
                                                 </table>
                                             </div>
                                             <div class="sub2">
-                                                <a onclick="moveToDown('bodysub1', 'bodysub2')">
+                                                <a onclick="moveToDown('editRole', 'viewRole')">
                                                     <img src="~/assets/imgs/btn_personD.png" alt="Alternate Text" />
                                                 </a>
-                                                <a onclick="moveToUp('bodysub2', 'bodysub1')">
+                                                <a onclick="moveToUp('viewRole', 'editRole')">
                                                     <img src="~/assets/imgs/btn_personU.png" alt="Alternate Text" />
                                                 </a>
                                             </div>
@@ -531,16 +485,16 @@
                                                 <div class="subheader">
                                                     <p class="header2">Read</p>
                                                     <span class="helpsub1">
-                                                        <a href="">
+                                                        <a>
                                                             <img src="~/assets/imgs/ico_help.png" alt="help Text" />
                                                         </a>
                                                     </span>
                                                     <span>
-                                                        <a onclick="deleteAllSelect('bodysub2')" class="btn btn-default delselectsub1">Delete All</a>
+                                                        <a onclick="deleteAllSelect('viewRole')" class="btn btn-default delselectsub1">Delete All</a>
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="bodysub1" id="bodysub2">
+                                            <div class="bodysub1" id="viewRole">
                                                 <table>
                                                     <tbody></tbody>
                                                 </table>
@@ -555,7 +509,7 @@
             </div>
             <div class="modal-footer">
                 <center>
-                    <button type="button" id="btnAddNewFile" class="btn btn-primary">Save</button>
+                    <button type="button" id="btnEditFile" class="btn btn-primary">Save</button>
                 </center>
             </div>
         </div>

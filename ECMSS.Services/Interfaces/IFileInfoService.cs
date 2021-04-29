@@ -17,6 +17,8 @@ namespace ECMSS.Services.Interfaces
 
         FileInfoDTO AddNewFile(FileInfoDTO fileInfo);
 
+        void EditFileInfo(FileInfoDTO fileInfo);
+
         void UploadNewFile(FileInfoDTO fileInfo);
 
         IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId);

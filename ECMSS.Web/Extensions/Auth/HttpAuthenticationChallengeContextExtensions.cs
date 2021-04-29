@@ -22,7 +22,6 @@ namespace ECMSS.Web.Extensions.Auth
             {
                 throw new ArgumentNullException(nameof(context));
             }
-
             context.Result = new AddChallengeOnUnauthorizedResult(challenge, context.Result);
         }
     }

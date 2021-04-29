@@ -181,6 +181,10 @@ namespace ECMSS.Services
         {
             try
             {
+                if (_fileInfoRepository.CheckContains(x => x.Name == fileInfo.Name && x.DirectoryId == fileInfo.DirectoryId))
+                {
+                    throw new Exception();
+                }
                 fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 string filePath = ConfigHelper.Read("FileUploadPath");
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
@@ -197,6 +201,40 @@ namespace ECMSS.Services
                 FileHelper.SaveFile(filePath, fileInfo.FileData);
                 _unitOfWork.Commit();
                 return _mapper.Map<FileInfoDTO>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void EditFileInfo(FileInfoDTO fileInfo)
+        {
+            try
+            {
+                var filesInNewLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
+                if (filesInNewLocation.Where(x => x.Name == fileInfo.Name).Any())
+                {
+                    throw new Exception();
+                }
+
+                var curFile = _fileInfoRepository.GetSingleById(fileInfo.Id);
+                int curDirId = curFile.DirectoryId;
+
+                string rootPath = ConfigHelper.Read("FileUploadPath");
+                string srcPath = $"{rootPath}{_directoryService.GetDirFromId(curFile.DirectoryId).Name}/{curFile.Name}";
+                string desPath = $"{rootPath}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{curFile.Name}";
+
+                curFile.DirectoryId = fileInfo.DirectoryId;
+                curFile.SecurityLevel = fileInfo.SecurityLevel;
+                curFile.Tag = fileInfo.Tag;
+
+                _fileInfoRepository.Update(curFile, f => f.DirectoryId, f => f.SecurityLevel, f => f.Tag);
+                if (curDirId != fileInfo.DirectoryId)
+                {
+                    FileHelper.Move(srcPath, desPath);
+                }
+                _unitOfWork.Commit();
             }
             catch (Exception ex)
             {

@@ -59,5 +59,11 @@ namespace ECMSS.Web.Api
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        public string GetPathFromFileId(int fileId)
+        {
+            var directory = _directoryService.GetDirFromFileId(fileId);
+            return directory.Name;
+        }
     }
 }

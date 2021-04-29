@@ -122,7 +122,8 @@ namespace ECMSS.Web.Api
         public FileInfoViewModel GetFileInfo(int id)
         {
             var fileInfo = _fileInfoService.GetFileInfo(id);
-            var fileInfoVM = new FileInfoViewModel() 
+            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            var fileInfoVM = new FileInfoViewModel()
             {
                 Id = fileInfo.Id,
                 Name = fileInfo.Name,
@@ -132,7 +133,10 @@ namespace ECMSS.Web.Api
                 Size = GetFileHistory(fileInfo).Size,
                 SecurityLevel = fileInfo.SecurityLevel,
                 Version = GetFileHistory(fileInfo).Version,
-                ModifiedDate = GetFileHistory(fileInfo).ModifiedDate
+                Tag = fileInfo.Tag,
+                ModifiedDate = GetFileHistory(fileInfo).ModifiedDate,
+                IsFavorite = fileInfo.FileFavorites.Where(f => f.EmployeeId == empId).Count() > 0,
+                IsImportant = fileInfo.FileImportants.Where(i => i.EmployeeId == empId).Count() > 0
             };
             return fileInfoVM;
         }
@@ -168,6 +172,20 @@ namespace ECMSS.Web.Api
             {
                 var result = _fileInfoService.AddNewFile(fileInfo);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage EditFileInfo(FileInfoDTO fileInfo)
+        {
+            try
+            {
+                _fileInfoService.EditFileInfo(fileInfo);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch
             {

@@ -75,11 +75,16 @@ $(document).ready(function () {
     $("#showFolder").click(function () {
         $(".listFolder1").slideToggle("fast");
     });
+
+    $("#showAllFolderEdit").click(function () {
+        $(".listFolderEdit").slideToggle("fast");
+    })
 });
 
 $(document).delegate("#btnGetPath", "click", function (event) {
     $(event.target).closest(".listFolder").slideToggle("fast");
     $(event.target).closest(".listFolder1").slideToggle("fast");
+    $(event.target).closest(".listFolderEdit").slideToggle("fast");
 });
 
 function addNewClass(id) {
@@ -157,6 +162,22 @@ $(document).on("click", ".sidebar-menu li", function (e) {
     }
 });
 
+$(document).on("click", ".sidebar-menu-edit li", function (e) {
+    e.stopPropagation();
+    $(".sidebar-menu-edit").find("span").remove();
+    $(this).toggleClass("active");
+    if ($(this).hasClass("active")) {
+        $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
+        $("<span onclick=selectFolder('#folderPathEdit','.sidebar-menu-edit') class='btnMove' id='btnGetPath' >Select <i class='fas fa-angle-right'></i></span>").insertAfter($(this).children("a"));
+    } else {
+        $(this)
+            .children()
+            .children()
+            .attr("src", "/assets/imgs/ico_folder_off.png");
+        $(this).children("span").remove();
+    }
+});
+
 $(document).on("click", ".sidebar-menu2 li", function (e) {
     e.stopPropagation();
     $(".sidebar-menu2").find("span").remove();
@@ -177,7 +198,7 @@ $(document).on("click", ".sidebar-menu2 li", function (e) {
 
 $(document).on("click", ".sidebar-menu1 li", function (e) {
     e.stopPropagation();
-    $(".sidebar-menu").find("span").remove();
+    $(".sidebar-menu1").find("span").remove();
     $(this).toggleClass("active");
     if ($(this).hasClass("active")) {
         $(this).children().children().attr("src", "/assets/imgs/ico_folder_on.png");
@@ -262,11 +283,15 @@ $("#fileupload").click(function () {
 });
 
 function changebackgroundFilextension(filename, optId, inpID) {
-    var backgroundIcon = "";
     $(".listFileImport").css("display", "block");
     $(".listFileImport .list").append(String.format("<li id={0}>{1} <a onclick=\"removefile('{0}','{2}')\" class='btnfloatR'><img src='/assets/imgs/ico_go_rcb.png'/></a></li>", optId, filename, inpID));
     var extension = getFileExtension(filename);
+    var backgroundIcon = getBackgroundIconFromExtension(extension);
+    $("#" + optId).css("background-image", "url(" + backgroundIcon + ")");
+}
 
+function getBackgroundIconFromExtension(extension) {
+    var backgroundIcon = "";
     if (extension === "doc" || extension === "docx") {
         backgroundIcon = "/assets/imgs/ico_doc_on.png";
     } else if (extension === "xls" || extension === "xlsx" || extension === "xlsm" || extension === "csv") {
@@ -278,7 +303,7 @@ function changebackgroundFilextension(filename, optId, inpID) {
     } else {
         backgroundIcon = "/assets/imgs/ico_pdf_on.png";
     }
-    $("#" + optId).css("background-image", "url(" + backgroundIcon + ")");
+    return backgroundIcon;
 }
 
 function removefile(optionID, inpID) {
@@ -415,8 +440,26 @@ function resetFileInfoModal() {
     $("#inputhidden").children().remove();
     $(".listFileImport .list").children().remove();
     $(".listFileImport").css("display", "none");
-    $("#folderPath").text("PoscoVST");
+    $("#folderPath").val("PoscoVST");
+    $(".tagSecurity .input_hashtag input").val("#");
+    $("#tab3C input[name = empName]").val("");
+    $("#tab3C table tbody").children().remove();
+    $("#PartR table tbody").children().remove();
+    $("#chktype").prop("checked", false);
+    $("#listAllcheck").prop("checked", false);
+
+    $("#security-option a").each(function (index, elem) {
+        if ($(elem).text().trim() === "Public") {
+            $(elem).addClass("active");
+        } else {
+            $(elem).removeClass("active");
+        }
+    });
 }
+
+$("#addNew").on("hidden.bs.modal", function () {
+    resetFileInfoModal();
+});
 
 function fileToByteArray(file) {
     return new Promise((resolve, reject) => {
@@ -456,6 +499,22 @@ function moveToLeft(id) {
     }
 }
 
+function moveToLeft_Edit(id) {
+    var tabActive = $("#tabs3").children().children(".active").attr("id");
+    if (tabActive == "tab6") {
+        var listChecked = $("#" + id + " .checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).find("input[data-emp-id]").attr("data-emp-id");
+            if ($("#tab6C tbody").find("input[data-emp-id='" + empId + "']").length === 0) {
+                $(value).appendTo("#tab6C tbody");
+            }
+        });
+    } else if (tabActive == "tab7") {
+        $("#" + id + " .checked").remove();
+    }
+}
+
+
 function moveToRight(id) {
     var tabActive = $("#tabs2").children().children(".active").attr("id");
     var tblWrap = $("#" + id + " table tbody");
@@ -484,12 +543,36 @@ function moveToRight(id) {
     }
 }
 
+function moveToRight_Edit(id) {
+    var tabActive = $("#tabs3").children().children(".active").attr("id");
+    var tblWrap = $("#" + id + " table tbody");
+    if (tabActive == "tab6") {
+        var listChecked = $("#tab6C tbody .checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).find("input[data-emp-id]").attr("data-emp-id");
+            if ($("#EditContent #PartR").find("input[data-emp-id='" + empId + "']").length === 0) {
+                $(value).appendTo(tblWrap);
+            }
+        });
+    } else if (tabActive == "tab7") {
+        var listChecked = $("#organListEdit tr.checked");
+        listChecked.each(function (index, value) {
+            var empId = $(value).attr("data-emp-id");
+            if ($("#EditContent #PartR").find("input[data-emp-id='" + empId + "']").length === 0) {
+                var empName = $(value).find("div.d_tooltip").text();
+                var newElem = String.format("<tr class='checked'>" +
+                    "<td>" +
+                    "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange='addNewClass({0})' checked><span> {1}</span>" +
+                    "</td>" +
+                    "</tr>", empId, empName);
+                $(newElem).clone().appendTo(tblWrap);
+            }
+        });
+    }
+} 
+
 function isTrashUrl() {
     return window.location.pathname === "/trash-content";
-}
-
-function editFileContent(id) {
-    $("#EditContent").modal("show");
 }
 
 function copyToClipboard(text) {

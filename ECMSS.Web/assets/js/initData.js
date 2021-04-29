@@ -1,5 +1,6 @@
 ﻿(function () {
-    initDepartments();
+    initDepartments("#organList");
+    initDepartments("#organListEdit");
 
     $("#tbMainDefault th").resizable({
         handles: "e",
@@ -21,6 +22,9 @@ async function initTreeFolder() {
         );
         $(".addFolderTreeBox2").html(
             renderTreeFolder(listToTree(response.data), "sidebar-menu2", false)
+        );
+        $(".addFolderTreeBoxEdit").html(
+            renderTreeFolder(listToTree(response.data), "sidebar-menu-edit", false)
         );
         $('#tbMainDefault').on('xhr.dt', function () { $.fn.dataTable.ext.search.pop(); });
     } catch (error) {
@@ -45,7 +49,6 @@ function initDataTable(url) {
         },
         columns: [
             {
-                //+ "<div class='dropdown'><a class=' dropdown-toggle' type='button' data-toggle='dropdown'><i class='fas fa-caret-down'></i></a><ul class='dropdown-menu'><li><a href='#'>Coppy Link to Eplite</a></li><li><a onclick='editFileContent({1})'>Edit Content</a></li></ul></div>" +
                 data: "Name",
                 title: "FileName",
                 width: "50%",
@@ -79,7 +82,7 @@ function initDataTable(url) {
                         "<img src='{2}' alt='icon_start' />" +
                         "</a>" +
                         "<a onclick='openContent({1})' class='contentname'>{3}</a>" +
-                        "<div class='dropdown'><a class='dropdown-toggle' type='button' data-toggle='dropdown'><i class='fas fa-caret-down'></i></a><ul class='dropdown-menu'><li><a onclick='getFileShareUrl({1})'>Copy Link</a></li><li><a onclick='editFileContent({1})'>Edit</a></li></ul></div>" +
+                        "<div class='dropdown'><a class='dropdown-toggle' type='button' data-toggle='dropdown'><i class='fas fa-caret-down'></i></a><ul class='dropdown-menu'><li><a onclick='getFileShareUrl({1})'>Copy Link</a></li><li><a onclick='initEditData({1})'>Edit</a></li></ul></div>" +
                         "</div>", importantClass, row["Id"], favoriteImgSrc, data);
                 }
             },
@@ -343,7 +346,6 @@ $(document).on("click", "#btnAddNewFile", async function () {
             await shareFile(fileInfos, shareReads, shareEdits);
         }
         router.navigateTo(window.location.pathname);
-        resetFileInfoModal();
     }
 });
 
@@ -441,16 +443,25 @@ async function getDirFromPath(path) {
     }
 }
 
-$("#tab3C > a > img").click(async function () {
+$("#tab3C > a > img").click(function () {
     var empName = $("#tab3C > input[name='empName']").val();
+    getEmpsByName(empName, "#userList");
+});
+
+$("#tab6C > a > img").click(function () {
+    var empName = $("#tab6C > input[name='empName']").val();
+    getEmpsByName(empName, "#tab6C .normalTb tbody");
+});
+
+async function getEmpsByName(name, elem) {
     try {
-        var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", empName));
+        var response = await api.get(String.format("Employee/GetEmployeesByName?empName={0}", name));
         var emps = response.data;
-        $("#userList").html("");
+        $(elem).html("");
         $(emps).each(function (index, value) {
             var checkElem = $(".positionSearch").find("table input[data-emp-id='" + value.Id + "']").length > 0;
             if (!checkElem) {
-                $("#userList").append(
+                $(elem).append(
                     String.format("<tr>" +
                         "<td>" +
                         "<input type='checkbox' name='name' value='' data-emp-id='{0}' onchange=\"addNewClass({0})\" />" +
@@ -463,30 +474,31 @@ $("#tab3C > a > img").click(async function () {
     } catch (error) {
         console.log(error);
     }
-});
+}
 
-async function initDepartments() {
+async function initDepartments(parentElem) {
+    var parentElemId = $(parentElem).attr("id");
     try {
         var response = await api.get("Department/GetDepartments");
         var depts = response.data;
         $(depts).each(function (index, value) {
             var nextElemId = index + 1 <= depts.length - 1 ? depts[index + 1].Id : null;
-            $("#organList").append(String.format(
+            $(parentElem).append(String.format(
                 "<tr class='dept-list' data-dept-id='{0}'>" +
                 "<td class= 'bdr0'>" +
                 "<div>" +
                 "<label>" +
-                "<input type='checkbox' onclick='selectEmpsInDept({0}, {2})'>" +
+                "<input type='checkbox' onclick='selectEmpsInDept({0}, {2}, \"{3}\")'>" +
                 "</label>" +
                 "</div>" +
                 "</td>" +
                 "<td class='name-dept'>" +
                 "<strong>{1}</strong>" +
-                "<a href='#' onclick='showUser({0})'>" +
+                "<a href='#' onclick='showUser({0}, \"{3}\")'>" +
                 "<img src='/assets/imgs/btn_show_peo.gif' />" +
                 "</a>" +
                 "</td>" +
-                "</tr>", value.Id, value.Name, nextElemId
+                "</tr>", value.Id, value.Name, nextElemId, parentElemId
             ));
         });
     } catch (error) {
@@ -494,14 +506,14 @@ async function initDepartments() {
     }
 }
 
-async function showUser(deptId) {
+async function showUser(deptId, parentId) {
     try {
         var response = await api.get("Employee/GetEmployeesByDeptId?deptId=" + deptId);
         var emps = response.data;
         $(emps).each(function (index, value) {
-            var elem = $("#organList").find("tr[data-emp-id='" + value.Id + "']");
+            var elem = $("#" + parentId).find("tr[data-emp-id='" + value.Id + "']");
             if (elem.length === 0) {
-                $("#organList tr[data-dept-id='" + deptId + "']").after(String.format("<tr class='groupUser activeUser' data-emp-id='{0}'>" +
+                $("#" + parentId + " tr[data-dept-id='" + deptId + "']").after(String.format("<tr class='groupUser activeUser' data-emp-id='{0}'>" +
                     "<td class='bdr1'>" +
                     "<div>" +
                     "<label>" +
@@ -522,9 +534,9 @@ async function showUser(deptId) {
     }
 }
 
-async function selectEmpsInDept(fromId, toId) {
-    var fromElem = $("tr[data-dept-id='" + fromId + "']");
-    var toElem = $("tr[data-dept-id='" + toId + "']");
+async function selectEmpsInDept(fromId, toId, parentId) {
+    var fromElem = $("#" + parentId + " tr[data-dept-id='" + fromId + "']");
+    var toElem = $("#" + parentId + " tr[data-dept-id='" + toId + "']");
     var empElems = fromElem.nextUntil(toElem);
     var isRootChecked = fromElem.find("input:checkbox").prop("checked");
 
@@ -532,9 +544,9 @@ async function selectEmpsInDept(fromId, toId) {
         var response = await api.get("Employee/GetEmployeesByDeptId?deptId=" + fromId);
         var emps = response.data;
         $(emps).each(function (index, value) {
-            var elem = $("#organList").find("tr[data-emp-id='" + value.Id + "']");
+            var elem = $("#" + parentId).find("tr[data-emp-id='" + value.Id + "']");
             if (elem.length === 0) {
-                $("#organList tr[data-dept-id='" + fromId + "']").after(String.format("<tr class='groupUser' data-emp-id='{0}'>" +
+                $("#" + parentId + " tr[data-dept-id='" + fromId + "']").after(String.format("<tr class='groupUser' data-emp-id='{0}'>" +
                     "<td class='bdr1'>" +
                     "<div>" +
                     "<label>" +
@@ -557,5 +569,108 @@ async function selectEmpsInDept(fromId, toId) {
             elem.prop("checked", isRootChecked);
             elem.change();
         });
+    }
+}
+
+async function initEditData(fileId) {
+    try {
+        var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+
+        var dirRes = await api.get("Directory/GetPathFromFileId?fileId=" + fileId);
+        var fileInfoRes = await api.get("FileInfo/GetFileInfo?id=" + fileId);
+        var fileSharesRes = await api.get("FileShare/GetFileShared?fileId=" + fileId);
+
+        var fileInfo = fileInfoRes.data;
+        var fileShares = fileSharesRes.data;
+        var extension = getFileExtension(fileInfo.Name);
+        var backgroundIcon = getBackgroundIconFromExtension(extension);
+
+        $("#editRole tbody").empty();
+        $("#viewRole tbody").empty();
+        $("#tab6C tbody").empty();
+        $("#folderPathEdit").val(("PoscoVST>" + dirRes.data).replaceAll("/", ">"));
+        $(".listFileImportEdit > .list").html(String.format("<li file-id={0} style='background-image: url({1});'>{2}</li>", fileInfo.Id, backgroundIcon, fileInfo.Name))
+        $("#EditContent .tagSecurity input").val(fileInfo.Tag);
+        $("#EditContent .PartL .firtL .account01").text(curEmp.EpLiteId);
+
+        $("#EditContent .safe_btn_box a").each(function (index, elem) {
+            if ($(elem).text().trim() === fileInfo.SecurityLevel) {
+                $(elem).addClass("active");
+            } else {
+                $(elem).removeClass("active");
+            }
+        });
+
+        $(fileShares).each(function (index, value) {
+            if (value.Permission == 1) {
+                $("#viewRole tbody").append(String.format("<tr class='checked'><td><input type='checkbox' name='name' value='' data-emp-id='{0}' onchange='addNewClass({0})'><span> {1}</span></td></tr>", value.Employee.Id, value.Employee.LastName + " " + value.Employee.FirstName));
+            } else {
+                $("#editRole tbody").append(String.format("<tr class='checked'><td><input type='checkbox' name='name' value='' data-emp-id='{0}' onchange='addNewClass({0})'><span> {1}</span></td></tr>", value.Employee.Id, value.Employee.LastName + " " + value.Employee.FirstName));
+            }
+        });
+        $("#EditContent .checked input").prop("checked", true);
+
+        $("#EditContent").modal("show");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+$(document).on("click", "#btnEditFile", async function () {
+    var fileId = $("#EditContent .listFileImportEdit li").attr("file-id");
+    var securityLevel = $("#EditContent #security-option").find(".active").text().trim()
+    var tag = $("#EditContent input[name='tag']").val();
+    var curPath = $("#EditContent #folderPathEdit").val().trim().replace("PoscoVST>", "").replaceAll(">", "/");
+    var dir = await getDirFromPath(curPath);
+
+    var shareReads = $("#viewRole input").toArray();
+    var shareEdits = $("#editRole input").toArray();
+
+    var fileShares = [];
+    if (shareReads.length > 0) {
+        for (var r = 0; r < shareReads.length; r++) {
+            var fileShare = {
+                FileId: fileId,
+                EmployeeId: $(shareReads[r]).attr("data-emp-id"),
+                Permission: 1
+            }
+            fileShares.push(fileShare);
+        }
+    }
+    if (shareEdits.length > 0) {
+        for (var r = 0; r < shareEdits.length; r++) {
+            var fileShare = {
+                FileId: fileId,
+                EmployeeId: $(shareEdits[r]).attr("data-emp-id"),
+                Permission: 2
+            }
+            fileShares.push(fileShare);
+        }
+    }
+
+    var editFileStatus = editFileInfo(fileId, securityLevel, tag, dir);
+    if (editFileStatus) {
+        try {
+            await api.post("FileShare/EditFileShares?fileId=" + fileId, fileShares);
+            $("#EditContent").modal("hide");
+            router.navigateTo(window.location.pathname);
+        } catch (error) {
+            swal("Failed!", "Edit file failed, check your input and try again!", "error");
+        }
+    }
+});
+
+async function editFileInfo(fileId, securityLevel, tag, dir, isFavorite) {
+    var fileInfo = {
+        Id: fileId,
+        SecurityLevel: securityLevel,
+        Tag: tag,
+        DirectoryId: dir.Id
+    }
+    try {
+        await api.post("FileInfo/EditFileInfo", fileInfo);
+        return true;
+    } catch (error) {
+        return false;
     }
 }

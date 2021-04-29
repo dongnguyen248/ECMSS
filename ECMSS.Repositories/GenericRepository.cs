@@ -61,6 +61,15 @@ namespace ECMSS.Repositories
             return _dbSet.RemoveRange(entities);
         }
 
+        public void RemoveMulti(Expression<Func<TEntity, bool>> condition)
+        {
+            IEnumerable<TEntity> objects = _dbSet.Where<TEntity>(condition).AsEnumerable();
+            foreach (TEntity obj in objects)
+            {
+                _dbSet.Remove(obj);
+            }
+        }
+
         public void Update(TEntity entity)
         {
             _dbSet.Attach(entity);

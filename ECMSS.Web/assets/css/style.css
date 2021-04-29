@@ -603,7 +603,6 @@ a {
     width: 200px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
     background-size: 195px 30px;
 }
 
@@ -668,6 +667,7 @@ a {
         color: #fff !important;
     }
 
+.listFileImportEdit,
 .listFileImport {
     margin-top: -5px !important;
     overflow-x: hidden;
@@ -1319,6 +1319,7 @@ a {
 }
 
 /*css for select folder location*/
+.listFolderEdit,
 .listFolder {
     /*right: 365px;
     top: 124px;*/
@@ -1437,6 +1438,7 @@ ol {
 }
 
 /*Open folder css*/
+.sidebar-menu-edit,
 .sidebar-menu {
     list-style: none;
     margin: 0;
@@ -1444,13 +1446,14 @@ ol {
     background-color: #f6f6f6;
     width: 537px;
 }
-
+    .sidebar-menu-edit > li,
     .sidebar-menu > li {
         position: relative;
         margin: 0;
         padding: 0;
     }
 
+        .sidebar-menu-edit > li > a,
         .sidebar-menu > li > a {
             padding: 9px 5px 0px 15px;
             display: inline-block;
@@ -1458,6 +1461,8 @@ ol {
             color: #333;
         }
 
+        .sidebar-menu-edit > li:hover > a,
+        .sidebar-menu-edit > li.active > a,
         .sidebar-menu > li:hover > a,
         .sidebar-menu > li.active > a {
             color: #555;
@@ -1465,10 +1470,12 @@ ol {
             border-left-color: #f6f6f6;
         }
 
+        .sidebar-menu-edit > li > .treeview-menu,
         .sidebar-menu > li > .treeview-menu {
             margin: 0 15px;
         }
 
+    .sidebar-menu-edit li.active > .treeview-menu,
     .sidebar-menu li.active > .treeview-menu {
         display: block;
     }
@@ -1478,6 +1485,7 @@ ol {
         text-decoration: none;
     }
 
+    .sidebar-menu-edit .treeview-menu,
     .sidebar-menu .treeview-menu {
         display: none;
         list-style: none;
@@ -1486,21 +1494,25 @@ ol {
         padding-left: 5px;
     }
 
+        .sidebar-menu-edit .treeview-menu .treeview-menu,
         .sidebar-menu .treeview-menu .treeview-menu {
             padding-left: 20px;
         }
 
+        .sidebar-menu-edit .treeview-menu > li,
         .sidebar-menu .treeview-menu > li {
             margin: 0;
         }
 
+            .sidebar-menu-edit .treeview-menu > li > a,
             .sidebar-menu .treeview-menu > li > a {
                 padding: 5px 5px 5px 15px;
                 display: inline-block;
                 font-size: 14px;
                 color: #333;
             }
-
+                .sidebar-menu-edit .treeview-menu > li.active > a,
+                .sidebar-menu-edit .treeview-menu > li > a:hover,
                 .sidebar-menu .treeview-menu > li.active > a,
                 .sidebar-menu .treeview-menu > li > a:hover {
                     color: #333;
@@ -1893,6 +1905,7 @@ ol {
     padding-right: 5px;
 }
 
+#tab6C a img,
 #tab3C a img {
     top: -2px;
     position: relative;

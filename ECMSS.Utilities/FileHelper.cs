@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ECMSS.Utilities
 {
@@ -6,6 +7,10 @@ namespace ECMSS.Utilities
     {
         public static void SaveFile(string filePath, byte[] fileData)
         {
+            if (File.Exists(filePath))
+            {
+                throw new Exception();
+            }
             using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
             {
                 fs.Write(fileData, 0, fileData.Length);
@@ -58,6 +63,15 @@ namespace ECMSS.Utilities
             {
                 File.Delete(path);
             }
+        }
+
+        public static void Move(string srcPath, string desPath)
+        {
+            if (File.Exists(desPath))
+            {
+                throw new Exception();
+            }
+            File.Move(srcPath, desPath);
         }
     }
 }
