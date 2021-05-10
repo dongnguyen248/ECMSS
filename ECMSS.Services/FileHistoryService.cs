@@ -34,7 +34,7 @@ namespace ECMSS.Services
                 filePath += $"{_directoryService.GetDirFromFileId(fileHistory.FileId).Name}/{fileHistory.FileName}";
                 fileHistory.Size = fileHistory.FileData.Length / 1024;
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
-                FileHelper.SaveFile(filePath, fileHistory.FileData);
+                FileHelper.SaveFile(filePath, fileHistory.FileData, true);
                 _unitOfWork.Commit();
             }
             catch (Exception ex)

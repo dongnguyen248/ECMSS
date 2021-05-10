@@ -5,11 +5,14 @@ namespace ECMSS.Utilities
 {
     public class FileHelper
     {
-        public static void SaveFile(string filePath, byte[] fileData)
+        public static void SaveFile(string filePath, byte[] fileData, bool isOverride = false)
         {
-            if (File.Exists(filePath))
+            if (!isOverride)
             {
-                throw new Exception();
+                if (File.Exists(filePath))
+                {
+                    throw new Exception();
+                }
             }
             using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
             {
