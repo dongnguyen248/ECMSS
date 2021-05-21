@@ -67,7 +67,7 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Invalid path");
                 }
-                string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{path}/";
+                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{path}/";
                 _directoryRepository.Add(new Directory { Name = dirName, ParentId = dir.Id });
                 FileHelper.CreatePath(fullPath, dirName);
                 _unitOfWork.Commit();
@@ -88,7 +88,7 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Invalid path or does not have permission to delete this directory");
                 }
-                string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{path}/";
+                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{path}/";
 
                 var filesInDir = _fileInfoRepository.GetMany(x => x.DirectoryId == dir.Id);
                 if (filesInDir.Any())

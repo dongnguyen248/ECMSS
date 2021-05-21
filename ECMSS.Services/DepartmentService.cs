@@ -22,7 +22,7 @@ namespace ECMSS.Services
 
         public IEnumerable<DepartmentDTO> GetDepartments()
         {
-            return _mapper.Map<IEnumerable<DepartmentDTO>>(_departmentRepository.GetAll());
+            return _mapper.Map<IEnumerable<DepartmentDTO>>(_departmentRepository.GetAll(dep => dep.Employees));
         }
     }
 }

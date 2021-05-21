@@ -30,7 +30,7 @@ namespace ECMSS.Services
             try
             {
                 fileHistory.Modifier = _employeeRepository.GetSingle(x => x.EpLiteId == fileHistory.ModifierUser).Id;
-                string filePath = ConfigHelper.Read("FileUploadPath");
+                string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromFileId(fileHistory.FileId).Name}/{fileHistory.FileName}";
                 fileHistory.Size = fileHistory.FileData.Length / 1024;
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));

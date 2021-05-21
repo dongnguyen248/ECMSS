@@ -6,7 +6,6 @@ using ECMSS.Services.Interfaces;
 using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ECMSS.Services
 {
@@ -30,7 +29,7 @@ namespace ECMSS.Services
 
         public EmployeeDTO GetEmployeeById(int empId)
         {
-            return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingleById(empId));
+            return _mapper.Map<EmployeeDTO>(_employeeRepository.GetSingle(x => x.Id == empId, x => x.Department));
         }
 
         public IEnumerable<EmployeeDTO> GetEmployeesByDeptId(int deptId)

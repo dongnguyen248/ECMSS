@@ -60,7 +60,7 @@ namespace ECMSS.Services
                     var dir = _directoryService.GetDirFromFileId(fileId);
                     var fileInfo = _fileInfoRepository.GetSingleById(fileId);
                     _fileInfoRepository.Remove(fileInfo);
-                    string fullPath = $@"{ConfigHelper.Read("FileUploadPath")}{dir.Name}/{fileInfo.Name}";
+                    string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{dir.Name}/{fileInfo.Name}";
                     FileHelper.DeleteFile(fullPath);
                     _unitOfWork.Commit();
                 }

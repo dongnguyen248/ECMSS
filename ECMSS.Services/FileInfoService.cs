@@ -66,7 +66,7 @@ namespace ECMSS.Services
             string filePath = string.Empty;
             if (Debugger.IsAttached)
             {
-                filePath = ConfigHelper.Read("FileUploadPath");
+                filePath = CommonConstants.FILE_UPLOAD_PATH;
             }
             else
             {
@@ -87,7 +87,7 @@ namespace ECMSS.Services
             string filePath = string.Empty;
             if (Debugger.IsAttached)
             {
-                filePath = ConfigHelper.Read("FileUploadPath");
+                filePath = CommonConstants.FILE_UPLOAD_PATH;
             }
             else
             {
@@ -110,7 +110,7 @@ namespace ECMSS.Services
             {
                 fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
-                string filePath = ConfigHelper.Read("FileUploadPath");
+                string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
                 _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
                 FileHistoryDTO fileHistory = new FileHistoryDTO
@@ -186,7 +186,7 @@ namespace ECMSS.Services
                     throw new Exception();
                 }
                 fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
-                string filePath = ConfigHelper.Read("FileUploadPath");
+                string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
                 var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
                 FileHistoryDTO fileHistory = new FileHistoryDTO
@@ -221,7 +221,7 @@ namespace ECMSS.Services
                 var curFile = _fileInfoRepository.GetSingleById(fileInfo.Id);
                 int curDirId = curFile.DirectoryId;
 
-                string rootPath = ConfigHelper.Read("FileUploadPath");
+                string rootPath = CommonConstants.FILE_UPLOAD_PATH;
                 string srcPath = $"{rootPath}{_directoryService.GetDirFromId(curFile.DirectoryId).Name}/{curFile.Name}";
                 string desPath = $"{rootPath}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{curFile.Name}";
 
