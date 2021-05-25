@@ -1,11 +1,13 @@
-﻿namespace ECMSS.Services.Interfaces
+﻿using System;
+
+namespace ECMSS.Services.Interfaces
 {
     public interface ITrashService
     {
-        void AddFilesToTrash(int[] fileIds, int empId);
+        void AddFilesToTrash(Guid[] fileIds, int empId);
 
-        void CleanTrash(int[] fileIds);
+        void CleanTrash(Guid[] fileIds);
 
-        void RecoverFile(int[] fileIds);
+        void RecoverFile(Guid[] fileIds);
     }
 }

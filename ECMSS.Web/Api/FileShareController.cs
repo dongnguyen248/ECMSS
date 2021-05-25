@@ -1,6 +1,7 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -33,7 +34,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage EditFileShares([FromBody] IEnumerable<FileShareDTO> fileShares, int fileId)
+        public HttpResponseMessage EditFileShares([FromBody] IEnumerable<FileShareDTO> fileShares, Guid fileId)
         {
             try
             {
@@ -46,7 +47,7 @@ namespace ECMSS.Web.Api
             }
         }
         [HttpGet]
-        public IEnumerable<FileShareDTO> GetFileShared(int fileId)
+        public IEnumerable<FileShareDTO> GetFileShared(Guid fileId)
         {
             return _fileShareService.GetFileShares(fileId);
         }

@@ -2,6 +2,7 @@
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
 using ECMSS.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -38,14 +39,14 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public string[] GetFileUrl(int id, bool isShareUrl = false)
+        public string[] GetFileUrl(Guid id, bool isShareUrl = false)
         {
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _fileInfoService.GetFileUrl(id, empId, isShareUrl);
         }
 
         [HttpGet]
-        public string GetFileShareUrl(int id)
+        public string GetFileShareUrl(Guid id)
         {
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _fileInfoService.GetFileShareUrl(id, empId);
@@ -119,7 +120,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public FileInfoViewModel GetFileInfo(int id)
+        public FileInfoViewModel GetFileInfo(Guid id)
         {
             var fileInfo = _fileInfoService.GetFileInfo(id);
             var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
@@ -171,6 +172,20 @@ namespace ECMSS.Web.Api
             try
             {
                 var result = _fileInfoService.AddNewFile(fileInfo);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPost]
+        public HttpResponseMessage AddFiles(IEnumerable<FileInfoDTO> fileInfos)
+        {
+            try
+            {
+                var result = _fileInfoService.AddFiles(fileInfos);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch

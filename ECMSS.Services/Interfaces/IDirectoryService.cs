@@ -1,4 +1,5 @@
 ﻿using ECMSS.DTO;
+using System;
 using System.Collections.Generic;
 
 namespace ECMSS.Services.Interfaces
@@ -11,7 +12,7 @@ namespace ECMSS.Services.Interfaces
 
         void DeleteDirectory(int empId, string path);
 
-        DirectoryDTO GetDirFromFileId(int fileId);
+        DirectoryDTO GetDirFromFileId(Guid fileId);
 
         DirectoryDTO GetDirFromId(int dirId);
 

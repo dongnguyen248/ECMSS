@@ -25,7 +25,7 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public void AddFilesToTrash(int[] fileIds, int empId)
+        public void AddFilesToTrash(Guid[] fileIds, int empId)
         {
             try
             {
@@ -50,13 +50,13 @@ namespace ECMSS.Services
             }
         }
 
-        public void CleanTrash(int[] fileIds)
+        public void CleanTrash(Guid[] fileIds)
         {
             try
             {
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    int fileId = fileIds[i];
+                    Guid fileId = fileIds[i];
                     var dir = _directoryService.GetDirFromFileId(fileId);
                     var fileInfo = _fileInfoRepository.GetSingleById(fileId);
                     _fileInfoRepository.Remove(fileInfo);
@@ -71,14 +71,14 @@ namespace ECMSS.Services
             }
         }
 
-        public void RecoverFile(int[] fileIds)
+        public void RecoverFile(Guid[] fileIds)
         {
             try
             {
                 List<Trash> trashes = new List<Trash>();
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    int fileId = fileIds[i];
+                    Guid fileId = fileIds[i];
                     var file = _trashRepository.GetSingle(f => f.FileId == fileId);
                     trashes.Add(file);
                 }

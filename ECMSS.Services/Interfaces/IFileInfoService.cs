@@ -1,4 +1,5 @@
 ﻿using ECMSS.DTO;
+using System;
 using System.Collections.Generic;
 
 namespace ECMSS.Services.Interfaces
@@ -9,13 +10,15 @@ namespace ECMSS.Services.Interfaces
 
         IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId);
 
-        string[] GetFileUrl(int id, int empId, bool isShareUrl);
+        string[] GetFileUrl(Guid id, int empId, bool isShareUrl);
 
-        string GetFileShareUrl(int id, int empId);
+        string GetFileShareUrl(Guid id, int empId);
 
-        FileInfoDTO GetFileInfo(int id);
+        FileInfoDTO GetFileInfo(Guid id);
 
         FileInfoDTO AddNewFile(FileInfoDTO fileInfo);
+
+        List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos);
 
         void EditFileInfo(FileInfoDTO fileInfo);
 

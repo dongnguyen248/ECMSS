@@ -17,32 +17,32 @@ namespace ECMSS.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FileInfo()
         {
-            this.FileHistories = new HashSet<FileHistory>();
             this.FileFavorites = new HashSet<FileFavorite>();
+            this.FileHistories = new HashSet<FileHistory>();
             this.FileImportants = new HashSet<FileImportant>();
-            this.Trashes = new HashSet<Trash>();
             this.FileShares = new HashSet<FileShare>();
+            this.Trashes = new HashSet<Trash>();
         }
     
-        public int Id { get; set; }
         public string Name { get; set; }
         public int Owner { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }
+        public System.Guid Id { get; set; }
     
+        public virtual Directory Directory { get; set; }
         public virtual Employee Employee { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FileHistory> FileHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileFavorite> FileFavorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FileHistory> FileHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileImportant> FileImportants { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Trash> Trashes { get; set; }
-        public virtual Directory Directory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FileShare> FileShares { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Trash> Trashes { get; set; }
     }
 }

@@ -37,9 +37,9 @@ namespace ECMSS.Services
             return _mapper.Map<IEnumerable<DirectoryDTO>>(directories);
         }
 
-        public DirectoryDTO GetDirFromFileId(int fileId)
+        public DirectoryDTO GetDirFromFileId(Guid fileId)
         {
-            var args = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.Int, Value = fileId };
+            var args = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.UniqueIdentifier, Value = fileId };
             var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromFileId @FileId", args).FirstOrDefault();
             return _mapper.Map<DirectoryDTO>(directory);
         }

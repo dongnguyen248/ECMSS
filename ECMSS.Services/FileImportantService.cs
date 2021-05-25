@@ -19,7 +19,7 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public void AddOrRemoveImportantFile(int fileId, int employeeId)
+        public void AddOrRemoveImportantFile(Guid fileId, int employeeId)
         {
             FileImportant fileImportant = _fileImportantRepository.GetSingle(x => x.FileId == fileId && x.EmployeeId == employeeId);
             if (fileImportant == null)

@@ -15,8 +15,8 @@ namespace ECMSS.Data
     public partial class Trash
     {
         public System.Guid Id { get; set; }
-        public int FileId { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
+        public Nullable<System.Guid> FileId { get; set; }
     
         public virtual FileInfo FileInfo { get; set; }
     }

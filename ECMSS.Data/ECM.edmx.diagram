@@ -11,29 +11,29 @@
         <EntityTypeShape EntityType="ECMModel.Role" Width="1.5" PointX="3.75" PointY="2.125" IsExpanded="true" />
         <AssociationConnector Association="ECMModel.Fk_Employee_Department" ManuallyRouted="false" />
         <AssociationConnector Association="ECMModel.Fk_Employee_Roles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ECMModel.FileInfo" Width="1.5" PointX="6" PointY="4.5" />
-        <AssociationConnector Association="ECMModel.Fk_FileInfo_Employee" />
-        <EntityTypeShape EntityType="ECMModel.FileHistory" Width="1.5" PointX="9" PointY="4.625" />
-        <AssociationConnector Association="ECMModel.Fk_FileHistory_Employee" />
-        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileInfo" />
-        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileStatus" />
-        <EntityTypeShape EntityType="ECMModel.FileFavorite" Width="1.5" PointX="5.125" PointY="9.375" />
-        <AssociationConnector Association="ECMModel.Fk_FileFavorite_Employee" />
-        <AssociationConnector Association="ECMModel.Fk_FileFavorite_FileInfo" />
-        <EntityTypeShape EntityType="ECMModel.FileImportant" Width="1.5" PointX="11.25" PointY="8.25" />
-        <AssociationConnector Association="ECMModel.Fk_FileImportant_Employee" />
-        <AssociationConnector Association="ECMModel.Fk_FileImportant_FileInfo" />
-        <EntityTypeShape EntityType="ECMModel.Trash" Width="1.5" PointX="8.25" PointY="9" />
-        <AssociationConnector Association="ECMModel.Fk_Trash_FileInfo" />
         <EntityTypeShape EntityType="ECMModel.FilePermission" Width="1.5" PointX="14.125" PointY="4.75" />
         <EntityTypeShape EntityType="ECMModel.Directory" Width="1.5" PointX="0.75" PointY="4.375" />
         <AssociationConnector Association="ECMModel.Fk_Directory_Seft" />
+        <AssociationConnector Association="ECMModel.Fk_Directory_Department" />
+        <EntityTypeShape EntityType="ECMModel.FileFavorite" Width="1.5" PointX="11.375" PointY="7.75" />
+        <EntityTypeShape EntityType="ECMModel.FileHistory" Width="1.5" PointX="10.375" PointY="3.375" />
+        <EntityTypeShape EntityType="ECMModel.FileImportant" Width="1.5" PointX="6.125" PointY="5.25" />
+        <EntityTypeShape EntityType="ECMModel.FileInfo" Width="1.5" PointX="9.125" PointY="7.5" />
+        <EntityTypeShape EntityType="ECMModel.FileShare" Width="1.5" PointX="16.375" PointY="6.5" />
         <AssociationConnector Association="ECMModel.Fk_FileInfo_Directory" />
-        <EntityTypeShape EntityType="ECMModel.FileShare" Width="1.5" PointX="11.375" PointY="4.875" />
+        <AssociationConnector Association="ECMModel.Fk_FileFavorite_Employee" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_Employee" />
+        <AssociationConnector Association="ECMModel.Fk_FileImportant_Employee" />
+        <AssociationConnector Association="ECMModel.Fk_FileInfo_Employee" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_Employee" />
+        <AssociationConnector Association="ECMModel.Fk_FileFavorite_FileInfo" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileInfo" />
+        <AssociationConnector Association="ECMModel.Fk_FileHistory_FileStatus" />
+        <AssociationConnector Association="ECMModel.Fk_FileImportant_FileInfo" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_FileInfo" />
         <AssociationConnector Association="ECMModel.Fk_FileShare_FilePermission" />
-        <AssociationConnector Association="ECMModel.Fk_Directory_Department" />
+        <EntityTypeShape EntityType="ECMModel.Trash" Width="1.5" PointX="11.375" PointY="11.5" />
+        <AssociationConnector Association="ECMModel.Fk_Trash_FileInfo" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

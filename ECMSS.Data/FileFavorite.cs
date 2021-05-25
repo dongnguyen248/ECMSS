@@ -14,9 +14,9 @@ namespace ECMSS.Data
     
     public partial class FileFavorite
     {
-        public int FileId { get; set; }
         public int EmployeeId { get; set; }
         public System.Guid Id { get; set; }
+        public Nullable<System.Guid> FileId { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual FileInfo FileInfo { get; set; }

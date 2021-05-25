@@ -15,7 +15,7 @@ namespace ECMSS.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public FileShareService(IUnitOfWork unitOfWork, IMapper mapper, IFileInfoService fileInfoService)
+        public FileShareService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _fileShareRepository = _unitOfWork.FileShareRepository;
@@ -35,7 +35,7 @@ namespace ECMSS.Services
             }
         }
 
-        public void EditFileShares(IEnumerable<FileShareDTO> fileShares, int fileId)
+        public void EditFileShares(IEnumerable<FileShareDTO> fileShares, Guid fileId)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace ECMSS.Services
             }
         }
 
-        public IEnumerable<FileShareDTO> GetFileShares(int fileId)
+        public IEnumerable<FileShareDTO> GetFileShares(Guid fileId)
         {
             return _mapper.Map<IEnumerable<FileShareDTO>>(_fileShareRepository.GetMany(f => f.FileId == fileId, f => f.Employee));
         }

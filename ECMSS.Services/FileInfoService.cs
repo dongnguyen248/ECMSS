@@ -55,7 +55,7 @@ namespace ECMSS.Services
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public string[] GetFileUrl(int id, int empId, bool isShareUrl)
+        public string[] GetFileUrl(Guid id, int empId, bool isShareUrl)
         {
             string[] result = new string[3];
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
@@ -80,7 +80,7 @@ namespace ECMSS.Services
             return result;
         }
 
-        public string GetFileShareUrl(int id, int empId)
+        public string GetFileShareUrl(Guid id, int empId)
         {
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
             var isOwner = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId)) != null;
@@ -98,7 +98,7 @@ namespace ECMSS.Services
             return url;
         }
 
-        public FileInfoDTO GetFileInfo(int id)
+        public FileInfoDTO GetFileInfo(Guid id)
         {
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, _includes);
             return _mapper.Map<FileInfoDTO>(fileInfo);
@@ -201,6 +201,42 @@ namespace ECMSS.Services
                 FileHelper.SaveFile(filePath, fileInfo.FileData);
                 _unitOfWork.Commit();
                 return _mapper.Map<FileInfoDTO>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos)
+        {
+            try
+            {
+                List<FileInfoDTO> files = new List<FileInfoDTO>();
+                foreach (var fi in fileInfos)
+                {
+                    if (_fileInfoRepository.CheckContains(x => x.Name == fi.Name && x.DirectoryId == fi.DirectoryId))
+                    {
+                        throw new Exception();
+                    }
+                    fi.Name = StringHelper.RemoveSharpCharacter(fi.Name);
+                    string filePath = CommonConstants.FILE_UPLOAD_PATH;
+                    filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
+                    var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
+                    FileHistoryDTO fileHistory = new FileHistoryDTO
+                    {
+                        FileId = result.Id,
+                        Modifier = result.Owner,
+                        Size = fi.FileData.Length / 1024,
+                        StatusId = 1,
+                        Version = "0.1"
+                    };
+                    _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                    FileHelper.SaveFile(filePath, fi.FileData);
+                    files.Add(_mapper.Map<FileInfoDTO>(result));
+                }
+                _unitOfWork.Commit();
+                return files;
             }
             catch (Exception ex)
             {

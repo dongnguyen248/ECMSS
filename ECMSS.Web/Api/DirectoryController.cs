@@ -1,6 +1,7 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -60,7 +61,7 @@ namespace ECMSS.Web.Api
             }
         }
 
-        public string GetPathFromFileId(int fileId)
+        public string GetPathFromFileId(Guid fileId)
         {
             var directory = _directoryService.GetDirFromFileId(fileId);
             return directory.Name;

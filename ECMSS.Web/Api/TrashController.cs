@@ -1,5 +1,6 @@
 ﻿using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -17,7 +18,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage AddFilesToTrash(int[] fileIds)
+        public HttpResponseMessage AddFilesToTrash(Guid[] fileIds)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage CleanTrash(int[] fileIds)
+        public HttpResponseMessage CleanTrash(Guid[] fileIds)
         {
             try
             {
@@ -46,7 +47,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage RecoverFile(int[] fileIds)
+        public HttpResponseMessage RecoverFile(Guid[] fileIds)
         {
             try
             {

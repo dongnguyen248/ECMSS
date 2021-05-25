@@ -9,6 +9,12 @@
             $(this).width(ui.size.width);
         }
     });
+
+    var curEmp = JSON.parse(localStorage.getItem("curEmp"));
+    if (curEmp.RoleId !== 1) {
+        $(".bt_resign .btn_create").css("display", "none");
+        $("#btn-delete-folder").css("display", "none");
+    }
 })();
 
 async function initTreeFolder() {

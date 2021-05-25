@@ -1,6 +1,7 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -18,7 +19,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage AddOrRemoveImportantFile(int fileId)
+        public HttpResponseMessage AddOrRemoveImportantFile(Guid fileId)
         {
             try
             {

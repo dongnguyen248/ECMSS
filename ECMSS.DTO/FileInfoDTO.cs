@@ -7,16 +7,14 @@ namespace ECMSS.DTO
 {
     public class FileInfoDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Enter file name")]
         public string Name { get; set; }
-
         public int Owner { get; set; }
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public virtual DirectoryDTO Directory { get; set; }
         public virtual EmployeeDTO Employee { get; set; }
