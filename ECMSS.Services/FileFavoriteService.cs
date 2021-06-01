@@ -4,7 +4,6 @@ using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 
 namespace ECMSS.Services
 {
@@ -19,19 +18,6 @@ namespace ECMSS.Services
             _unitOfWork = unitOfWork;
             _fileFavoriteRepository = _unitOfWork.FileFavoriteRepository;
             _mapper = mapper;
-        }
-
-        public void AddFavoriteFiles(IEnumerable<FileFavoriteDTO> fileFavorites)
-        {
-            try
-            {
-                _fileFavoriteRepository.AddRange(_mapper.Map<IEnumerable<FileFavorite>>(fileFavorites));
-                _unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public void AddOrRemoveFavoriteFile(FileFavoriteDTO fileFavoriteDTO)

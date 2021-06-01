@@ -10,12 +10,6 @@ namespace ECMSS.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-              name: "AuthGate",
-              url: "AuthGate/{token}",
-              defaults: new { controller = "Home", action = "AuthGate", token = UrlParameter.Optional }
-           );
-
-            routes.MapRoute(
                 name: "Root",
                 url: "{*.}",
                 defaults: new { controller = "Home", action = "Index" }

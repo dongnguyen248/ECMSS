@@ -16,11 +16,9 @@ namespace ECMSS.Services.Interfaces
 
         FileInfoDTO GetFileInfo(Guid id);
 
-        FileInfoDTO AddNewFile(FileInfoDTO fileInfo);
-
         List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos);
 
-        void EditFileInfo(FileInfoDTO fileInfo);
+        FileInfoDTO EditFileInfo(FileInfoDTO fileInfo);
 
         void UploadNewFile(FileInfoDTO fileInfo);
 

@@ -1,7 +1,6 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -26,19 +25,13 @@ namespace ECMSS.Web.Api
             return _directoryService.GetTreeDirectories(empId);
         }
 
-        [HttpGet]
-        public DirectoryDTO GetDirectoryFromPath(string path)
-        {
-            return _directoryService.GetDirFromPath(path);
-        }
-
         [HttpPost]
-        public HttpResponseMessage CreateDirectory(string dirName, string path)
+        public HttpResponseMessage CreateDirectory(DirectoryDTO directory)
         {
             try
             {
-                _directoryService.CreateDirectory(dirName, path);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var dir = _directoryService.CreateDirectory(directory);
+                return Request.CreateResponse(HttpStatusCode.OK, dir);
             }
             catch
             {
@@ -47,24 +40,18 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage DeleteDirectory(string path)
+        public HttpResponseMessage DeleteDirectory(int id)
         {
             try
             {
                 var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-                _directoryService.DeleteDirectory(empId, path);
+                _directoryService.DeleteDirectory(empId, id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-        }
-
-        public string GetPathFromFileId(Guid fileId)
-        {
-            var directory = _directoryService.GetDirFromFileId(fileId);
-            return directory.Name;
         }
     }
 }

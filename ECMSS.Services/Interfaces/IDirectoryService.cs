@@ -8,9 +8,11 @@ namespace ECMSS.Services.Interfaces
     {
         IEnumerable<DirectoryDTO> GetTreeDirectories(int empId);
 
-        void CreateDirectory(string dirName, string path);
+        DirectoryDTO CreateDirectory(DirectoryDTO directory);
 
         void DeleteDirectory(int empId, string path);
+
+        void DeleteDirectory(int empId, int id);
 
         DirectoryDTO GetDirFromFileId(Guid fileId);
 

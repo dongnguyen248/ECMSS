@@ -33,19 +33,6 @@ namespace ECMSS.Web.Api
             }
         }
 
-        [HttpPost]
-        public HttpResponseMessage EditFileShares([FromBody] IEnumerable<FileShareDTO> fileShares, Guid fileId)
-        {
-            try
-            {
-                _fileShareService.EditFileShares(fileShares, fileId);
-                return Request.CreateResponse(HttpStatusCode.OK);
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
         [HttpGet]
         public IEnumerable<FileShareDTO> GetFileShared(Guid fileId)
         {

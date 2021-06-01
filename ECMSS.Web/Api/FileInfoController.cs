@@ -151,6 +151,8 @@ namespace ECMSS.Web.Api
                 Name = x.Name,
                 Owner = x.Employee.EpLiteId,
                 CreatedDate = x.CreatedDate,
+                DirectoryId = x.DirectoryId,
+                Tag = x.Tag,
                 Modifier = GetFileHistory(x).Employee.EpLiteId,
                 Size = GetFileHistory(x).Size,
                 SecurityLevel = x.SecurityLevel,
@@ -164,20 +166,6 @@ namespace ECMSS.Web.Api
         private FileHistoryDTO GetFileHistory(FileInfoDTO fileInfo)
         {
             return fileInfo.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault();
-        }
-
-        [HttpPost]
-        public HttpResponseMessage AddNewFile(FileInfoDTO fileInfo)
-        {
-            try
-            {
-                var result = _fileInfoService.AddNewFile(fileInfo);
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
         }
 
         [HttpPost]
@@ -199,8 +187,8 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                _fileInfoService.EditFileInfo(fileInfo);
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var result = _fileInfoService.EditFileInfo(fileInfo);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch
             {

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using FileInfo = ECMSS.Data.FileInfo;
+using FileShare = ECMSS.Data.FileShare;
 
 namespace ECMSS.Services
 {
@@ -18,6 +19,7 @@ namespace ECMSS.Services
     {
         private readonly IGenericRepository<FileInfo> _fileInfoRepository;
         private readonly IGenericRepository<FileHistory> _fileHistoryRepository;
+        private readonly IGenericRepository<FileShare> _fileShareRepository;
         private readonly IGenericRepository<Employee> _employeeRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDirectoryService _directoryService;
@@ -29,6 +31,7 @@ namespace ECMSS.Services
             _unitOfWork = unitOfWork;
             _fileInfoRepository = _unitOfWork.FileInfoRepository;
             _fileHistoryRepository = _unitOfWork.FileHistoryRepository;
+            _fileShareRepository = _unitOfWork.FileShareRepository;
             _employeeRepository = _unitOfWork.EmployeeRepository;
             _directoryService = directoryService;
             _mapper = mapper;
@@ -177,37 +180,6 @@ namespace ECMSS.Services
             return _mapper.Map<IEnumerable<FileInfoDTO>>(sharedFiles);
         }
 
-        public FileInfoDTO AddNewFile(FileInfoDTO fileInfo)
-        {
-            try
-            {
-                if (_fileInfoRepository.CheckContains(x => x.Name == fileInfo.Name && x.DirectoryId == fileInfo.DirectoryId))
-                {
-                    throw new Exception();
-                }
-                fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
-                string filePath = CommonConstants.FILE_UPLOAD_PATH;
-                filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
-                var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
-                FileHistoryDTO fileHistory = new FileHistoryDTO
-                {
-                    FileId = result.Id,
-                    Modifier = result.Owner,
-                    Size = fileInfo.FileData.Length / 1024,
-                    StatusId = 1,
-                    Version = "0.1"
-                };
-                _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
-                FileHelper.SaveFile(filePath, fileInfo.FileData);
-                _unitOfWork.Commit();
-                return _mapper.Map<FileInfoDTO>(result);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos)
         {
             try
@@ -244,33 +216,37 @@ namespace ECMSS.Services
             }
         }
 
-        public void EditFileInfo(FileInfoDTO fileInfo)
+        public FileInfoDTO EditFileInfo(FileInfoDTO fileInfo)
         {
             try
             {
-                var filesInNewLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
-                if (filesInNewLocation.Where(x => x.Name == fileInfo.Name).Any())
-                {
-                    throw new Exception();
-                }
-
-                var curFile = _fileInfoRepository.GetSingleById(fileInfo.Id);
-                int curDirId = curFile.DirectoryId;
-
+                var prevState = _fileInfoRepository.GetSingleById(fileInfo.Id);
+                bool isChangedLocation = fileInfo.DirectoryId != prevState.DirectoryId || fileInfo.Name != prevState.Name;
                 string rootPath = CommonConstants.FILE_UPLOAD_PATH;
-                string srcPath = $"{rootPath}{_directoryService.GetDirFromId(curFile.DirectoryId).Name}/{curFile.Name}";
-                string desPath = $"{rootPath}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{curFile.Name}";
+                string srcPath = $"{rootPath}{_directoryService.GetDirFromId(prevState.DirectoryId).Name}/{prevState.Name}";
+                string desPath = $"{rootPath}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
 
-                curFile.DirectoryId = fileInfo.DirectoryId;
-                curFile.SecurityLevel = fileInfo.SecurityLevel;
-                curFile.Tag = fileInfo.Tag;
+                prevState.Name = fileInfo.Name;
+                prevState.DirectoryId = fileInfo.DirectoryId;
+                prevState.SecurityLevel = fileInfo.SecurityLevel;
+                prevState.Tag = fileInfo.Tag;
 
-                _fileInfoRepository.Update(curFile, f => f.DirectoryId, f => f.SecurityLevel, f => f.Tag);
-                if (curDirId != fileInfo.DirectoryId)
+                _fileInfoRepository.Update(prevState);
+
+                _fileShareRepository.RemoveMulti(x => x.FileId == fileInfo.Id);
+                _fileShareRepository.AddRange(_mapper.Map<IEnumerable<FileShare>>(fileInfo.FileShares));
+
+                if (isChangedLocation)
                 {
+                    var filesInNewLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
+                    if (filesInNewLocation.Where(x => x.Name == fileInfo.Name).Any())
+                    {
+                        throw new Exception("There is a file with the same name in the same directory");
+                    }
                     FileHelper.Move(srcPath, desPath);
                 }
                 _unitOfWork.Commit();
+                return _mapper.Map<FileInfoDTO>(prevState);
             }
             catch (Exception ex)
             {
@@ -280,7 +256,7 @@ namespace ECMSS.Services
 
         private bool IsSupportedFile(string fileName)
         {
-            string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".csv", ".ppt", ".pptx", ".pdf" };
+            string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".csv", ".ppt", ".pptx" };
             var ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
             if (fileTrackingExtensions.Any(ext.Equals))
             {

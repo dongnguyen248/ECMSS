@@ -58,19 +58,15 @@ namespace ECMSS.Services
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
-        public void CreateDirectory(string dirName, string path)
+        public DirectoryDTO CreateDirectory(DirectoryDTO directory)
         {
             try
             {
-                var dir = GetDirFromPath(path);
-                if (dir is null)
-                {
-                    throw new Exception("Invalid path");
-                }
-                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{path}/";
-                _directoryRepository.Add(new Directory { Name = dirName, ParentId = dir.Id });
-                FileHelper.CreatePath(fullPath, dirName);
+                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{GetDirFromId((int)directory.ParentId).Name}/";
+                var dir = _directoryRepository.Add(new Directory { Name = directory.Name, ParentId = directory.ParentId });
+                FileHelper.CreatePath(fullPath, directory.Name.Trim());
                 _unitOfWork.Commit();
+                return _mapper.Map<DirectoryDTO>(dir);
             }
             catch (Exception ex)
             {
@@ -90,13 +86,35 @@ namespace ECMSS.Services
                 }
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{path}/";
 
-                var filesInDir = _fileInfoRepository.GetMany(x => x.DirectoryId == dir.Id);
-                if (filesInDir.Any())
-                {
-                    _fileInfoRepository.RemoveRange(filesInDir);
-                }
+                _fileInfoRepository.RemoveMulti(x => x.DirectoryId == dir.Id);
                 _directoryRepository.Remove(dir.Id);
-                FileHelper.DeleteFolder(fullPath);
+                FileHelper.Empty(fullPath, true);
+                _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteDirectory(int empId, int id)
+        {
+            try
+            {
+                var dir = GetDirFromId(id);
+                var role = _employeeRepository.GetSingle(x => x.Id == empId).RoleId;
+                if (dir is null || role != CommonConstants.MANAGER_ROLE)
+                {
+                    throw new Exception("Invalid path or does not have permission to delete this directory");
+                }
+                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{dir.Name}/";
+
+                _fileInfoRepository.RemoveMulti(x => x.DirectoryId == dir.Id);
+
+                _directoryRepository.RemoveMulti(d => d.ParentId == dir.Id);
+                _directoryRepository.Remove(dir.Id);
+
+                FileHelper.Empty(fullPath, true);
                 _unitOfWork.Commit();
             }
             catch (Exception ex)

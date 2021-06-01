@@ -76,5 +76,22 @@ namespace ECMSS.Utilities
             }
             File.Move(srcPath, desPath);
         }
+
+        public static void Empty(string path, bool deleteRoot = false)
+        {
+            DirectoryInfo directory = new DirectoryInfo(path);
+            foreach (FileInfo file in directory.EnumerateFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in directory.EnumerateDirectories())
+            {
+                dir.Delete(true);
+            }
+            if (deleteRoot)
+            {
+                Directory.Delete(path);
+            }
+        }
     }
 }

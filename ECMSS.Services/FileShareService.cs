@@ -5,7 +5,6 @@ using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ECMSS.Services
 {
@@ -27,23 +26,6 @@ namespace ECMSS.Services
             try
             {
                 _fileShareRepository.AddRange(_mapper.Map<IEnumerable<FileShare>>(fileShares));
-                _unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void EditFileShares(IEnumerable<FileShareDTO> fileShares, Guid fileId)
-        {
-            try
-            {
-                _fileShareRepository.RemoveMulti(x => x.FileId == fileId);
-                if (fileShares != null && fileShares.Count() > 0)
-                {
-                    _fileShareRepository.AddRange(_mapper.Map<IEnumerable<FileShare>>(fileShares));
-                }
                 _unitOfWork.Commit();
             }
             catch (Exception ex)

@@ -9,6 +9,7 @@ namespace ECMSS.DTO
     {
         [Required(ErrorMessage = "Enter file name")]
         public string Name { get; set; }
+
         public int Owner { get; set; }
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
         public string Tag { get; set; }

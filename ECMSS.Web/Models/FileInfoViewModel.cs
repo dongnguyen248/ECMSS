@@ -9,6 +9,7 @@ namespace ECMSS.Web.Models
         public string Owner { get; set; }
         public string Modifier { get; set; }
         public int Size { get; set; }
+        public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }
         public string Version { get; set; }
         public string Tag { get; set; }
