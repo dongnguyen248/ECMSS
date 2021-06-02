@@ -66,15 +66,7 @@ namespace ECMSS.Services
                                                                                     x.FileShares.Count(s => s.EmployeeId == empId &&
                                                                                                        s.Permission == CommonConstants.EDIT_PERMISSION) > 0)) != null;
 
-            string filePath = string.Empty;
-            if (Debugger.IsAttached)
-            {
-                filePath = CommonConstants.FILE_UPLOAD_PATH;
-            }
-            else
-            {
-                filePath = "http://172.25.216.127:8081/FileSS/";
-            }
+            string filePath = Env.IS_DEVELOPMENT ? CommonConstants.FILE_UPLOAD_PATH : "http://172.25.216.127:8082/FileSS/";
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
             result[0] = $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></true/>")}";
@@ -87,15 +79,7 @@ namespace ECMSS.Services
         {
             var fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
             var isOwner = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId)) != null;
-            string filePath = string.Empty;
-            if (Debugger.IsAttached)
-            {
-                filePath = CommonConstants.FILE_UPLOAD_PATH;
-            }
-            else
-            {
-                filePath = "http://172.25.216.127:8081/FileSS/";
-            }
+            string filePath = Env.IS_DEVELOPMENT ? CommonConstants.FILE_UPLOAD_PATH : "http://172.25.216.127:8082/FileSS/";
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string url = isOwner ? $"<FileShareUrl>{Encryptor.Encrypt($"</{fileInfo.Id}/>")}" : null;
             return url;
