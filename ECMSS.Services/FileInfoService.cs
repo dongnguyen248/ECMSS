@@ -6,7 +6,6 @@ using ECMSS.Services.Interfaces;
 using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -173,23 +172,27 @@ namespace ECMSS.Services
                 {
                     if (_fileInfoRepository.CheckContains(x => x.Name == fi.Name && x.DirectoryId == fi.DirectoryId))
                     {
-                        throw new Exception();
+                        throw new Exception("There is a file with the same name in the same directory");
                     }
-                    fi.Name = StringHelper.RemoveSharpCharacter(fi.Name);
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
-                    var result = _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
+
+                    fi.Name = StringHelper.RemoveSharpCharacter(fi.Name);
+                    fi.FileShares.ToList().ForEach(x => x.FileId = fi.Id);
+                    _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
+
                     FileHistoryDTO fileHistory = new FileHistoryDTO
                     {
-                        FileId = result.Id,
-                        Modifier = result.Owner,
+                        FileId = fi.Id,
+                        Modifier = fi.Owner,
                         Size = fi.FileData.Length / 1024,
                         StatusId = 1,
                         Version = "0.1"
                     };
                     _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+
                     FileHelper.SaveFile(filePath, fi.FileData);
-                    files.Add(_mapper.Map<FileInfoDTO>(result));
+                    files.Add(fi);
                 }
                 _unitOfWork.Commit();
                 return files;

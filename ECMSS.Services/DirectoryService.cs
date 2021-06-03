@@ -51,13 +51,6 @@ namespace ECMSS.Services
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
-        public DirectoryDTO GetDirFromPath(string path)
-        {
-            var args = new SqlParameter { ParameterName = "Path", SqlDbType = SqlDbType.NVarChar, Value = path };
-            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromPath @Path", args).FirstOrDefault();
-            return _mapper.Map<DirectoryDTO>(directory);
-        }
-
         public DirectoryDTO CreateDirectory(DirectoryDTO directory)
         {
             try
@@ -67,29 +60,6 @@ namespace ECMSS.Services
                 FileHelper.CreatePath(fullPath, directory.Name.Trim());
                 _unitOfWork.Commit();
                 return _mapper.Map<DirectoryDTO>(dir);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public void DeleteDirectory(int empId, string path)
-        {
-            try
-            {
-                var dir = GetDirFromPath(path);
-                var role = _employeeRepository.GetSingle(x => x.Id == empId).RoleId;
-                if (dir is null || role != CommonConstants.MANAGER_ROLE)
-                {
-                    throw new Exception("Invalid path or does not have permission to delete this directory");
-                }
-                string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{path}/";
-
-                _fileInfoRepository.RemoveMulti(x => x.DirectoryId == dir.Id);
-                _directoryRepository.Remove(dir.Id);
-                FileHelper.Empty(fullPath, true);
-                _unitOfWork.Commit();
             }
             catch (Exception ex)
             {

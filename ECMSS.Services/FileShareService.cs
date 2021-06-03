@@ -21,19 +21,6 @@ namespace ECMSS.Services
             _mapper = mapper;
         }
 
-        public void AddFileShares(IEnumerable<FileShareDTO> fileShares)
-        {
-            try
-            {
-                _fileShareRepository.AddRange(_mapper.Map<IEnumerable<FileShare>>(fileShares));
-                _unitOfWork.Commit();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public IEnumerable<FileShareDTO> GetFileShares(Guid fileId)
         {
             return _mapper.Map<IEnumerable<FileShareDTO>>(_fileShareRepository.GetMany(f => f.FileId == fileId, f => f.Employee));

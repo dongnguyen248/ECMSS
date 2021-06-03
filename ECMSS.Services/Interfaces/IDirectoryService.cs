@@ -10,14 +10,10 @@ namespace ECMSS.Services.Interfaces
 
         DirectoryDTO CreateDirectory(DirectoryDTO directory);
 
-        void DeleteDirectory(int empId, string path);
-
         void DeleteDirectory(int empId, int id);
 
         DirectoryDTO GetDirFromFileId(Guid fileId);
 
         DirectoryDTO GetDirFromId(int dirId);
-
-        DirectoryDTO GetDirFromPath(string path);
     }
 }
