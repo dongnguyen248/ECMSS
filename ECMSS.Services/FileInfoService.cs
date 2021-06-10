@@ -24,6 +24,7 @@ namespace ECMSS.Services
         private readonly IDirectoryService _directoryService;
         private readonly IMapper _mapper;
         private readonly Expression<Func<FileInfo, object>>[] _includes;
+        private const int CREATE_STATUS = 1;
 
         public FileInfoService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
         {
@@ -104,7 +105,7 @@ namespace ECMSS.Services
                     FileId = fileInfo.Id,
                     Modifier = fileInfo.Owner,
                     Size = fileInfo.FileData.Length / 1024,
-                    StatusId = 1,
+                    StatusId = CREATE_STATUS,
                     Version = "0.1"
                 };
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
@@ -186,7 +187,7 @@ namespace ECMSS.Services
                         FileId = fi.Id,
                         Modifier = fi.Owner,
                         Size = fi.FileData.Length / 1024,
-                        StatusId = 1,
+                        StatusId = CREATE_STATUS,
                         Version = "0.1"
                     };
                     _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));

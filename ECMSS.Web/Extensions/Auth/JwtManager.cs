@@ -33,8 +33,7 @@ namespace ECMSS.Web.Extensions.Auth
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
-                if (jwtToken == null)
+                if (!(tokenHandler.ReadToken(token) is JwtSecurityToken jwtToken))
                 {
                     return null;
                 }

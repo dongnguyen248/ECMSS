@@ -10,13 +10,11 @@ namespace ECMSS.Services
     {
         private readonly IGenericRepository<FileImportant> _fileImportantRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public FileImportantService(IUnitOfWork unitOfWork, IMapper mapper)
+        public FileImportantService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _fileImportantRepository = _unitOfWork.FileImportantRepository;
-            _mapper = mapper;
         }
 
         public void AddOrRemoveImportantFile(Guid fileId, int employeeId)

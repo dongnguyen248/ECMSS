@@ -11,13 +11,11 @@ namespace ECMSS.Services
     {
         private readonly IGenericRepository<FileFavorite> _fileFavoriteRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public FileFavoriteService(IUnitOfWork unitOfWork, IMapper mapper)
+        public FileFavoriteService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _fileFavoriteRepository = _unitOfWork.FileFavoriteRepository;
-            _mapper = mapper;
         }
 
         public void AddOrRemoveFavoriteFile(FileFavoriteDTO fileFavoriteDTO)

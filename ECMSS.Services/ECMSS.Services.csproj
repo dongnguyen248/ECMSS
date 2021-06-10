@@ -52,27 +52,21 @@
     <Compile Include="DepartmentService.cs" />
     <Compile Include="DirectoryService.cs" />
     <Compile Include="EmployeeService.cs" />
-    <Compile Include="FileAuthorityService.cs" />
     <Compile Include="FileFavoriteService.cs" />
     <Compile Include="FileHistoryService.cs" />
     <Compile Include="FileImportantService.cs" />
     <Compile Include="FileInfoService.cs" />
     <Compile Include="FileShareService.cs" />
-    <Compile Include="FileStatusService.cs" />
     <Compile Include="Interfaces\IDepartmentService.cs" />
     <Compile Include="Interfaces\IDirectoryService.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
-    <Compile Include="Interfaces\IFileAuthorityService.cs" />
     <Compile Include="Interfaces\IFileFavoriteService.cs" />
     <Compile Include="Interfaces\IFileHistoryService.cs" />
     <Compile Include="Interfaces\IFileImportantService.cs" />
     <Compile Include="Interfaces\IFileInfoService.cs" />
     <Compile Include="Interfaces\IFileShareService.cs" />
-    <Compile Include="Interfaces\IFileStatusService.cs" />
-    <Compile Include="Interfaces\IRoleService.cs" />
     <Compile Include="Interfaces\ITrashService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleService.cs" />
     <Compile Include="TrashService.cs" />
   </ItemGroup>
   <ItemGroup />
