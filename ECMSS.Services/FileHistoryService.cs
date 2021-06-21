@@ -29,11 +29,20 @@ namespace ECMSS.Services
         {
             try
             {
+                var historyDb = _fileHistoryRepository.GetSingle(x => x.FileId == fileHistory.FileId && x.Version == fileHistory.Version);
                 fileHistory.Modifier = _employeeRepository.GetSingle(x => x.EpLiteId == fileHistory.ModifierUser).Id;
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromFileId(fileHistory.FileId).Name}/{fileHistory.FileName}";
                 fileHistory.Size = fileHistory.FileData.Length / 1024;
-                _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                if (historyDb != null)
+                {
+                    fileHistory.Id = historyDb.Id;
+                    _fileHistoryRepository.Update(_mapper.Map<FileHistory>(fileHistory));
+                }
+                else
+                {
+                    _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                }
                 FileHelper.SaveFile(filePath, fileHistory.FileData, true);
                 _unitOfWork.Commit();
             }

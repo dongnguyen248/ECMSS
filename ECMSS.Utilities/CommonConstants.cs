@@ -9,5 +9,7 @@
         public const int EDIT_PERMISSION = 2;
 
         public const string FILE_UPLOAD_PATH = Env.IS_DEVELOPMENT ? "C:/Users/Admin/Desktop/FileSS/" : "D:/Web/ECMSS/FileSS/";
+
+        public const int CEO_USER_ID = 2468;
     }
 }
