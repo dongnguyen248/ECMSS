@@ -61,7 +61,8 @@ namespace ECMSS.Services
             {
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{GetDirFromId((int)directory.ParentId).Name}/";
                 var dir = _directoryRepository.Add(new Directory { Name = directory.Name, ParentId = directory.ParentId });
-                FileHelper.CreatePath(fullPath, directory.Name.Trim());
+                directory.Name = directory.Name.Trim();
+                FileHelper.CreatePath(fullPath, directory.Name);
                 _unitOfWork.Commit();
                 return _mapper.Map<DirectoryDTO>(dir);
             }
