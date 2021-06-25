@@ -16,7 +16,6 @@ namespace ECMSS.Services
     {
         private readonly IGenericRepository<Directory> _directoryRepository;
         private readonly IGenericRepository<Employee> _employeeRepository;
-        private readonly IGenericRepository<FileInfo> _fileInfoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -25,7 +24,6 @@ namespace ECMSS.Services
             _unitOfWork = unitOfWork;
             _directoryRepository = _unitOfWork.DirectoryRepository;
             _employeeRepository = _unitOfWork.EmployeeRepository;
-            _fileInfoRepository = _unitOfWork.FileInfoRepository;
             _mapper = mapper;
         }
 
@@ -59,10 +57,15 @@ namespace ECMSS.Services
         {
             try
             {
+                bool isValidFileName = StringHelper.CheckContainSpecialCharacters(directory.Name);
+                if (isValidFileName)
+                {
+                    throw new Exception("Special character should not be entered");
+                }
+
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{GetDirFromId((int)directory.ParentId).Name}/";
-                var dir = _directoryRepository.Add(new Directory { Name = directory.Name, ParentId = directory.ParentId });
-                directory.Name = directory.Name.Trim();
-                FileHelper.CreatePath(fullPath, directory.Name);
+                var dir = _directoryRepository.Add(new Directory { Name = directory.Name.Trim(), ParentId = directory.ParentId });
+                FileHelper.CreatePath(fullPath, dir.Name);
                 _unitOfWork.Commit();
                 return _mapper.Map<DirectoryDTO>(dir);
             }
@@ -82,13 +85,12 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Invalid path or does not have permission to delete this directory");
                 }
+                if (_directoryRepository.CheckContains(x => x.ParentId == id))
+                {
+                    throw new Exception("There are subdirectories inside the current directory");
+                }
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{dir.Name}/";
-
-                _fileInfoRepository.RemoveMulti(x => x.DirectoryId == dir.Id);
-
-                _directoryRepository.RemoveMulti(d => d.ParentId == dir.Id);
                 _directoryRepository.Remove(dir.Id);
-
                 FileHelper.Empty(fullPath, true);
                 _unitOfWork.Commit();
             }

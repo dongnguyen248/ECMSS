@@ -52,5 +52,18 @@ namespace ECMSS.Utilities
             input = trimmer.Replace(input, " ").Trim();
             return input;
         }
+
+        public static bool CheckContainSpecialCharacters(string input)
+        {
+            string specialChar = @"\|!#$%&/=?»«@£§€{};'<>,";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item.ToString())) 
+                { 
+                    return true; 
+                }
+            }
+            return false;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -25,9 +26,9 @@ namespace ECMSS.Web.Api
                 _fileHistoryService.UploadFile(fileHistory);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
     }

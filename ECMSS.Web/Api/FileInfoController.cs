@@ -60,9 +60,9 @@ namespace ECMSS.Web.Api
                 _fileInfoService.UploadNewFile(fileInfo);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
@@ -176,9 +176,9 @@ namespace ECMSS.Web.Api
                 var result = _fileInfoService.AddFiles(fileInfos);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
@@ -190,9 +190,9 @@ namespace ECMSS.Web.Api
                 var result = _fileInfoService.EditFileInfo(fileInfo);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ECMSS.DTO;
 using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -33,9 +34,9 @@ namespace ECMSS.Web.Api
                 var dir = _directoryService.CreateDirectory(directory);
                 return Request.CreateResponse(HttpStatusCode.OK, dir);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
@@ -48,9 +49,9 @@ namespace ECMSS.Web.Api
                 _directoryService.DeleteDirectory(empId, id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-            catch
+            catch (Exception ex)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
     }

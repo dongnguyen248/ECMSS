@@ -95,6 +95,12 @@ namespace ECMSS.Services
         {
             try
             {
+                bool isValidFileName = StringHelper.CheckContainSpecialCharacters(fileInfo.Name);
+                if (isValidFileName)
+                {
+                    throw new Exception("Special character should not be entered");
+                }
+
                 fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
@@ -168,6 +174,16 @@ namespace ECMSS.Services
         {
             try
             {
+                bool isValidFileName = false;
+                foreach (var item in fileInfos)
+                {
+                    isValidFileName = StringHelper.CheckContainSpecialCharacters(item.Name);
+                }
+                if (isValidFileName)
+                {
+                    throw new Exception("Special character should not be entered");
+                }
+
                 List<FileInfoDTO> files = new List<FileInfoDTO>();
                 foreach (var fi in fileInfos)
                 {
@@ -208,6 +224,12 @@ namespace ECMSS.Services
         {
             try
             {
+                bool isValidFileName = StringHelper.CheckContainSpecialCharacters(fileInfo.Name);
+                if (isValidFileName)
+                {
+                    throw new Exception("Special character should not be entered");
+                }
+
                 var prevState = _fileInfoRepository.GetSingleById(fileInfo.Id);
                 bool isChangedLocation = fileInfo.DirectoryId != prevState.DirectoryId || fileInfo.Name != prevState.Name;
                 string rootPath = CommonConstants.FILE_UPLOAD_PATH;
