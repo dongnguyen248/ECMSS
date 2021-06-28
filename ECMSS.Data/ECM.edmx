@@ -617,7 +617,7 @@
           <Property Name="FileId" Type="Guid" />
           <NavigationProperty Name="Employee" Relationship="ECMModel.Fk_FileHistory_Employee" FromRole="FileHistory" ToRole="Employee" />
           <NavigationProperty Name="FileInfo" Relationship="ECMModel.Fk_FileHistory_FileInfo" FromRole="FileHistory" ToRole="FileInfo" />
-          <NavigationProperty Name="FileStatu" Relationship="ECMModel.Fk_FileHistory_FileStatus" FromRole="FileHistory" ToRole="FileStatus" />
+          <NavigationProperty Name="FileStatus" Relationship="ECMModel.Fk_FileHistory_FileStatus" FromRole="FileHistory" ToRole="FileStatus" />
         </EntityType>
         <EntityType Name="FileImportant">
           <Key>

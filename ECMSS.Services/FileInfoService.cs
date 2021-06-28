@@ -70,7 +70,7 @@ namespace ECMSS.Services
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string version = fileInfo.FileHistories.OrderByDescending(x => x.Id).FirstOrDefault().Version;
             result[0] = $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></true/>")}";
-            result[1] = (isOwnerOrShared || isShareUrl) && IsSupportedFile(fileInfo.Name) ? $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></false/>")}" : null;
+            result[1] = (isOwnerOrShared || isShareUrl) && CheckSupportedFile(fileInfo.Name) ? $"<Download>{Encryptor.Encrypt($"</{fileInfo.Id}/></{filePath}/></{fileInfo.Employee.EpLiteId}/></{version}/></false/>")}" : null;
             result[2] = fileInfo.Name;
             return result;
         }
@@ -100,8 +100,6 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Special character should not be entered");
                 }
-
-                fileInfo.Name = StringHelper.RemoveSharpCharacter(fileInfo.Name);
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
@@ -166,8 +164,8 @@ namespace ECMSS.Services
 
         public IEnumerable<FileInfoDTO> GetTrashContents(int empId)
         {
-            var sharedFiles = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Count > 0, _includes);
-            return _mapper.Map<IEnumerable<FileInfoDTO>>(sharedFiles);
+            var result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Count > 0, _includes);
+            return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos)
@@ -193,8 +191,6 @@ namespace ECMSS.Services
                     }
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
-
-                    fi.Name = StringHelper.RemoveSharpCharacter(fi.Name);
                     fi.FileShares.ToList().ForEach(x => x.FileId = fi.Id);
                     _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
 
@@ -264,9 +260,9 @@ namespace ECMSS.Services
             }
         }
 
-        private bool IsSupportedFile(string fileName)
+        private bool CheckSupportedFile(string fileName)
         {
-            string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlsx", ".xlsm", ".csv", ".ppt", ".pptx" };
+            string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlt", ".xlsx", ".xlsm", ".xlsb", ".xltx", ".xltm", ".csv", ".ppt", ".pptx" };
             var ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
             if (fileTrackingExtensions.Any(ext.Equals))
             {

@@ -9,7 +9,6 @@ namespace ECMSS.Web.Api
     public class TokenController : ApiController
     {
         private readonly IEmployeeService _employeeService;
-        private const int EXPIRE_MINUTES = 60;
 
         public TokenController(IEmployeeService employeeService)
         {
@@ -22,7 +21,7 @@ namespace ECMSS.Web.Api
             var curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
             if (curEmp != null)
             {
-                string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id, EXPIRE_MINUTES);
+                string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id);
                 return token;
             }
             throw new HttpResponseException(HttpStatusCode.Unauthorized);

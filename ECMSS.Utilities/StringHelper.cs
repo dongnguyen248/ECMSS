@@ -5,23 +5,6 @@ namespace ECMSS.Utilities
 {
     public static class StringHelper
     {
-        public static string RemoveSharpCharacter(string fileName)
-        {
-            fileName = fileName.Trim();
-            while (true)
-            {
-                if (fileName[0] == '#')
-                {
-                    fileName = fileName.Substring(1);
-                }
-                else
-                {
-                    break;
-                }
-            }
-            return fileName;
-        }
-
         public static string StringNormalization(string input)
         {
             input = ConvertToUnSign(input);
@@ -56,7 +39,7 @@ namespace ECMSS.Utilities
         public static bool CheckContainSpecialCharacters(string input)
         {
             string specialChar = @"\|!#$%&/=?»«@£§€{};'<>,";
-            foreach (var item in specialChar)
+            foreach (char item in specialChar)
             {
                 if (input.Contains(item.ToString())) 
                 { 

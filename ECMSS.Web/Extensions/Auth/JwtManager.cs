@@ -12,7 +12,7 @@ namespace ECMSS.Web.Extensions.Auth
     {
         private const string SECRET_KEY = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
-        public static string GenerateToken(string epLiteId, int empId, int expireMinutes)
+        public static string GenerateToken(string epLiteId, int empId)
         {
             var symmetricKey = Convert.FromBase64String(SECRET_KEY);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -20,7 +20,6 @@ namespace ECMSS.Web.Extensions.Auth
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, epLiteId), new Claim(ClaimTypes.NameIdentifier, empId.ToString()) }),
-                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);

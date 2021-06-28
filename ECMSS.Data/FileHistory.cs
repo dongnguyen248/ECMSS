@@ -24,6 +24,6 @@ namespace ECMSS.Data
     
         public virtual Employee Employee { get; set; }
         public virtual FileInfo FileInfo { get; set; }
-        public virtual FileStatus FileStatu { get; set; }
+        public virtual FileStatus FileStatus { get; set; }
     }
 }
