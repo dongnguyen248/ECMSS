@@ -181,6 +181,10 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Special character should not be entered");
                 }
+                if (fileInfos.Any(f => f.DirectoryId == 0))
+                {
+                    throw new Exception("No folder has been selected yet");
+                }
 
                 List<FileInfoDTO> files = new List<FileInfoDTO>();
                 foreach (var fi in fileInfos)
