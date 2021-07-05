@@ -38,7 +38,7 @@ namespace ECMSS.Utilities
 
         public static bool CheckContainSpecialCharacters(string input)
         {
-            string specialChar = @"\|!#$%&/=?»«@£§€{};'<>,";
+            string specialChar = @"\|!#$%&/=?»«@£§€{}'<>";
             foreach (char item in specialChar)
             {
                 if (input.Contains(item.ToString())) 

@@ -170,6 +170,7 @@ namespace ECMSS.Services
 
         public List<FileInfoDTO> AddFiles(IEnumerable<FileInfoDTO> fileInfos)
         {
+            List<string> insertedFiles = new List<string>();
             try
             {
                 bool isValidFileName = false;
@@ -209,6 +210,7 @@ namespace ECMSS.Services
                     _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
 
                     FileHelper.SaveFile(filePath, fi.FileData);
+                    insertedFiles.Add(filePath);
                     files.Add(fi);
                 }
                 _unitOfWork.Commit();
@@ -216,6 +218,10 @@ namespace ECMSS.Services
             }
             catch (Exception ex)
             {
+                foreach (var item in insertedFiles)
+                {
+                    FileHelper.DeleteFile(item);
+                }
                 throw ex;
             }
         }
