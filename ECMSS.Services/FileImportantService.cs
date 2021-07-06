@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ECMSS.Data;
+﻿using ECMSS.Data;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using System;

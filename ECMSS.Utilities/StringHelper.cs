@@ -41,9 +41,9 @@ namespace ECMSS.Utilities
             string specialChar = @"\|!#$%&/=?»«@£§€{}'<>";
             foreach (char item in specialChar)
             {
-                if (input.Contains(item.ToString())) 
-                { 
-                    return true; 
+                if (input.Contains(item.ToString()))
+                {
+                    return true;
                 }
             }
             return false;
