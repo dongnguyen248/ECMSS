@@ -1,4 +1,5 @@
 ﻿using ECMSS.Web.App_Start;
+using MultipartDataMediaFormatter;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -20,6 +21,7 @@ namespace ECMSS.Web
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
+            GlobalConfiguration.Configuration.Formatters.Add(new FormMultipartEncodedMediaTypeFormatter());
         }
     }
 }

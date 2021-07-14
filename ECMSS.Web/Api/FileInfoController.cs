@@ -4,9 +4,11 @@ using ECMSS.Web.Extensions.Auth;
 using ECMSS.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace ECMSS.Web.Api
@@ -169,10 +171,11 @@ namespace ECMSS.Web.Api
         }
 
         [HttpPost]
-        public HttpResponseMessage AddFiles(IEnumerable<FileInfoDTO> fileInfos)
+        public HttpResponseMessage AddFiles(FileUploadViewModel fileUpload)
         {
             try
             {
+                IEnumerable<FileInfoDTO> fileInfos = fileUpload.ConvertToFileInfos(HttpContext.Current.Request.Files);
                 var result = _fileInfoService.AddFiles(fileInfos);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }

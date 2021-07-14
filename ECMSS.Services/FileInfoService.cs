@@ -196,9 +196,11 @@ namespace ECMSS.Services
                     }
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
-                    fi.FileShares.ToList().ForEach(x => x.FileId = fi.Id);
-                    _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
 
+                    if (fi.FileShares != null)
+                    {
+                        fi.FileShares.ToList().ForEach(x => { x.FileId = fi.Id; x.Id = Guid.NewGuid(); });
+                    }
                     FileHistoryDTO fileHistory = new FileHistoryDTO
                     {
                         FileId = fi.Id,
@@ -207,7 +209,8 @@ namespace ECMSS.Services
                         StatusId = CREATE_STATUS,
                         Version = "0.1"
                     };
-                    _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
+                    fi.FileHistories = new FileHistoryDTO[] { fileHistory };
+                    _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
 
                     FileHelper.SaveFile(filePath, fi.FileData);
                     insertedFiles.Add(filePath);
