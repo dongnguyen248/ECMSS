@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
 
 namespace ECMSS.DTO
 {
@@ -24,6 +23,7 @@ namespace ECMSS.DTO
         public virtual ICollection<FileHistoryDTO> FileHistories { get; set; }
         public virtual ICollection<FileShareDTO> FileShares { get; set; }
         public virtual ICollection<FileImportantDTO> FileImportants { get; set; }
+        public virtual ICollection<TrashDTO> Trashes { get; set; }
 
         #region IgnoreMap
 

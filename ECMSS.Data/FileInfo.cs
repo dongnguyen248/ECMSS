@@ -26,7 +26,7 @@ namespace ECMSS.Data
     
         public string Name { get; set; }
         public int Owner { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public System.DateTime CreatedDate { get; set; }
         public string Tag { get; set; }
         public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }

@@ -29,10 +29,6 @@ namespace ECMSS.Services
 
         public IEnumerable<DirectoryDTO> GetTreeDirectories(int empId)
         {
-            if (empId == CommonConstants.CEO_USER_ID)
-            {
-                return _mapper.Map<IEnumerable<DirectoryDTO>>(_directoryRepository.GetAll());
-            }
             int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
             var args = new SqlParameter { ParameterName = "DeptId", SqlDbType = SqlDbType.Int, Value = deptId };
             var directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", args);
