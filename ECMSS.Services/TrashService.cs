@@ -26,7 +26,7 @@ namespace ECMSS.Services
         {
             try
             {
-                List<Trash> trashes = new List<Trash>();
+                List<Trash> removeFiles = new List<Trash>();
                 var isOwner = false;
                 for (int i = 0; i < fileIds.Length; i++)
                 {
@@ -36,9 +36,9 @@ namespace ECMSS.Services
                     {
                         throw new Exception("Invalid file or does not have permission to delete this file");
                     }
-                    trashes.Add(new Trash { Id = Guid.NewGuid(), FileId = fileIds[i], DeletedDate = DateTime.Now });
+                    removeFiles.Add(new Trash { Id = Guid.NewGuid(), FileId = fileIds[i], DeletedDate = DateTime.Now });
                 }
-                _trashRepository.AddRange(trashes);
+                _trashRepository.AddRange(removeFiles);
                 _unitOfWork.Commit();
             }
             catch (Exception ex)
@@ -72,14 +72,13 @@ namespace ECMSS.Services
         {
             try
             {
-                List<Trash> trashes = new List<Trash>();
+                List<Trash> recoverFiles = new List<Trash>();
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    Guid fileId = fileIds[i];
-                    var file = _trashRepository.GetSingle(f => f.FileId == fileId);
-                    trashes.Add(file);
+                    var file = _trashRepository.GetSingle(f => f.FileId == fileIds[i]);
+                    recoverFiles.Add(file);
                 }
-                _trashRepository.RemoveRange(trashes);
+                _trashRepository.RemoveRange(recoverFiles);
                 _unitOfWork.Commit();
             }
             catch (Exception ex)

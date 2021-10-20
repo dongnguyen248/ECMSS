@@ -24,6 +24,8 @@ namespace ECMSS.Services
         private readonly IDirectoryService _directoryService;
         private readonly IMapper _mapper;
         private readonly Expression<Func<FileInfo, object>>[] _includes;
+
+        private const string BEGIN_VERSION = "0.1";
         private const int CREATE_STATUS = 1;
 
         public FileInfoService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
@@ -110,7 +112,7 @@ namespace ECMSS.Services
                     Modifier = fileInfo.Owner,
                     Size = fileInfo.FileData.Length / 1024,
                     StatusId = CREATE_STATUS,
-                    Version = "0.1"
+                    Version = BEGIN_VERSION
                 };
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
                 FileHelper.SaveFile(filePath, fileInfo.FileData);
@@ -207,7 +209,7 @@ namespace ECMSS.Services
                         Modifier = fi.Owner,
                         Size = fi.FileData.Length / 1024,
                         StatusId = CREATE_STATUS,
-                        Version = "0.1"
+                        Version = BEGIN_VERSION
                     };
                     fi.FileHistories = new FileHistoryDTO[] { fileHistory };
                     _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
@@ -276,7 +278,7 @@ namespace ECMSS.Services
         private bool CheckSupportedFile(string fileName)
         {
             string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlt", ".xlsx", ".xlsm", ".xlsb", ".xltx", ".xltm", ".csv", ".ppt", ".pptx" };
-            var ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
+            string ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
             if (fileTrackingExtensions.Any(ext.Equals))
             {
                 return true;

@@ -30,22 +30,22 @@ namespace ECMSS.Services
         public IEnumerable<DirectoryDTO> GetTreeDirectories(int empId)
         {
             int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
-            var args = new SqlParameter { ParameterName = "DeptId", SqlDbType = SqlDbType.Int, Value = deptId };
-            var directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", args);
+            var arg = new SqlParameter { ParameterName = "DeptId", SqlDbType = SqlDbType.Int, Value = deptId };
+            var directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", arg);
             return _mapper.Map<IEnumerable<DirectoryDTO>>(directories);
         }
 
         public DirectoryDTO GetDirFromFileId(Guid fileId)
         {
-            var args = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.UniqueIdentifier, Value = fileId };
-            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromFileId @FileId", args).FirstOrDefault();
+            var arg = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.UniqueIdentifier, Value = fileId };
+            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromFileId @FileId", arg).FirstOrDefault();
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
         public DirectoryDTO GetDirFromId(int dirId)
         {
-            var args = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
-            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", args).FirstOrDefault();
+            var arg = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
+            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", arg).FirstOrDefault();
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
