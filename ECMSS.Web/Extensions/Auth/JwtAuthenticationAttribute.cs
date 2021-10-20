@@ -43,21 +43,13 @@ namespace ECMSS.Web.Extensions.Auth
             username = null;
             var simplePrinciple = JwtManager.GetPrincipal(token);
             var identity = simplePrinciple?.Identity as ClaimsIdentity;
-            if (identity == null)
-            {
-                return false;
-            }
-            if (!identity.IsAuthenticated)
+            if (identity == null || !identity.IsAuthenticated)
             {
                 return false;
             }
             var usernameClaim = identity.FindFirst(ClaimTypes.Name);
             username = usernameClaim?.Value;
-            if (string.IsNullOrEmpty(username))
-            {
-                return false;
-            }
-            return true;
+            return !string.IsNullOrEmpty(username);
         }
 
         protected Task<IPrincipal> AuthenticateJwtToken(string token)

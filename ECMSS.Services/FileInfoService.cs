@@ -141,12 +141,8 @@ namespace ECMSS.Services
             searchContent = StringHelper.StringNormalization(searchContent);
             var result = _fileInfoRepository.Find(delegate (FileInfo f)
             {
-                if ((StringHelper.StringNormalization(f.Name).IndexOf(searchContent, StringComparison.CurrentCultureIgnoreCase) >= 0 || f.Employee.EpLiteId.Contains(searchContent))
-                && f.Trashes.Count == 0)
-                {
-                    return true;
-                }
-                return false;
+                return (StringHelper.StringNormalization(f.Name).IndexOf(searchContent, StringComparison.CurrentCultureIgnoreCase) >= 0 || f.Employee.EpLiteId.Contains(searchContent))
+                && f.Trashes.Count == 0;
             }, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
@@ -279,11 +275,7 @@ namespace ECMSS.Services
         {
             string[] fileTrackingExtensions = { ".doc", ".docx", ".xls", ".xlt", ".xlsx", ".xlsm", ".xlsb", ".xltx", ".xltm", ".csv", ".ppt", ".pptx" };
             string ext = (Path.GetExtension(fileName) ?? string.Empty).ToLower();
-            if (fileTrackingExtensions.Any(ext.Equals))
-            {
-                return true;
-            }
-            return false;
+            return fileTrackingExtensions.Any(ext.Equals);
         }
     }
 }

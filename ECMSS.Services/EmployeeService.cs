@@ -42,14 +42,7 @@ namespace ECMSS.Services
             empName = StringHelper.StringNormalization(empName);
             return _mapper.Map<IEnumerable<EmployeeDTO>>(_employeeRepository.Find(delegate (Employee e)
             {
-                if (StringHelper.StringNormalization(e.LastName + " " + e.FirstName).IndexOf(empName, StringComparison.CurrentCultureIgnoreCase) >= 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return StringHelper.StringNormalization(e.LastName + " " + e.FirstName).IndexOf(empName, StringComparison.CurrentCultureIgnoreCase) >= 0;
             }, x => x.Department));
         }
     }
