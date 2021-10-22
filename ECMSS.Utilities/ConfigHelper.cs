@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Specialized;
+using System.Configuration;
 
 namespace ECMSS.Utilities
 {
@@ -8,7 +9,7 @@ namespace ECMSS.Utilities
         {
             try
             {
-                var appSettings = ConfigurationManager.AppSettings;
+                NameValueCollection appSettings = ConfigurationManager.AppSettings;
                 string result = appSettings[key] ?? "Not Found";
                 return result;
             }
@@ -22,8 +23,8 @@ namespace ECMSS.Utilities
         {
             try
             {
-                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var settings = configFile.AppSettings.Settings;
+                Configuration configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                KeyValueConfigurationCollection settings = configFile.AppSettings.Settings;
                 settings[key].Value = value;
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);

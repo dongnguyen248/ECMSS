@@ -22,7 +22,7 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IEnumerable<DirectoryDTO> GetTreeDirectory()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _directoryService.GetTreeDirectories(empId);
         }
 
@@ -31,7 +31,7 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                var dir = _directoryService.CreateDirectory(directory);
+                DirectoryDTO dir = _directoryService.CreateDirectory(directory);
                 return Request.CreateResponse(HttpStatusCode.OK, dir);
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+                int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
                 _directoryService.DeleteDirectory(empId, id);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

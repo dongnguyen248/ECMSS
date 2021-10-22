@@ -29,7 +29,7 @@ namespace ECMSS.Services
         {
             try
             {
-                var historyDb = _fileHistoryRepository.GetSingle(x => x.FileId == fileHistory.FileId && x.Version == fileHistory.Version);
+                FileHistory historyDb = _fileHistoryRepository.GetSingle(x => x.FileId == fileHistory.FileId && x.Version == fileHistory.Version);
                 fileHistory.Modifier = _employeeRepository.GetSingle(x => x.EpLiteId == fileHistory.ModifierUser).Id;
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromFileId(fileHistory.FileId).Name}/{fileHistory.FileName}";

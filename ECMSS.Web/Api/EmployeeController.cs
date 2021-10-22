@@ -26,7 +26,7 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public EmployeeDTO GetEmployeeFromToken()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _employeeService.GetEmployeeById(empId);
         }
 

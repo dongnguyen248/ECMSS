@@ -33,7 +33,7 @@ namespace ECMSS.Web.App_Start
                    .InstancePerRequest();
 
             builder.RegisterFilterProvider();
-            var container = builder.Build();
+            IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
         }
@@ -43,7 +43,7 @@ namespace ECMSS.Web.App_Start
             builder.RegisterType<MappingProfile>().As<Profile>();
             builder.Register(c => new MapperConfiguration(cfg =>
             {
-                foreach (var profile in c.Resolve<IEnumerable<Profile>>())
+                foreach (Profile profile in c.Resolve<IEnumerable<Profile>>())
                 {
                     cfg.AddProfile(profile);
                 }

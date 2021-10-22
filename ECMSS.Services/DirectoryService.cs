@@ -31,21 +31,21 @@ namespace ECMSS.Services
         {
             int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
             var arg = new SqlParameter { ParameterName = "DeptId", SqlDbType = SqlDbType.Int, Value = deptId };
-            var directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", arg);
+            IEnumerable<Directory> directories = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromDeptId @DeptId", arg);
             return _mapper.Map<IEnumerable<DirectoryDTO>>(directories);
         }
 
         public DirectoryDTO GetDirFromFileId(Guid fileId)
         {
             var arg = new SqlParameter { ParameterName = "FileId", SqlDbType = SqlDbType.UniqueIdentifier, Value = fileId };
-            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromFileId @FileId", arg).FirstOrDefault();
+            Directory directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromFileId @FileId", arg).FirstOrDefault();
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
         public DirectoryDTO GetDirFromId(int dirId)
         {
             var arg = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
-            var directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", arg).FirstOrDefault();
+            Directory directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", arg).FirstOrDefault();
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
@@ -60,7 +60,7 @@ namespace ECMSS.Services
                 }
 
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{GetDirFromId((int)directory.ParentId).Name}/";
-                var dir = _directoryRepository.Add(new Directory { Name = directory.Name.Trim(), ParentId = directory.ParentId });
+                Directory dir = _directoryRepository.Add(new Directory { Name = directory.Name.Trim(), ParentId = directory.ParentId });
                 FileHelper.CreatePath(fullPath, dir.Name);
                 _unitOfWork.Commit();
                 return _mapper.Map<DirectoryDTO>(dir);
@@ -75,8 +75,8 @@ namespace ECMSS.Services
         {
             try
             {
-                var dir = GetDirFromId(id);
-                var role = _employeeRepository.GetSingle(x => x.Id == empId).RoleId;
+                DirectoryDTO dir = GetDirFromId(id);
+                int role = _employeeRepository.GetSingle(x => x.Id == empId).RoleId;
                 if (dir is null || role != CommonConstants.MANAGER_ROLE)
                 {
                     throw new Exception("Invalid path or does not have permission to delete this directory");

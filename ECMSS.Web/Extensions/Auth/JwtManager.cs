@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Web.Http.Controllers;
 
@@ -15,17 +16,17 @@ namespace ECMSS.Web.Extensions.Auth
 
         public static string GenerateToken(string epLiteId, int empId, int expireMinutes = EXPIRE_MINUTES)
         {
-            var symmetricKey = Convert.FromBase64String(SECRET_KEY);
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var now = DateTime.UtcNow;
+            byte[] symmetricKey = Convert.FromBase64String(SECRET_KEY);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            DateTime now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, epLiteId), new Claim(ClaimTypes.NameIdentifier, empId.ToString()) }),
                 Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(securityToken);
+            SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            string token = tokenHandler.WriteToken(securityToken);
             return token;
         }
 
@@ -38,7 +39,7 @@ namespace ECMSS.Web.Extensions.Auth
                 {
                     return null;
                 }
-                var symmetricKey = Convert.FromBase64String(SECRET_KEY);
+                byte[] symmetricKey = Convert.FromBase64String(SECRET_KEY);
                 var validationParameters = new TokenValidationParameters()
                 {
                     RequireExpirationTime = true,
@@ -46,7 +47,7 @@ namespace ECMSS.Web.Extensions.Auth
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(symmetricKey)
                 };
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out _);
                 return principal;
             }
             catch
@@ -58,7 +59,7 @@ namespace ECMSS.Web.Extensions.Auth
         public static Dictionary<string, string> ExtractFromHeader(HttpActionContext actionContext)
         {
             string requestToken = null;
-            var authRequest = actionContext.Request.Headers.Authorization;
+            AuthenticationHeaderValue authRequest = actionContext.Request.Headers.Authorization;
             var empInfo = new Dictionary<string, string>();
             if (authRequest != null)
             {

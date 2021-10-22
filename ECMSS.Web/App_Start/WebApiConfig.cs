@@ -13,11 +13,10 @@ namespace ECMSS.Web
 
             config.MapHttpAttributeRoutes();
 
-            var corsAttr = new EnableCorsAttribute("*", "*", "*");
+            EnableCorsAttribute corsAttr = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(corsAttr);
 
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            //config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new DefaultContractResolver { IgnoreSerializableAttribute = true };
             config.Formatters.JsonFormatter.SerializerSettings.Re‌​ferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
             config.Routes.MapHttpRoute(

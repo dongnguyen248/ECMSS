@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -51,7 +52,7 @@ namespace ECMSS.Repositories
 
         public IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities)
+            foreach (TEntity entity in entities)
             {
                 if (_dbContext.Entry(entity).State == EntityState.Detached)
                 {
@@ -79,7 +80,7 @@ namespace ECMSS.Repositories
         public void Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
         {
             _dbSet.Attach(entity);
-            var dbEntry = _dbContext.Entry(entity);
+            DbEntityEntry<TEntity> dbEntry = _dbContext.Entry(entity);
             foreach (var includeProperty in properties)
             {
                 dbEntry.Property(includeProperty).IsModified = true;
@@ -93,7 +94,7 @@ namespace ECMSS.Repositories
 
         public IEnumerable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _dbSet.AsQueryable();
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
         }
 
@@ -104,7 +105,7 @@ namespace ECMSS.Repositories
 
         public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _dbSet.Where(condition);
+            IQueryable<TEntity> query = _dbSet.Where(condition);
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
         }
 
@@ -115,7 +116,7 @@ namespace ECMSS.Repositories
 
         public IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _dbSet.Where(condition).OrderBy(r => Guid.NewGuid()).Take(rows);
+            IQueryable<TEntity> query = _dbSet.Where(condition).OrderBy(r => Guid.NewGuid()).Take(rows);
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
         }
 
@@ -131,7 +132,7 @@ namespace ECMSS.Repositories
 
         public TEntity GetSingle(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _dbSet.Where(condition);
+            IQueryable<TEntity> query = _dbSet.Where(condition);
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking().FirstOrDefault();
         }
 
@@ -147,7 +148,7 @@ namespace ECMSS.Repositories
 
         public IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = _dbSet.Include(includes[0]);
+            IQueryable<TEntity> query = _dbSet.Include(includes[0]);
             foreach (var include in includes.Skip(1))
             {
                 query = query.Include(include);

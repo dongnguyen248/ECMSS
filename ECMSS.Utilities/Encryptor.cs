@@ -15,10 +15,10 @@ namespace ECMSS.Utilities
             {
                 return null;
             }
-            var bytesToBeEncrypted = Encoding.UTF8.GetBytes(plainText);
-            var secretBytes = Encoding.UTF8.GetBytes(SECRET_KEY);
+            byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(plainText);
+            byte[] secretBytes = Encoding.UTF8.GetBytes(SECRET_KEY);
             secretBytes = SHA256.Create().ComputeHash(secretBytes);
-            var bytesEncrypted = Encrypt(bytesToBeEncrypted, secretBytes);
+            byte[] bytesEncrypted = Encrypt(bytesToBeEncrypted, secretBytes);
             return Convert.ToBase64String(bytesEncrypted);
         }
 
@@ -28,10 +28,10 @@ namespace ECMSS.Utilities
             {
                 return null;
             }
-            var bytesToBeDecrypted = Convert.FromBase64String(encryptedText);
-            var secretBytes = Encoding.UTF8.GetBytes(SECRET_KEY);
+            byte[] bytesToBeDecrypted = Convert.FromBase64String(encryptedText);
+            byte[] secretBytes = Encoding.UTF8.GetBytes(SECRET_KEY);
             secretBytes = SHA256.Create().ComputeHash(secretBytes);
-            var bytesDecrypted = Decrypt(bytesToBeDecrypted, secretBytes);
+            byte[] bytesDecrypted = Decrypt(bytesToBeDecrypted, secretBytes);
             return Encoding.UTF8.GetString(bytesDecrypted);
         }
 

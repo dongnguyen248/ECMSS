@@ -22,7 +22,7 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+                int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
                 _trashService.AddFilesToTrash(fileIds, empId);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

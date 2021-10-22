@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
@@ -15,8 +17,8 @@ namespace ECMSS.Web.Extensions.Auth
 
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            var request = context.Request;
-            var authorization = request.Headers.Authorization;
+            HttpRequestMessage request = context.Request;
+            AuthenticationHeaderValue authorization = request.Headers.Authorization;
             if (authorization == null || authorization.Scheme != "Bearer")
             {
                 return;
@@ -26,8 +28,8 @@ namespace ECMSS.Web.Extensions.Auth
                 context.ErrorResult = new AuthenticationFailureResult("Missing Jwt Token", request);
                 return;
             }
-            var token = authorization.Parameter;
-            var principal = await AuthenticateJwtToken(token);
+            string token = authorization.Parameter;
+            IPrincipal principal = await AuthenticateJwtToken(token);
             if (principal == null)
             {
                 context.ErrorResult = new AuthenticationFailureResult("Invalid token", request);
@@ -41,13 +43,12 @@ namespace ECMSS.Web.Extensions.Auth
         private static bool ValidateToken(string token, out string username)
         {
             username = null;
-            var simplePrinciple = JwtManager.GetPrincipal(token);
-            var identity = simplePrinciple?.Identity as ClaimsIdentity;
-            if (identity == null || !identity.IsAuthenticated)
+            ClaimsPrincipal simplePrinciple = JwtManager.GetPrincipal(token);
+            if (!(simplePrinciple?.Identity is ClaimsIdentity identity) || !identity.IsAuthenticated)
             {
                 return false;
             }
-            var usernameClaim = identity.FindFirst(ClaimTypes.Name);
+            Claim usernameClaim = identity.FindFirst(ClaimTypes.Name);
             username = usernameClaim?.Value;
             return !string.IsNullOrEmpty(username);
         }

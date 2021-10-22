@@ -1,4 +1,5 @@
 ﻿using ECMSS.Data;
+using ECMSS.DTO;
 using ECMSS.Repositories.Interfaces;
 using ECMSS.Services.Interfaces;
 using ECMSS.Utilities;
@@ -27,10 +28,10 @@ namespace ECMSS.Services
             try
             {
                 List<Trash> removeFiles = new List<Trash>();
-                var isOwner = false;
+                bool isOwner = false;
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    var fileId = fileIds[i];
+                    Guid fileId = fileIds[i];
                     isOwner = _fileInfoRepository.GetSingle(x => x.Id == fileId && x.Owner == empId) != null;
                     if (!isOwner)
                     {
@@ -54,8 +55,8 @@ namespace ECMSS.Services
                 for (int i = 0; i < fileIds.Length; i++)
                 {
                     Guid fileId = fileIds[i];
-                    var dir = _directoryService.GetDirFromFileId(fileId);
-                    var fileInfo = _fileInfoRepository.GetSingleById(fileId);
+                    DirectoryDTO dir = _directoryService.GetDirFromFileId(fileId);
+                    FileInfo fileInfo = _fileInfoRepository.GetSingleById(fileId);
                     _fileInfoRepository.Remove(fileInfo);
                     string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{dir.Name}/{fileInfo.Name}";
                     FileHelper.DeleteFile(fullPath);
@@ -75,7 +76,7 @@ namespace ECMSS.Services
                 List<Trash> recoverFiles = new List<Trash>();
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    var file = _trashRepository.GetSingle(f => f.FileId == fileIds[i]);
+                    Trash file = _trashRepository.GetSingle(f => f.FileId == fileIds[i]);
                     recoverFiles.Add(file);
                 }
                 _trashRepository.RemoveRange(recoverFiles);

@@ -25,31 +25,31 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetFileInfos()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetFileInfosByUserId(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByUserId(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult GetFileInfosByDirId(int dirId)
         {
-            var fileInfos = _fileInfoService.GetFileInfosByDirId(dirId);
-            var result = ConvertToModels(fileInfos);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByDirId(dirId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public string[] GetFileUrl(Guid id, bool isShareUrl = false)
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _fileInfoService.GetFileUrl(id, empId, isShareUrl);
         }
 
         [HttpGet]
         public string GetFileShareUrl(Guid id)
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return _fileInfoService.GetFileShareUrl(id, empId);
         }
 
@@ -70,62 +70,62 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public IHttpActionResult GetFavoriteFiles()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetFavoriteFiles(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFavoriteFiles(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult GetImportantFiles()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetImportantFiles(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetImportantFiles(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult Search(string searchContent)
         {
-            var fileInfos = _fileInfoService.Search(searchContent);
-            var result = ConvertToModels(fileInfos);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.Search(searchContent);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult GetDepartmentFiles()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetDepartmentFiles(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetDepartmentFiles(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult GetSharedFiles()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetSharedFiles(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetSharedFiles(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public IHttpActionResult GetTrashContents()
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfos = _fileInfoService.GetTrashContents(empId);
-            var result = ConvertToModels(fileInfos);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetTrashContents(empId);
+            IEnumerable<FileInfoViewModel> result = ConvertToModels(fileInfos);
             return Ok(new { fileInfos = result });
         }
 
         [HttpGet]
         public FileInfoViewModel GetFileInfo(Guid id)
         {
-            var fileInfo = _fileInfoService.GetFileInfo(id);
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            var fileInfoVM = new FileInfoViewModel()
+            FileInfoDTO fileInfo = _fileInfoService.GetFileInfo(id);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            FileInfoViewModel fileInfoVM = new FileInfoViewModel()
             {
                 Id = fileInfo.Id,
                 Name = fileInfo.Name,
@@ -145,7 +145,7 @@ namespace ECMSS.Web.Api
 
         private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
         {
-            var empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             return fileInfos.Select(x => new FileInfoViewModel
             {
                 Id = x.Id,
@@ -175,7 +175,7 @@ namespace ECMSS.Web.Api
             try
             {
                 IEnumerable<FileInfoDTO> fileInfos = fileUpload.ConvertToFileInfos(HttpContext.Current.Request.Files);
-                var result = _fileInfoService.AddFiles(fileInfos);
+                List<FileInfoDTO> result = _fileInfoService.AddFiles(fileInfos);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
@@ -189,7 +189,7 @@ namespace ECMSS.Web.Api
         {
             try
             {
-                var result = _fileInfoService.EditFileInfo(fileInfo);
+                FileInfoDTO result = _fileInfoService.EditFileInfo(fileInfo);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)

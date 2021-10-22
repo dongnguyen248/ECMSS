@@ -1,4 +1,5 @@
-﻿using ECMSS.Services.Interfaces;
+﻿using ECMSS.DTO;
+using ECMSS.Services.Interfaces;
 using ECMSS.Web.Extensions.Auth;
 using System.Net;
 using System.Web.Http;
@@ -18,7 +19,7 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public string GetToken(string epLiteId)
         {
-            var curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
+            EmployeeDTO curEmp = _employeeService.GetEmployeeByEpLiteId(epLiteId);
             if (curEmp != null)
             {
                 string token = JwtManager.GenerateToken(curEmp.EpLiteId, curEmp.Id);
