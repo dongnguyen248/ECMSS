@@ -31,15 +31,15 @@ namespace ECMSS.Utilities
 
         private static string RemoveExtraSpace(this string input)
         {
-            Regex trimmer = new Regex(@"\s\s+");
-            input = trimmer.Replace(input, " ").Trim();
+            Regex regex = new Regex(@"\s\s+");
+            input = regex.Replace(input, " ").Trim();
             return input;
         }
 
         public static bool CheckContainSpecialCharacters(string input)
         {
-            string specialChar = @"\|!#$%&/=?»«@£§€{}'<>";
-            foreach (char item in specialChar)
+            string specCharacters = @"\|!#$%&/=?»«@£§€{}'<>";
+            foreach (char item in specCharacters)
             {
                 if (input.Contains(item.ToString()))
                 {
