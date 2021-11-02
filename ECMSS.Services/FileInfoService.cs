@@ -239,9 +239,8 @@ namespace ECMSS.Services
 
                 FileInfo prevState = _fileInfoRepository.GetSingleById(fileInfo.Id);
                 bool isChangedLocation = fileInfo.DirectoryId != prevState.DirectoryId || fileInfo.Name != prevState.Name;
-                string rootPath = CommonConstants.FILE_UPLOAD_PATH;
-                string srcPath = $"{rootPath}{_directoryService.GetDirFromId(prevState.DirectoryId).Name}/{prevState.Name}";
-                string desPath = $"{rootPath}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
+                string srcPath = $"{CommonConstants.FILE_UPLOAD_PATH}{_directoryService.GetDirFromId(prevState.DirectoryId).Name}/{prevState.Name}";
+                string desPath = $"{CommonConstants.FILE_UPLOAD_PATH}{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
 
                 prevState.Name = fileInfo.Name;
                 prevState.DirectoryId = fileInfo.DirectoryId;

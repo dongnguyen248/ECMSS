@@ -28,36 +28,14 @@ namespace ECMSS.Utilities
             }
         }
 
-        public static string CreatePath(string path, string subPath)
+        public static string CreateFolder(string path, string subPath)
         {
-            string fullPath = path + subPath;
-            if (!Directory.Exists(fullPath))
+            string fullPath = path.Trim() + subPath.Trim();
+            if (Directory.Exists(fullPath))
             {
-                Directory.CreateDirectory(fullPath);
+                throw new Exception("This directory is already available");
             }
-            return fullPath;
-        }
-
-        public static void CreatePath(string path, params string[] subPaths)
-        {
-            if (subPaths is null)
-            {
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < subPaths.Length; i++)
-                {
-                    string fullPath = path + subPaths[i];
-                    if (!Directory.Exists(fullPath))
-                    {
-                        Directory.CreateDirectory(fullPath);
-                    }
-                }
-            }
+            return Directory.CreateDirectory(fullPath).Name;
         }
 
         public static void DeleteFile(string path)

@@ -18,11 +18,10 @@ namespace ECMSS.Web.Extensions.Auth
         {
             byte[] symmetricKey = Convert.FromBase64String(SECRET_KEY);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            DateTime now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, epLiteId), new Claim(ClaimTypes.NameIdentifier, empId.ToString()) }),
-                Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(expireMinutes)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(symmetricKey), SecurityAlgorithms.HmacSha256Signature)
             };
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);

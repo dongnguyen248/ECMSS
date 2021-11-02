@@ -58,10 +58,9 @@ namespace ECMSS.Services
                 {
                     throw new Exception("Special character should not be entered");
                 }
-
                 string fullPath = $@"{CommonConstants.FILE_UPLOAD_PATH}{GetDirFromId((int)directory.ParentId).Name}/";
-                Directory dir = _directoryRepository.Add(new Directory { Name = directory.Name.Trim(), ParentId = directory.ParentId });
-                FileHelper.CreatePath(fullPath, dir.Name);
+                string directoryName = FileHelper.CreateFolder(fullPath, directory.Name);
+                Directory dir = _directoryRepository.Add(new Directory { Name = directoryName, ParentId = directory.ParentId });
                 _unitOfWork.Commit();
                 return _mapper.Map<DirectoryDTO>(dir);
             }
