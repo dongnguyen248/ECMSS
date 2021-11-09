@@ -20,9 +20,9 @@ namespace ECMSS.Repositories
         public GenericRepository(IDbFactory dbFactory)
         {
             _dbFactory = dbFactory;
+            _dbSet = DbContext.Set<TEntity>();
             DbContext.Configuration.LazyLoadingEnabled = false;
             DbContext.Configuration.AutoDetectChangesEnabled = false;
-            _dbSet = DbContext.Set<TEntity>();
         }
 
         public TEntity Add(TEntity entity)
