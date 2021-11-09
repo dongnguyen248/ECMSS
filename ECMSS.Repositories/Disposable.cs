@@ -23,7 +23,6 @@ namespace ECMSS.Repositories
             {
                 DisposeCore();
             }
-
             _isDisposed = true;
         }
 
