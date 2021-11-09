@@ -137,8 +137,8 @@ namespace ECMSS.Web.Api
                 Version = GetFileHistory(fileInfo).Version,
                 Tag = fileInfo.Tag,
                 ModifiedDate = GetFileHistory(fileInfo).ModifiedDate,
-                IsFavorite = fileInfo.FileFavorites.Where(f => f.EmployeeId == empId).Count() > 0,
-                IsImportant = fileInfo.FileImportants.Where(i => i.EmployeeId == empId).Count() > 0
+                IsFavorite = fileInfo.FileFavorites.Where(f => f.EmployeeId == empId).Any(),
+                IsImportant = fileInfo.FileImportants.Where(i => i.EmployeeId == empId).Any()
             };
             return fileInfoVM;
         }
@@ -159,8 +159,8 @@ namespace ECMSS.Web.Api
                 SecurityLevel = x.SecurityLevel,
                 Version = GetFileHistory(x).Version,
                 ModifiedDate = GetFileHistory(x).ModifiedDate,
-                IsFavorite = x.FileFavorites.Where(f => f.EmployeeId == empId).Count() > 0,
-                IsImportant = x.FileImportants.Where(i => i.EmployeeId == empId).Count() > 0
+                IsFavorite = x.FileFavorites.Where(f => f.EmployeeId == empId).Any(),
+                IsImportant = x.FileImportants.Where(i => i.EmployeeId == empId).Any()
             });
         }
 

@@ -57,12 +57,11 @@ namespace ECMSS.Web.Extensions.Auth
 
         public static Dictionary<string, string> ExtractFromHeader(HttpActionContext actionContext)
         {
-            string requestToken = null;
             AuthenticationHeaderValue authRequest = actionContext.Request.Headers.Authorization;
             var empInfo = new Dictionary<string, string>();
             if (authRequest != null)
             {
-                requestToken = authRequest.Parameter;
+                string requestToken = authRequest.Parameter;
                 empInfo.Add("EpLiteId", actionContext.Request.Headers.Authorization.Parameter);
                 empInfo.Add("Id", GetPrincipal(requestToken).Claims.FirstOrDefault(m => m.Type.Contains("nameidentifier")).Value);
             }

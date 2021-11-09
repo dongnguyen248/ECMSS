@@ -50,13 +50,13 @@ namespace ECMSS.Services
 
         public IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId)
         {
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Count == 0, _includes);
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId)
         {
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId && x.Trashes.Count == 0, _includes);
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
@@ -65,8 +65,8 @@ namespace ECMSS.Services
             string[] result = new string[3];
             FileInfo fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
             bool isOwnerOrShared = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId ||
-                                                                                    x.FileShares.Count(s => s.EmployeeId == empId &&
-                                                                                                       s.Permission == CommonConstants.EDIT_PERMISSION) > 0)) != null;
+                                                                                    x.FileShares.Any(s => s.EmployeeId == empId &&
+                                                                                                       s.Permission == CommonConstants.EDIT_PERMISSION))) != null;
 
             string filePath = Env.IS_DEVELOPMENT ? CommonConstants.FILE_UPLOAD_PATH : "http://172.25.216.127:8082/FileSS/";
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
@@ -126,13 +126,13 @@ namespace ECMSS.Services
 
         public IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId)
         {
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.FileFavorites.Count(f => f.EmployeeId == empId) > 0 && x.Trashes.Count == 0, _includes);
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.FileFavorites.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public IEnumerable<FileInfoDTO> GetImportantFiles(int empId)
         {
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.FileImportants.Count(i => i.EmployeeId == empId) > 0 && x.Trashes.Count == 0, _includes);
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.FileImportants.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
@@ -142,27 +142,27 @@ namespace ECMSS.Services
             IEnumerable<FileInfo> result = _fileInfoRepository.Find(delegate (FileInfo f)
             {
                 return (StringHelper.StringNormalization(f.Name).IndexOf(searchContent, StringComparison.CurrentCultureIgnoreCase) >= 0 || f.Employee.EpLiteId.Contains(searchContent))
-                && f.Trashes.Count == 0;
+                && !f.Trashes.Any();
             }, _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId)
         {
-            int depId = _employeeRepository.GetSingleById(empId).DepartmentId;
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.DepartmentId == depId && x.Trashes.Count == 0, _includes);
+            int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.DepartmentId == deptId && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
         public IEnumerable<FileInfoDTO> GetSharedFiles(int empId)
         {
-            IEnumerable<FileInfo> sharedFiles = _fileInfoRepository.GetMany(x => x.FileShares.Count(s => s.EmployeeId == empId) > 0 && x.Trashes.Count == 0, _includes);
+            IEnumerable<FileInfo> sharedFiles = _fileInfoRepository.GetMany(x => x.FileShares.Any(s => s.EmployeeId == empId) && !x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(sharedFiles);
         }
 
         public IEnumerable<FileInfoDTO> GetTrashContents(int empId)
         {
-            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Count > 0, _includes);
+            IEnumerable<FileInfo> result = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Any(), _includes);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 

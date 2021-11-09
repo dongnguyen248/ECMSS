@@ -143,7 +143,7 @@ namespace ECMSS.Repositories
 
         public bool CheckContains(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbSet.Count(predicate) > 0;
+            return _dbSet.Any(predicate);
         }
 
         public IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)

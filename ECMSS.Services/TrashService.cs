@@ -74,9 +74,11 @@ namespace ECMSS.Services
             try
             {
                 List<Trash> recoverFiles = new List<Trash>();
+                Guid fileId;
                 for (int i = 0; i < fileIds.Length; i++)
                 {
-                    Trash file = _trashRepository.GetSingle(f => f.FileId == fileIds[i]);
+                    fileId = fileIds[i];
+                    Trash file = _trashRepository.GetSingle(f => f.FileId == fileId);
                     recoverFiles.Add(file);
                 }
                 _trashRepository.RemoveRange(recoverFiles);

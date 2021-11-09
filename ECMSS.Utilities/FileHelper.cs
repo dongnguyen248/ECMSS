@@ -11,7 +11,7 @@ namespace ECMSS.Utilities
             {
                 if (File.Exists(filePath))
                 {
-                    throw new Exception();
+                    throw new Exception("There is a file with the same name in the same directory");
                 }
             }
             using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
@@ -50,7 +50,7 @@ namespace ECMSS.Utilities
         {
             if (File.Exists(desPath))
             {
-                throw new Exception();
+                throw new Exception("There is a file with the same name in the destination directory");
             }
             File.Move(srcPath, desPath);
         }
