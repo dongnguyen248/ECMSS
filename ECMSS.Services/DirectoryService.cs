@@ -19,11 +19,14 @@ namespace ECMSS.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public DirectoryService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DirectoryService(IGenericRepository<Directory> directoryRepository, 
+            IGenericRepository<Employee> employeeRepository, 
+            IUnitOfWork unitOfWork, 
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _directoryRepository = _unitOfWork.DirectoryRepository;
-            _employeeRepository = _unitOfWork.EmployeeRepository;
+            _directoryRepository = directoryRepository;
+            _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
 

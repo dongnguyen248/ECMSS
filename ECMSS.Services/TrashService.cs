@@ -15,11 +15,14 @@ namespace ECMSS.Services
         private readonly IDirectoryService _directoryService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TrashService(IUnitOfWork unitOfWork, IDirectoryService directoryService)
+        public TrashService(IGenericRepository<Trash> trashRepository,
+            IGenericRepository<FileInfo> fileInfoRepository,
+            IUnitOfWork unitOfWork,
+            IDirectoryService directoryService)
         {
             _unitOfWork = unitOfWork;
-            _trashRepository = _unitOfWork.TrashRepository;
-            _fileInfoRepository = _unitOfWork.FileInfoRepository;
+            _trashRepository = trashRepository;
+            _fileInfoRepository = fileInfoRepository;
             _directoryService = directoryService;
         }
 
@@ -74,7 +77,7 @@ namespace ECMSS.Services
             try
             {
                 List<Trash> recoverFiles = new List<Trash>();
-                Guid fileId;
+                Guid fileId = Guid.Empty;
                 for (int i = 0; i < fileIds.Length; i++)
                 {
                     fileId = fileIds[i];

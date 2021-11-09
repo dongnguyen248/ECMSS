@@ -12,17 +12,17 @@ namespace ECMSS.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly ECMEntities _dbContext;
         private readonly DbSet<TEntity> _dbSet;
+        private readonly IDbFactory _dbFactory;
+        private ECMEntities _dbContext;
+        protected ECMEntities DbContext => _dbContext ?? (_dbContext = _dbFactory.Init());
 
-        public GenericRepository(ECMEntities dbContext)
+        public GenericRepository(IDbFactory dbFactory)
         {
-            _dbContext = dbContext;
-            _dbContext.Configuration.LazyLoadingEnabled = false;
-            _dbContext.Configuration.AutoDetectChangesEnabled = false;
-            _dbSet = _dbContext.Set<TEntity>();
-
-            //_dbContext.Database.Log = s => Debug.WriteLine(s);
+            _dbFactory = dbFactory;
+            DbContext.Configuration.LazyLoadingEnabled = false;
+            DbContext.Configuration.AutoDetectChangesEnabled = false;
+            _dbSet = DbContext.Set<TEntity>();
         }
 
         public TEntity Add(TEntity entity)

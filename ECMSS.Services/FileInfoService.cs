@@ -28,13 +28,19 @@ namespace ECMSS.Services
         private const string BEGIN_VERSION = "0.1";
         private const int CREATE_STATUS = 1;
 
-        public FileInfoService(IUnitOfWork unitOfWork, IMapper mapper, IDirectoryService directoryService)
+        public FileInfoService(IGenericRepository<FileInfo> fileInfoRepository,
+            IGenericRepository<FileHistory> fileHistoryRepository,
+            IGenericRepository<FileShare> fileShareRepository,
+            IGenericRepository<Employee> employeeRepository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IDirectoryService directoryService)
         {
             _unitOfWork = unitOfWork;
-            _fileInfoRepository = _unitOfWork.FileInfoRepository;
-            _fileHistoryRepository = _unitOfWork.FileHistoryRepository;
-            _fileShareRepository = _unitOfWork.FileShareRepository;
-            _employeeRepository = _unitOfWork.EmployeeRepository;
+            _fileInfoRepository = fileInfoRepository;
+            _fileHistoryRepository = fileHistoryRepository;
+            _fileShareRepository = fileShareRepository;
+            _employeeRepository = employeeRepository;
             _directoryService = directoryService;
             _mapper = mapper;
 

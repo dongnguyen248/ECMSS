@@ -10,13 +10,11 @@ namespace ECMSS.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IGenericRepository<Department> _departmentRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public DepartmentService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DepartmentService(IGenericRepository<Department> departmentRepository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _departmentRepository = _unitOfWork.DepartmentRepository;
+            _departmentRepository = departmentRepository;
             _mapper = mapper;
         }
 

@@ -11,13 +11,11 @@ namespace ECMSS.Services
     public class FileShareService : IFileShareService
     {
         private readonly IGenericRepository<FileShare> _fileShareRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public FileShareService(IUnitOfWork unitOfWork, IMapper mapper)
+        public FileShareService(IGenericRepository<FileShare> fileShareRepository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _fileShareRepository = _unitOfWork.FileShareRepository;
+            _fileShareRepository = fileShareRepository;
             _mapper = mapper;
         }
 

@@ -51,7 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbFactory.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="GenericRepository.cs" />
+    <Compile Include="Interfaces\IDbFactory.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

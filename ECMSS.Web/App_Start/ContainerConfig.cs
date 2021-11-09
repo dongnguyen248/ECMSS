@@ -22,10 +22,13 @@ namespace ECMSS.Web.App_Start
             var builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<ECMEntities>().AsSelf().InstancePerRequest();
+            builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
             RegisterAutoMapper(builder);
+
+            builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>)).InstancePerRequest();
 
             builder.RegisterAssemblyTypes(typeof(DepartmentService).Assembly)
                    .Where(t => t.Name.EndsWith("Service"))

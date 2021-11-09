@@ -12,13 +12,11 @@ namespace ECMSS.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IGenericRepository<Employee> _employeeRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmployeeService(IUnitOfWork unitOfWork, IMapper mapper)
+        public EmployeeService(IGenericRepository<Employee> employeeRepository, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
-            _employeeRepository = _unitOfWork.EmployeeRepository;
+            _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
 
