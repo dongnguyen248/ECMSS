@@ -16,17 +16,14 @@ namespace ECMSS.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public FileHistoryService(IGenericRepository<FileHistory> fileHistoryRepository,
-            IGenericRepository<Employee> employeeRepository,
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IDirectoryService directoryService)
+        public FileHistoryService(IGenericRepository<FileHistory> fileHistoryRepository, IGenericRepository<Employee> employeeRepository,
+                                  IDirectoryService directoryService, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _fileHistoryRepository = fileHistoryRepository;
             _employeeRepository = employeeRepository;
+            _directoryService = directoryService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _directoryService = directoryService;
         }
 
         public void UploadFile(FileHistoryDTO fileHistory)

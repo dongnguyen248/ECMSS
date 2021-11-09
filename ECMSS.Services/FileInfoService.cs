@@ -20,29 +20,25 @@ namespace ECMSS.Services
         private readonly IGenericRepository<FileHistory> _fileHistoryRepository;
         private readonly IGenericRepository<FileShare> _fileShareRepository;
         private readonly IGenericRepository<Employee> _employeeRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IDirectoryService _directoryService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly Expression<Func<FileInfo, object>>[] _includes;
 
         private const string BEGIN_VERSION = "0.1";
         private const int CREATE_STATUS = 1;
 
-        public FileInfoService(IGenericRepository<FileInfo> fileInfoRepository,
-            IGenericRepository<FileHistory> fileHistoryRepository,
-            IGenericRepository<FileShare> fileShareRepository,
-            IGenericRepository<Employee> employeeRepository,
-            IUnitOfWork unitOfWork,
-            IMapper mapper,
-            IDirectoryService directoryService)
+        public FileInfoService(IGenericRepository<FileInfo> fileInfoRepository, IGenericRepository<FileHistory> fileHistoryRepository,
+                               IGenericRepository<FileShare> fileShareRepository, IGenericRepository<Employee> employeeRepository,
+                               IDirectoryService directoryService, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _fileInfoRepository = fileInfoRepository;
             _fileHistoryRepository = fileHistoryRepository;
             _fileShareRepository = fileShareRepository;
             _employeeRepository = employeeRepository;
+            _directoryService = directoryService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _directoryService = directoryService;
 
             _includes = new Expression<Func<FileInfo, object>>[]
             {

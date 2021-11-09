@@ -15,15 +15,13 @@ namespace ECMSS.Services
         private readonly IDirectoryService _directoryService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TrashService(IGenericRepository<Trash> trashRepository,
-            IGenericRepository<FileInfo> fileInfoRepository,
-            IUnitOfWork unitOfWork,
-            IDirectoryService directoryService)
+        public TrashService(IGenericRepository<Trash> trashRepository, IGenericRepository<FileInfo> fileInfoRepository,
+                            IDirectoryService directoryService, IUnitOfWork unitOfWork)
         {
             _trashRepository = trashRepository;
             _fileInfoRepository = fileInfoRepository;
-            _unitOfWork = unitOfWork;
             _directoryService = directoryService;
+            _unitOfWork = unitOfWork;
         }
 
         public void AddFilesToTrash(Guid[] fileIds, int empId)
