@@ -36,13 +36,13 @@ namespace ECMSS.Services
             IMapper mapper,
             IDirectoryService directoryService)
         {
-            _unitOfWork = unitOfWork;
             _fileInfoRepository = fileInfoRepository;
             _fileHistoryRepository = fileHistoryRepository;
             _fileShareRepository = fileShareRepository;
             _employeeRepository = employeeRepository;
-            _directoryService = directoryService;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _directoryService = directoryService;
 
             _includes = new Expression<Func<FileInfo, object>>[]
             {

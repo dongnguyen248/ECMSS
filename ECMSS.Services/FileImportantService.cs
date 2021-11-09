@@ -12,8 +12,8 @@ namespace ECMSS.Services
 
         public FileImportantService(IGenericRepository<FileImportant> fileImportantRepository, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _fileImportantRepository = fileImportantRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void AddOrRemoveImportantFile(Guid fileId, int employeeId)

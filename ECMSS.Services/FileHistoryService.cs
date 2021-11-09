@@ -22,11 +22,11 @@ namespace ECMSS.Services
             IMapper mapper,
             IDirectoryService directoryService)
         {
-            _unitOfWork = unitOfWork;
             _fileHistoryRepository = fileHistoryRepository;
             _employeeRepository = employeeRepository;
-            _directoryService = directoryService;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _directoryService = directoryService;
         }
 
         public void UploadFile(FileHistoryDTO fileHistory)

@@ -13,8 +13,8 @@ namespace ECMSS.Services
 
         public FileFavoriteService(IGenericRepository<FileFavorite> fileFavoriteRepository, IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _fileFavoriteRepository = fileFavoriteRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void AddOrRemoveFavoriteFile(FileFavoriteDTO fileFavoriteDTO)

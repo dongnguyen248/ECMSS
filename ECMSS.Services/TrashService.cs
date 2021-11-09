@@ -20,9 +20,9 @@ namespace ECMSS.Services
             IUnitOfWork unitOfWork,
             IDirectoryService directoryService)
         {
-            _unitOfWork = unitOfWork;
             _trashRepository = trashRepository;
             _fileInfoRepository = fileInfoRepository;
+            _unitOfWork = unitOfWork;
             _directoryService = directoryService;
         }
 

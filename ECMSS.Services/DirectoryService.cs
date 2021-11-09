@@ -24,9 +24,9 @@ namespace ECMSS.Services
             IUnitOfWork unitOfWork, 
             IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
             _directoryRepository = directoryRepository;
             _employeeRepository = employeeRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
