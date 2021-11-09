@@ -26,14 +26,14 @@ namespace ECMSS.Web.App_Start
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
 
-            RegisterAutoMapper(builder);
-
             builder.RegisterGeneric(typeof(GenericRepository<>)).As(typeof(IGenericRepository<>)).InstancePerRequest();
 
             builder.RegisterAssemblyTypes(typeof(DepartmentService).Assembly)
                    .Where(t => t.Name.EndsWith("Service"))
                    .AsImplementedInterfaces()
                    .InstancePerRequest();
+
+            RegisterAutoMapper(builder);
 
             builder.RegisterFilterProvider();
             IContainer container = builder.Build();
