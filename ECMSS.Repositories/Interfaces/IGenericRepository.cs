@@ -30,10 +30,6 @@ namespace ECMSS.Repositories.Interfaces
 
         IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
 
-        IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows);
-
-        IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows, params Expression<Func<TEntity, object>>[] includes);
-
         IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes);
 
         TEntity GetSingleById(object id);

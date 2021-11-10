@@ -109,17 +109,6 @@ namespace ECMSS.Repositories
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
         }
 
-        public IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows)
-        {
-            return _dbSet.Where(condition).OrderBy(r => Guid.NewGuid()).Take(rows).AsNoTracking();
-        }
-
-        public IEnumerable<TEntity> GetRandom(Expression<Func<TEntity, bool>> condition, int rows, params Expression<Func<TEntity, object>>[] includes)
-        {
-            IQueryable<TEntity> query = _dbSet.Where(condition).OrderBy(r => Guid.NewGuid()).Take(rows);
-            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
-        }
-
         public TEntity GetSingleById(object id)
         {
             return _dbSet.Find(id);
