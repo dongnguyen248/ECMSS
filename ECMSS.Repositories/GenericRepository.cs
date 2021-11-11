@@ -103,7 +103,7 @@ namespace ECMSS.Repositories
             return _dbSet.Where(condition).AsNoTracking();
         }
 
-        public IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
+        public IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _dbSet.Where(condition);
             return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)).AsNoTracking();
@@ -135,7 +135,7 @@ namespace ECMSS.Repositories
             return _dbSet.Any(predicate);
         }
 
-        public IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)
+        public IQueryable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _dbSet.Include(includes[0]);
             foreach (var include in includes.Skip(1))

@@ -6,9 +6,9 @@ namespace ECMSS.Services.Interfaces
 {
     public interface IFileInfoService
     {
-        IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId);
+        IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId);
+        IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId, int pageIndex, int pageSize, out int totalRow);
 
         string[] GetFileUrl(Guid id, int empId, bool isShareUrl);
 
@@ -22,16 +22,16 @@ namespace ECMSS.Services.Interfaces
 
         void UploadNewFile(FileInfoDTO fileInfo);
 
-        IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId);
+        IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> GetImportantFiles(int empId);
+        IEnumerable<FileInfoDTO> GetImportantFiles(int empId, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> Search(string searchContent);
+        IEnumerable<FileInfoDTO> Search(string searchContent, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId);
+        IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> GetSharedFiles(int empId);
+        IEnumerable<FileInfoDTO> GetSharedFiles(int empId, int pageIndex, int pageSize, out int totalRow);
 
-        IEnumerable<FileInfoDTO> GetTrashContents(int empId);
+        IEnumerable<FileInfoDTO> GetTrashContents(int empId, int pageIndex, int pageSize, out int totalRow);
     }
 }

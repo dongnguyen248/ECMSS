@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace ECMSS.Repositories.Interfaces
@@ -28,9 +29,9 @@ namespace ECMSS.Repositories.Interfaces
 
         IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition);
 
-        IEnumerable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
+        IQueryable<TEntity> GetMany(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
 
-        IEnumerable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes);
+        IQueryable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes);
 
         TEntity GetSingleById(object id);
 

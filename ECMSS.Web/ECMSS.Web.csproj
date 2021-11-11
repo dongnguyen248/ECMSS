@@ -209,6 +209,7 @@
     <Compile Include="Extensions\Auth\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Extensions\Auth\JwtAuthenticationAttribute.cs" />
     <Compile Include="Extensions\Auth\JwtManager.cs" />
+    <Compile Include="Extensions\Core\PaginationSet.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
