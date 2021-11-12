@@ -272,8 +272,8 @@ namespace ECMSS.Services
 
                 if (isChangedLocation)
                 {
-                    IEnumerable<FileInfo> filesInNewLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
-                    if (filesInNewLocation.Where(x => x.Name == fileInfo.Name).Any())
+                    IEnumerable<FileInfo> filesInDesLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
+                    if (filesInDesLocation.Where(x => x.Name == fileInfo.Name).Any())
                     {
                         throw new Exception("There is a file with the same name in the same directory");
                     }
