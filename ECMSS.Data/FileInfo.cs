@@ -31,6 +31,7 @@ namespace ECMSS.Data
         public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }
         public System.Guid Id { get; set; }
+        public string Extension { get; set; }
     
         public virtual Directory Directory { get; set; }
         public virtual Employee Employee { get; set; }

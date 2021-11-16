@@ -71,6 +71,7 @@
           <Property Name="DirectoryId" Type="int" Nullable="false" />
           <Property Name="SecurityLevel" Type="varchar" MaxLength="20" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Extension" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="FilePermission">
           <Key>
@@ -119,6 +120,18 @@
             </Principal>
             <Dependent Role="Directory">
               <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Fk_Directory_Seft">
+          <End Role="Directory" Type="Self.Directory" Multiplicity="0..1" />
+          <End Role="Directory1" Type="Self.Directory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Directory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Directory1">
+              <PropertyRef Name="ParentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -330,6 +343,10 @@
           <AssociationSet Name="Fk_Directory_Department" Association="Self.Fk_Directory_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="Directory" EntitySet="Directory" />
+          </AssociationSet>
+          <AssociationSet Name="Fk_Directory_Seft" Association="Self.Fk_Directory_Seft">
+            <End Role="Directory" EntitySet="Directory" />
+            <End Role="Directory1" EntitySet="Directory" />
           </AssociationSet>
           <AssociationSet Name="Fk_Employee_Department" Association="Self.Fk_Employee_Department">
             <End Role="Department" EntitySet="Department" />
@@ -643,6 +660,7 @@
           <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_FileInfo" FromRole="FileInfo" ToRole="FileImportant" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
           <NavigationProperty Name="Trashes" Relationship="ECMModel.Fk_Trash_FileInfo" FromRole="FileInfo" ToRole="Trash" />
+          <Property Name="Extension" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FileShare">
           <Key>
@@ -915,6 +933,7 @@
           <EntitySetMapping Name="FileInfoes">
             <EntityTypeMapping TypeName="ECMModel.FileInfo">
               <MappingFragment StoreEntitySet="FileInfo">
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SecurityLevel" ColumnName="SecurityLevel" />
                 <ScalarProperty Name="DirectoryId" ColumnName="DirectoryId" />

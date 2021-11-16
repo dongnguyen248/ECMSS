@@ -24,10 +24,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFileInfos(int page, int pageSize)
+        public IHttpActionResult GetFileInfos(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByUserId(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByUserId(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -39,9 +39,9 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFileInfosByDirId(int dirId, int page, int pageSize)
+        public IHttpActionResult GetFileInfosByDirId(int dirId, string filterExtension, int page, int pageSize)
         {
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByDirId(dirId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByDirId(dirId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -81,10 +81,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFavoriteFiles(int page, int pageSize)
+        public IHttpActionResult GetFavoriteFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFavoriteFiles(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFavoriteFiles(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -96,10 +96,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetImportantFiles(int page, int pageSize)
+        public IHttpActionResult GetImportantFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetImportantFiles(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetImportantFiles(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -111,9 +111,9 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult Search(string searchContent, int page, int pageSize)
+        public IHttpActionResult Search(string searchContent, string filterExtension, int page, int pageSize)
         {
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.Search(searchContent, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.Search(searchContent, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -125,10 +125,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetDepartmentFiles(int page, int pageSize)
+        public IHttpActionResult GetDepartmentFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetDepartmentFiles(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetDepartmentFiles(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -140,10 +140,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetSharedFiles(int page, int pageSize)
+        public IHttpActionResult GetSharedFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetSharedFiles(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetSharedFiles(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
@@ -155,10 +155,10 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetTrashContents(int page, int pageSize)
+        public IHttpActionResult GetTrashContents(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetTrashContents(empId, page, pageSize, out int totalRow);
+            IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetTrashContents(empId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,

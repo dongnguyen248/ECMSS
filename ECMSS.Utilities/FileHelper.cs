@@ -71,5 +71,11 @@ namespace ECMSS.Utilities
                 Directory.Delete(path);
             }
         }
+
+        public static string GetFileExtension(string fileName)
+        {
+            int lastIndex = fileName.LastIndexOf('.');
+            return fileName.Substring(lastIndex + 1);
+        }
     }
 }

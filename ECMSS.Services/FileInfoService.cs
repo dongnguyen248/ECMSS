@@ -50,17 +50,17 @@ namespace ECMSS.Services
             };
         }
 
-        public IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetFileInfosByUserId(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetFileInfosByDirId(int dirId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.DirectoryId == dirId && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
@@ -109,6 +109,7 @@ namespace ECMSS.Services
                     throw new Exception("Special character should not be entered");
                 }
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
+                fileInfo.Extension = FileHelper.GetFileExtension(fileInfo.Name);
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
                 _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
@@ -130,55 +131,55 @@ namespace ECMSS.Services
             }
         }
 
-        public IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetFavoriteFiles(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileFavorites.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileFavorites.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> GetImportantFiles(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetImportantFiles(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileImportants.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileImportants.Any(f => f.EmployeeId == empId) && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> Search(string searchContent, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> Search(string searchContent, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
             searchContent = StringHelper.StringNormalization(searchContent);
             IQueryable<FileInfo> fileInfos = _fileInfoRepository.Find(delegate (FileInfo f)
             {
                 return (StringHelper.StringNormalization(f.Name).IndexOf(searchContent, StringComparison.CurrentCultureIgnoreCase) >= 0 || f.Employee.EpLiteId.Contains(searchContent))
                 && !f.Trashes.Any();
-            }, _includes);
+            }, _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetDepartmentFiles(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
             int deptId = _employeeRepository.GetSingleById(empId).DepartmentId;
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.DepartmentId == deptId && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.DepartmentId == deptId && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> GetSharedFiles(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetSharedFiles(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileShares.Any(s => s.EmployeeId == empId) && !x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.FileShares.Any(s => s.EmployeeId == empId) && !x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
         }
 
-        public IEnumerable<FileInfoDTO> GetTrashContents(int empId, int pageIndex, int pageSize, out int totalRow)
+        public IEnumerable<FileInfoDTO> GetTrashContents(int empId, string filterExtension, int pageIndex, int pageSize, out int totalRow)
         {
-            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Any(), _includes);
+            IQueryable<FileInfo> fileInfos = _fileInfoRepository.GetMany(x => x.Employee.Id == empId && x.Trashes.Any(), _includes).Where(LinqHelper.GetFromType(filterExtension));
             totalRow = fileInfos.Count();
             IQueryable<FileInfo> result = fileInfos.OrderByDescending(x => x.CreatedDate).Skip(pageSize * (pageIndex - 1)).Take(pageSize);
             return _mapper.Map<IEnumerable<FileInfoDTO>>(result);
@@ -212,7 +213,7 @@ namespace ECMSS.Services
                     }
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
-
+                    fi.Extension = FileHelper.GetFileExtension(fi.Name);
                     if (fi.FileShares != null)
                     {
                         fi.FileShares.ToList().ForEach(x => { x.FileId = fi.Id; x.Id = Guid.NewGuid(); });
