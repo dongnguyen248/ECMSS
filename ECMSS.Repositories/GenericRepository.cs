@@ -64,7 +64,7 @@ namespace ECMSS.Repositories
 
         public void RemoveMulti(Expression<Func<TEntity, bool>> condition)
         {
-            IEnumerable<TEntity> objects = _dbSet.Where<TEntity>(condition).AsEnumerable();
+            IEnumerable<TEntity> objects = _dbSet.Where(condition).AsEnumerable();
             foreach (TEntity obj in objects)
             {
                 _dbSet.Remove(obj);
