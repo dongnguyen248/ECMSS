@@ -24,7 +24,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFileInfos(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetFileInfos(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByUserId(empId, filterExtension, page, pageSize, out int totalRow);
@@ -35,11 +35,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult GetFileInfosByDirId(int dirId, string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetFileInfosByDirId(int dirId, string filterExtension, int page, int pageSize)
         {
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByDirId(dirId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
@@ -49,7 +49,7 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
@@ -81,7 +81,7 @@ namespace ECMSS.Web.Api
         }
 
         [HttpGet]
-        public IHttpActionResult GetFavoriteFiles(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetFavoriteFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFavoriteFiles(empId, filterExtension, page, pageSize, out int totalRow);
@@ -92,11 +92,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult GetImportantFiles(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetImportantFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetImportantFiles(empId, filterExtension, page, pageSize, out int totalRow);
@@ -107,11 +107,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult Search(string searchContent, string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> Search(string searchContent, string filterExtension, int page, int pageSize)
         {
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.Search(searchContent, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
@@ -121,11 +121,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult GetDepartmentFiles(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetDepartmentFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetDepartmentFiles(empId, filterExtension, page, pageSize, out int totalRow);
@@ -136,11 +136,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult GetSharedFiles(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetSharedFiles(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetSharedFiles(empId, filterExtension, page, pageSize, out int totalRow);
@@ -151,11 +151,11 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
-        public IHttpActionResult GetTrashContents(string filterExtension, int page, int pageSize)
+        public PaginationSet<FileInfoViewModel> GetTrashContents(string filterExtension, int page, int pageSize)
         {
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetTrashContents(empId, filterExtension, page, pageSize, out int totalRow);
@@ -166,7 +166,7 @@ namespace ECMSS.Web.Api
                 PageSize = pageSize,
                 Items = ConvertToModels(fileInfos)
             };
-            return Ok(new { pagedSet });
+            return pagedSet;
         }
 
         [HttpGet]
@@ -186,8 +186,8 @@ namespace ECMSS.Web.Api
                 Version = GetFileHistory(fileInfo).Version,
                 Tag = fileInfo.Tag,
                 ModifiedDate = GetFileHistory(fileInfo).ModifiedDate,
-                IsFavorite = fileInfo.FileFavorites.Where(f => f.EmployeeId == empId).Any(),
-                IsImportant = fileInfo.FileImportants.Where(i => i.EmployeeId == empId).Any()
+                IsFavorite = fileInfo.FileFavorites.Any(f => f.EmployeeId == empId),
+                IsImportant = fileInfo.FileImportants.Any(i => i.EmployeeId == empId)
             };
             return fileInfoVM;
         }
@@ -208,8 +208,8 @@ namespace ECMSS.Web.Api
                 SecurityLevel = x.SecurityLevel,
                 Version = GetFileHistory(x).Version,
                 ModifiedDate = GetFileHistory(x).ModifiedDate,
-                IsFavorite = x.FileFavorites.Where(f => f.EmployeeId == empId).Any(),
-                IsImportant = x.FileImportants.Where(i => i.EmployeeId == empId).Any()
+                IsFavorite = x.FileFavorites.Any(f => f.EmployeeId == empId),
+                IsImportant = x.FileImportants.Any(i => i.EmployeeId == empId)
             });
         }
 
