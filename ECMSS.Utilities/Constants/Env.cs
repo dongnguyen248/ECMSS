@@ -1,4 +1,4 @@
-﻿namespace ECMSS.Utilities
+﻿namespace ECMSS.Utilities.Constants
 {
     public static class Env
     {

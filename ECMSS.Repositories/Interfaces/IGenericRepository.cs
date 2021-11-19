@@ -21,8 +21,6 @@ namespace ECMSS.Repositories.Interfaces
 
         void Update(TEntity entity);
 
-        void Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties);
-
         IEnumerable<TEntity> GetAll();
 
         IEnumerable<TEntity> GetAll(params Expression<Func<TEntity, object>>[] includes);

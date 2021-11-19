@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -75,16 +74,6 @@ namespace ECMSS.Repositories
         {
             _dbSet.Attach(entity);
             _dbContext.Entry(entity).State = EntityState.Modified;
-        }
-
-        public void Update(TEntity entity, params Expression<Func<TEntity, object>>[] properties)
-        {
-            _dbSet.Attach(entity);
-            DbEntityEntry<TEntity> dbEntry = _dbContext.Entry(entity);
-            foreach (var includeProperty in properties)
-            {
-                dbEntry.Property(includeProperty).IsModified = true;
-            }
         }
 
         public IEnumerable<TEntity> GetAll()
