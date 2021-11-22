@@ -127,7 +127,7 @@ namespace ECMSS.Repositories
         public IQueryable<TEntity> Find(Func<TEntity, bool> condition, params Expression<Func<TEntity, object>>[] includes)
         {
             IQueryable<TEntity> query = _dbSet.Include(includes[0]);
-            foreach (var include in includes.Skip(1))
+            foreach (Expression<Func<TEntity, object>> include in includes.Skip(1))
             {
                 query = query.Include(include);
             }

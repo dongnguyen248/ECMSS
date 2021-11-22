@@ -192,7 +192,7 @@ namespace ECMSS.Services
             try
             {
                 bool isValidFileName = false;
-                foreach (var item in fileInfos)
+                foreach (FileInfoDTO item in fileInfos)
                 {
                     isValidFileName = StringHelper.CheckContainSpecialCharacters(item.Name);
                 }
@@ -206,7 +206,7 @@ namespace ECMSS.Services
                 }
 
                 List<FileInfoDTO> files = new List<FileInfoDTO>();
-                foreach (var fi in fileInfos)
+                foreach (FileInfoDTO fi in fileInfos)
                 {
                     if (_fileInfoRepository.CheckContains(x => x.Name == fi.Name && x.DirectoryId == fi.DirectoryId))
                     {
@@ -239,7 +239,7 @@ namespace ECMSS.Services
             }
             catch (Exception ex)
             {
-                foreach (var item in insertedFiles)
+                foreach (string item in insertedFiles)
                 {
                     FileHelper.DeleteFile(item);
                 }
