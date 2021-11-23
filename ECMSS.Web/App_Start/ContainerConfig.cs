@@ -19,7 +19,7 @@ namespace ECMSS.Web.App_Start
     {
         public static void Configure()
         {
-            var builder = new ContainerBuilder();
+            ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             builder.RegisterType<ECMEntities>().AsSelf().InstancePerRequest();

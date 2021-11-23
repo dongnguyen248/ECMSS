@@ -55,17 +55,16 @@ namespace ECMSS.Web.Extensions.Auth
 
         protected Task<IPrincipal> AuthenticateJwtToken(string token)
         {
-            if (ValidateToken(token, out var username))
+            if (ValidateToken(token, out string username))
             {
-                var claims = new List<Claim>
+                List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username)
                 };
-                var identity = new ClaimsIdentity(claims, "Jwt");
+                ClaimsIdentity identity = new ClaimsIdentity(claims, "Jwt");
                 IPrincipal user = new ClaimsPrincipal(identity);
                 return Task.FromResult(user);
             }
-
             return Task.FromResult<IPrincipal>(null);
         }
 

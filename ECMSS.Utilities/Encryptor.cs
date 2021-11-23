@@ -38,18 +38,18 @@ namespace ECMSS.Utilities
         private static byte[] Encrypt(byte[] bytesToEncrypted, byte[] secretBytes)
         {
             byte[] encryptedBytes = null;
-            var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
             using (MemoryStream ms = new MemoryStream())
             {
                 using (RijndaelManaged AES = new RijndaelManaged())
                 {
-                    var key = new Rfc2898DeriveBytes(secretBytes, saltBytes, 1000);
+                    Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(secretBytes, saltBytes, 1000);
                     AES.KeySize = 256;
                     AES.BlockSize = 128;
                     AES.Key = key.GetBytes(AES.KeySize / 8);
                     AES.IV = key.GetBytes(AES.BlockSize / 8);
                     AES.Mode = CipherMode.CBC;
-                    using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
                     {
                         cs.Write(bytesToEncrypted, 0, bytesToEncrypted.Length);
                         cs.Close();
@@ -63,18 +63,18 @@ namespace ECMSS.Utilities
         private static byte[] Decrypt(byte[] bytesToDecrypted, byte[] secretBytes)
         {
             byte[] decryptedBytes = null;
-            var saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+            byte[] saltBytes = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
             using (MemoryStream ms = new MemoryStream())
             {
                 using (RijndaelManaged AES = new RijndaelManaged())
                 {
-                    var key = new Rfc2898DeriveBytes(secretBytes, saltBytes, 1000);
+                    Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(secretBytes, saltBytes, 1000);
                     AES.KeySize = 256;
                     AES.BlockSize = 128;
                     AES.Key = key.GetBytes(AES.KeySize / 8);
                     AES.IV = key.GetBytes(AES.BlockSize / 8);
                     AES.Mode = CipherMode.CBC;
-                    using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
                     {
                         cs.Write(bytesToDecrypted, 0, bytesToDecrypted.Length);
                         cs.Close();

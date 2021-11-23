@@ -18,7 +18,7 @@ namespace ECMSS.Web.Extensions.Auth
         {
             byte[] symmetricKey = Convert.FromBase64String(SECRET_KEY);
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, epLiteId), new Claim(ClaimTypes.NameIdentifier, empId.ToString()) }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(expireMinutes)),
@@ -33,13 +33,13 @@ namespace ECMSS.Web.Extensions.Auth
         {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
                 if (!(tokenHandler.ReadToken(token) is JwtSecurityToken jwtToken))
                 {
                     return null;
                 }
                 byte[] symmetricKey = Convert.FromBase64String(SECRET_KEY);
-                var validationParameters = new TokenValidationParameters()
+                TokenValidationParameters validationParameters = new TokenValidationParameters()
                 {
                     RequireExpirationTime = true,
                     ValidateIssuer = false,
@@ -58,7 +58,7 @@ namespace ECMSS.Web.Extensions.Auth
         public static Dictionary<string, string> ExtractFromHeader(HttpActionContext actionContext)
         {
             AuthenticationHeaderValue authRequest = actionContext.Request.Headers.Authorization;
-            var empInfo = new Dictionary<string, string>();
+            Dictionary<string, string> empInfo = new Dictionary<string, string>();
             if (authRequest != null)
             {
                 string requestToken = authRequest.Parameter;
