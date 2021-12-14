@@ -63,5 +63,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECMSS.Utilities\ECMSS.Utilities.csproj">
+      <Project>{42A916B6-79D4-4566-852D-14128FA23A85}</Project>
+      <Name>ECMSS.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

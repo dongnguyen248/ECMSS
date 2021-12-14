@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECMSS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,7 @@ namespace ECMSS.DTO
         public int DirectoryId { get; set; }
         public string SecurityLevel { get; set; }
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Extension { get; set; }
+        public string Extension => FileHelper.GetFileExtension(Name);
 
         public virtual DirectoryDTO Directory { get; set; }
         public virtual EmployeeDTO Employee { get; set; }

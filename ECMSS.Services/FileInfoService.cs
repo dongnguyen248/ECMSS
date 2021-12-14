@@ -164,7 +164,6 @@ namespace ECMSS.Services
                     throw new Exception("Special character should not be entered");
                 }
                 fileInfo.Owner = _employeeRepository.GetSingle(x => x.EpLiteId == fileInfo.OwnerUser).Id;
-                fileInfo.Extension = FileHelper.GetFileExtension(fileInfo.Name);
                 string filePath = CommonConstants.FILE_UPLOAD_PATH;
                 filePath += $"{_directoryService.GetDirFromId(fileInfo.DirectoryId).Name}/{fileInfo.Name}";
                 _fileInfoRepository.Add(_mapper.Map<FileInfo>(fileInfo));
@@ -214,7 +213,6 @@ namespace ECMSS.Services
                     }
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
-                    fi.Extension = FileHelper.GetFileExtension(fi.Name);
                     if (fi.FileShares != null)
                     {
                         fi.FileShares.ToList().ForEach(x => { x.FileId = fi.Id; x.Id = Guid.NewGuid(); });
