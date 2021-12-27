@@ -180,6 +180,7 @@ namespace ECMSS.Web.Api
                 Name = fileInfo.Name,
                 Owner = fileInfo.Employee.EpLiteId,
                 CreatedDate = fileInfo.CreatedDate,
+                DirectoryId = fileInfo.DirectoryId,
                 Modifier = GetFileHistory(fileInfo).Employee.EpLiteId,
                 Size = GetFileHistory(fileInfo).Size,
                 SecurityLevel = fileInfo.SecurityLevel,

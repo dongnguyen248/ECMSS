@@ -20,8 +20,6 @@ namespace ECMSS.Repositories
         {
             _dbFactory = dbFactory;
             _dbSet = DbContext.Set<TEntity>();
-            DbContext.Configuration.LazyLoadingEnabled = false;
-            DbContext.Configuration.AutoDetectChangesEnabled = false;
         }
 
         public TEntity Add(TEntity entity)

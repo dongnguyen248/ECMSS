@@ -141,7 +141,7 @@ namespace ECMSS.Services
         public string GetFileShareUrl(Guid id, int empId)
         {
             FileInfo fileInfo = _fileInfoRepository.GetSingle(x => x.Id == id, x => x.FileHistories, x => x.Employee);
-            bool isOwner = _fileInfoRepository.GetSingle(x => x.Id == id && (x.Owner == empId)) != null;
+            bool isOwner = _fileInfoRepository.GetSingle(x => x.Id == id && x.Owner == empId) != null;
             string filePath = Env.IS_DEVELOPMENT ? CommonConstants.FILE_UPLOAD_PATH : "http://172.25.216.127:8082/FileSS/";
             filePath += $"{_directoryService.GetDirFromFileId(id).Name}/{fileInfo.Name}";
             string url = isOwner ? $"<FileShareUrl>{Encryptor.Encrypt($"</{fileInfo.Id}/>")}" : null;

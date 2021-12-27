@@ -7,7 +7,16 @@ namespace ECMSS.Repositories
     {
         private ECMEntities _dbContext;
 
-        public ECMEntities Init() => _dbContext ?? (_dbContext = new ECMEntities());
+        public ECMEntities Init()
+        {
+            if (_dbContext == null)
+            {
+                _dbContext = new ECMEntities();
+                _dbContext.Configuration.LazyLoadingEnabled = false;
+                _dbContext.Configuration.AutoDetectChangesEnabled = false;
+            }
+            return _dbContext;
+        }
 
         protected override void DisposeCore()
         {

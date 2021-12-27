@@ -20,7 +20,7 @@ namespace ECMSS.Utilities
                 { "CAD", new string[] { "dwg", "dwt", "dxf" } },
                 { "VIDEO", new string[] { "webm", "mpeg", "ogg", "mp4", "mpg", "mpv", "m4p", "m4v", "avi", "wmv", "flv", "swf" } }
             };
-            var types = fileTypes.Where(x => x.Key == type.ToUpper()).Select(x => x.Value).FirstOrDefault();
+            string[] types = fileTypes.Where(x => x.Key == type.ToUpper()).Select(x => x.Value).FirstOrDefault();
             if (types != null)
             {
                 return f => types.Contains(f.Extension);
