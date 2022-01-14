@@ -1,5 +1,6 @@
 using ECMSS.Web;
 using Swashbuckle.Application;
+using System.Reflection;
 using System.Web.Http;
 using WebActivatorEx;
 
@@ -11,7 +12,7 @@ namespace ECMSS.Web
     {
         public static void Register()
         {
-            var assembly = typeof(SwaggerConfig).Assembly;
+            Assembly assembly = typeof(SwaggerConfig).Assembly;
             GlobalConfiguration.Configuration.EnableSwagger(w => w.SingleApiVersion("v1", "ECM Api")).EnableSwaggerUi();
         }
     }

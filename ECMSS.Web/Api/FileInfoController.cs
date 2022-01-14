@@ -33,7 +33,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -41,13 +41,14 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public PaginationSet<FileInfoViewModel> GetFileInfosByDirId(int dirId, string filterExtension, int page, int pageSize)
         {
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.GetFileInfosByDirId(dirId, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -90,7 +91,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -105,7 +106,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -113,13 +114,14 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public PaginationSet<FileInfoViewModel> Search(string searchContent, string filterExtension, int page, int pageSize)
         {
+            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
             IEnumerable<FileInfoDTO> fileInfos = _fileInfoService.Search(searchContent, filterExtension, page, pageSize, out int totalRow);
             PaginationSet<FileInfoViewModel> pagedSet = new PaginationSet<FileInfoViewModel>()
             {
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -134,7 +136,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -149,7 +151,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -164,7 +166,7 @@ namespace ECMSS.Web.Api
                 PageIndex = page,
                 TotalRows = totalRow,
                 PageSize = pageSize,
-                Items = ConvertToModels(fileInfos)
+                Items = ConvertToModels(fileInfos, empId)
             };
             return pagedSet;
         }
@@ -172,51 +174,15 @@ namespace ECMSS.Web.Api
         [HttpGet]
         public FileInfoViewModel GetFileInfo(Guid id)
         {
-            FileInfoDTO fileInfo = _fileInfoService.GetFileInfo(id);
             int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            FileInfoViewModel fileInfoVM = new FileInfoViewModel()
-            {
-                Id = fileInfo.Id,
-                Name = fileInfo.Name,
-                Owner = fileInfo.Employee.EpLiteId,
-                CreatedDate = fileInfo.CreatedDate,
-                DirectoryId = fileInfo.DirectoryId,
-                Modifier = GetFileHistory(fileInfo).Employee.EpLiteId,
-                Size = GetFileHistory(fileInfo).Size,
-                SecurityLevel = fileInfo.SecurityLevel,
-                Version = GetFileHistory(fileInfo).Version,
-                Tag = fileInfo.Tag,
-                ModifiedDate = GetFileHistory(fileInfo).ModifiedDate,
-                IsFavorite = fileInfo.FileFavorites.Any(f => f.EmployeeId == empId),
-                IsImportant = fileInfo.FileImportants.Any(i => i.EmployeeId == empId)
-            };
+            FileInfoDTO fileInfo = _fileInfoService.GetFileInfo(id);
+            FileInfoViewModel fileInfoVM = new FileInfoViewModel(fileInfo, empId);
             return fileInfoVM;
         }
 
-        private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos)
+        private IEnumerable<FileInfoViewModel> ConvertToModels(IEnumerable<FileInfoDTO> fileInfos, int empId)
         {
-            int empId = int.Parse(JwtManager.ExtractFromHeader(ActionContext)["Id"]);
-            return fileInfos.Select(x => new FileInfoViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Owner = x.Employee.EpLiteId,
-                CreatedDate = x.CreatedDate,
-                DirectoryId = x.DirectoryId,
-                Tag = x.Tag,
-                Modifier = GetFileHistory(x).Employee.EpLiteId,
-                Size = GetFileHistory(x).Size,
-                SecurityLevel = x.SecurityLevel,
-                Version = GetFileHistory(x).Version,
-                ModifiedDate = GetFileHistory(x).ModifiedDate,
-                IsFavorite = x.FileFavorites.Any(f => f.EmployeeId == empId),
-                IsImportant = x.FileImportants.Any(i => i.EmployeeId == empId)
-            });
-        }
-
-        private FileHistoryDTO GetFileHistory(FileInfoDTO fileInfo)
-        {
-            return fileInfo.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault();
+            return fileInfos.Select(x => new FileInfoViewModel(x, empId));
         }
 
         [HttpPost]
