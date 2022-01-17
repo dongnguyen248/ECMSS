@@ -43,7 +43,7 @@ namespace ECMSS.Web.Models
 
         private FileHistoryDTO GetFileHistory(FileInfoDTO fileInfo)
         {
-            return fileInfo.FileHistories.OrderByDescending(u => u.Id).FirstOrDefault();
+            return fileInfo.FileHistories.OrderByDescending(h => h.Id).FirstOrDefault();
         }
     }
 }
