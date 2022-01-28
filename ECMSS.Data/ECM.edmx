@@ -71,7 +71,7 @@
           <Property Name="DirectoryId" Type="int" Nullable="false" />
           <Property Name="SecurityLevel" Type="varchar" MaxLength="20" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Extension" Type="varchar" MaxLength="10" />
+          <Property Name="Extension" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="FilePermission">
           <Key>
@@ -660,7 +660,7 @@
           <NavigationProperty Name="FileImportants" Relationship="ECMModel.Fk_FileImportant_FileInfo" FromRole="FileInfo" ToRole="FileImportant" />
           <NavigationProperty Name="FileShares" Relationship="ECMModel.Fk_FileShare_FileInfo" FromRole="FileInfo" ToRole="FileShare" />
           <NavigationProperty Name="Trashes" Relationship="ECMModel.Fk_Trash_FileInfo" FromRole="FileInfo" ToRole="Trash" />
-          <Property Name="Extension" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Extension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="FileShare">
           <Key>
