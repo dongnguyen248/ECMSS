@@ -43,10 +43,10 @@ namespace ECMSS.Utilities
             {
                 if (input.Contains(item.ToString()))
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 }

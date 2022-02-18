@@ -26,7 +26,7 @@ namespace ECMSS.Services
         private readonly IMapper _mapper;
         private readonly Expression<Func<FileInfo, object>>[] _includes;
 
-        private const string BEGIN_VERSION = "0.1";
+        private const string FIRST_VERSION = "0.1";
         private const int CREATE_STATUS = 1;
 
         public FileInfoService(IGenericRepository<FileInfo> fileInfoRepository, IGenericRepository<FileHistory> fileHistoryRepository,
@@ -159,7 +159,7 @@ namespace ECMSS.Services
             try
             {
                 bool isValidFileName = StringHelper.CheckContainSpecialCharacters(fileInfo.Name);
-                if (isValidFileName)
+                if (!isValidFileName)
                 {
                     throw new Exception("Special character should not be entered");
                 }
@@ -173,7 +173,7 @@ namespace ECMSS.Services
                     Modifier = fileInfo.Owner,
                     Size = fileInfo.FileData.Length / 1024,
                     StatusId = CREATE_STATUS,
-                    Version = BEGIN_VERSION
+                    Version = FIRST_VERSION
                 };
                 _fileHistoryRepository.Add(_mapper.Map<FileHistory>(fileHistory));
                 FileHelper.SaveFile(filePath, fileInfo.FileData);
@@ -195,7 +195,7 @@ namespace ECMSS.Services
                 {
                     isValidFileName = StringHelper.CheckContainSpecialCharacters(item.Name);
                 }
-                if (isValidFileName)
+                if (!isValidFileName)
                 {
                     throw new Exception("Special character should not be entered");
                 }
@@ -209,7 +209,7 @@ namespace ECMSS.Services
                 {
                     if (_fileInfoRepository.CheckContains(x => x.Name == fi.Name && x.DirectoryId == fi.DirectoryId))
                     {
-                        throw new Exception("There is a file with the same name in the same directory");
+                        throw new Exception($"There is a file with the same name in the same directory - {fi.Name}");
                     }
                     string filePath = CommonConstants.FILE_UPLOAD_PATH;
                     filePath += $"{_directoryService.GetDirFromId(fi.DirectoryId).Name}/{fi.Name}";
@@ -223,7 +223,7 @@ namespace ECMSS.Services
                         Modifier = fi.Owner,
                         Size = fi.FileData.Length / 1024,
                         StatusId = CREATE_STATUS,
-                        Version = BEGIN_VERSION
+                        Version = FIRST_VERSION
                     };
                     fi.FileHistories = new FileHistoryDTO[] { fileHistory };
                     _fileInfoRepository.Add(_mapper.Map<FileInfo>(fi));
@@ -250,7 +250,7 @@ namespace ECMSS.Services
             try
             {
                 bool isValidFileName = StringHelper.CheckContainSpecialCharacters(fileInfo.Name);
-                if (isValidFileName)
+                if (!isValidFileName)
                 {
                     throw new Exception("Special character should not be entered");
                 }
@@ -275,7 +275,7 @@ namespace ECMSS.Services
                     IEnumerable<FileInfo> filesInDesLocation = _fileInfoRepository.GetMany(x => x.DirectoryId == fileInfo.DirectoryId);
                     if (filesInDesLocation.Where(x => x.Name == fileInfo.Name).Any())
                     {
-                        throw new Exception("There is a file with the same name in the same directory");
+                        throw new Exception($"There is a file with the same name in the same directory - {fileInfo.Name}");
                     }
                     FileHelper.Move(srcPath, desPath);
                 }

@@ -56,7 +56,7 @@ namespace ECMSS.Services
             try
             {
                 bool isValidFileName = StringHelper.CheckContainSpecialCharacters(directory.Name);
-                if (isValidFileName)
+                if (!isValidFileName)
                 {
                     throw new Exception("Special character should not be entered");
                 }
