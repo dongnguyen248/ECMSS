@@ -11,7 +11,7 @@ namespace ECMSS.Web.Extensions.Auth
 {
     public static class JwtManager
     {
-        private const string SECRET_KEY = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
+        private const string SECRET_KEY = "M0JvSkB+TEQ8IWV0V300bFcyUVVuSHZrVmgnajVnWGknUz4hJEc7NkpXUjpVUlJMWHU9U31KYyk2eG9wTkxk";
         private const int EXPIRE_MINUTES = 60 * 24;
 
         public static string GenerateToken(string epLiteId, int empId, int expireMinutes = EXPIRE_MINUTES)

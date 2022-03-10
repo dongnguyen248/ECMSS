@@ -44,13 +44,6 @@ namespace ECMSS.Services
             return _mapper.Map<DirectoryDTO>(directory);
         }
 
-        public DirectoryDTO GetDirFromId(int dirId)
-        {
-            SqlParameter arg = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
-            Directory directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", arg).FirstOrDefault();
-            return _mapper.Map<DirectoryDTO>(directory);
-        }
-
         public DirectoryDTO CreateDirectory(DirectoryDTO directory)
         {
             try
@@ -95,6 +88,13 @@ namespace ECMSS.Services
             {
                 throw ex;
             }
+        }
+
+        public DirectoryDTO GetDirFromId(int dirId)
+        {
+            SqlParameter arg = new SqlParameter { ParameterName = "DirId", SqlDbType = SqlDbType.Int, Value = dirId };
+            Directory directory = _directoryRepository.ExecuteQuery("EXEC Proc_GetDirFromId @DirId", arg).FirstOrDefault();
+            return _mapper.Map<DirectoryDTO>(directory);
         }
     }
 }
